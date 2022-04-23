@@ -1,1 +1,47 @@
-<p>header works!</p>
+<!-- Header -->
+<mat-toolbar color="primary">
+  <div class="txt">
+    <span style="font-size: 14pt">provisorischer Header</span>
+  </div>
+  <button
+    mat-raised-button
+    color="accent"
+    class="navigationBtt"
+    (click)="navigateToSite('dashboard')"
+  >
+    Dashboard
+  </button>
+  <button
+    mat-raised-button
+    color="accent"
+    class="navigationBtt"
+    (click)="navigateToSite('overview')"
+  >
+    Overview Page
+  </button>
+  <button
+    mat-raised-button
+    color="accent"
+    class="navigationBtt"
+    (click)="navigateToSite('analytics')"
+  >
+    Analytical List Page
+  </button>
+  <button
+    mat-raised-button
+    color="accent"
+    class="navigationBtt"
+    (click)="navigateToSite('listreport')"
+  >
+    Listreport
+  </button>
+
+  <button
+    mat-raised-button
+    color="accent"
+    class="logoutBtt"
+    (click)="navigateToSite('')"
+  >
+    Logout
+  </button>
+</mat-toolbar>

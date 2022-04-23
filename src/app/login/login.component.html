@@ -1,1 +1,26 @@
-<p>login works!</p>
+<div class="content" role="main">
+  <!-- Überschrift -->
+  <div class="card highlight-card headline">
+    <h1><u>Willkommen</u></h1>
+  </div>
+
+  <div class="card-container">
+    <h3>
+      Passwort:
+      <mat-form-field appearance="fill">
+        <mat-label>hier eingeben</mat-label>
+        <input
+          matInput
+          id="vname"
+          name="vname"
+          type="text"
+          (keyup)="onKeyLoginData($event)"
+        />
+      </mat-form-field>
+    </h3>
+  </div>
+
+  <div class="card-container">
+    <button mat-raised-button color="accent" (click)="login()">Login</button>
+  </div>
+</div>
