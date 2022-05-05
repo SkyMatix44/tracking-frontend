@@ -1,74 +1,145 @@
-
 <div class="page-holder align-items-center py-4 bg-gray-100 vh-100">
   <div class="container">
     <div class="row align-items-center">
-      <div class="col-lg-6 px-lg-4"  *ngIf="showLogin">
+      <!-- Login -->
+      <div class="col-lg-6 px-lg-4" *ngIf="showLogin">
         <div class="card">
           <div class="card-header px-lg-5">
             <div class="card-heading text-primary">Login</div>
           </div>
           <div class="card-body p-lg-5">
             <h3 class="mb-4">Willkommen zurück!</h3>
-            <p class="text-muted mb-5">Dieser Login führt dich zum Dashboard der Diabetes-App.</p>
+            <p class="text-muted mb-5">
+              Dieser Login führt dich zum Dashboard der Diabetes-App.
+            </p>
             <form id="loginForm" action="index.html">
               <div class="form-floating mb-3">
-                <input class="form-control" [(ngModel)]="userInputEmail" name="inputEmail" type="email" placeholder="name@example.com" required>
+                <input
+                  class="form-control"
+                  [(ngModel)]="userInputEmail"
+                  name="inputEmail"
+                  type="email"
+                  placeholder="name@example.com"
+                  required
+                />
                 <label>Email Addresse</label>
               </div>
               <div class="form-floating mb-3">
-                <input class="form-control" [(ngModel)]="userInputPassword" name="inputPassword" type="password" placeholder="Password" required>
+                <input
+                  class="form-control"
+                  [(ngModel)]="userInputPassword"
+                  name="inputPassword"
+                  type="password"
+                  placeholder="Password"
+                  required
+                />
                 <label>Passwort</label>
               </div>
-              <button mat-raised-button color="accent" (click)="login()">Login</button>
+              <button mat-raised-button color="accent" (click)="login()">
+                Login
+              </button>
             </form>
           </div>
           <div class="card-footer px-lg-5 py-lg-4">
-            <div>Du hast noch keinen Account? <a (click)="goToRegister()">Zur Registrierung</a></div>
+            <div>
+              Du hast noch keinen Account?
+              <a (click)="goToRegister()">Zur Registrierung</a>
+            </div>
           </div>
         </div>
       </div>
       <!-- Registrierung -->
-       <div class="col-lg-6 px-lg-4" *ngIf="showRegister">
+      <div class="col-lg-6 px-lg-4" *ngIf="showRegister">
         <div class="card">
           <div class="card-header px-lg-5">
             <div class="card-heading text-primary">Registrierung</div>
           </div>
           <div class="card-body p-lg-5">
             <h3 class="mb-4">Registriere dich hier kostenlos!</h3>
-            <p class="text-muted mb-5">Lege deinen Vornamen und Nachnamen, deine Universität, deine Email und ein Passwort fest.</p>
+            <p class="text-muted mb-5">
+              Lege deinen Vornamen und Nachnamen, deine Universität, deine Email
+              und ein Passwort fest.
+            </p>
             <form action="index.html">
               <div class="form-floating mb-3">
-                <input class="form-control" [(ngModel)]="createUserFirstName" name="userFirstName" placeholder="name@example.com" required>
+                <input
+                  class="form-control"
+                  [(ngModel)]="createUserFirstName"
+                  name="userFirstName"
+                  placeholder="name@example.com"
+                  required
+                />
                 <label>Vorname</label>
               </div>
               <div class="form-floating mb-3">
-                <input class="form-control" [(ngModel)]="createUserLastName" name="userLastName" placeholder="name@example.com" required>
+                <input
+                  class="form-control"
+                  [(ngModel)]="createUserLastName"
+                  name="userLastName"
+                  placeholder="name@example.com"
+                  required
+                />
                 <label>Nachname</label>
-              </div>              
+              </div>
               <div class="form-floating mb-3">
-                <input class="form-control" [(ngModel)]="university" name="university" placeholder="Universität" required>
+                <input
+                  class="form-control"
+                  [(ngModel)]="university"
+                  name="university"
+                  placeholder="Universität"
+                  required
+                />
                 <label>Universität</label>
               </div>
               <div class="form-floating mb-3">
-                <input class="form-control" [(ngModel)]="createEmail" name="email" type="email" placeholder="name@example.com" required>
+                <input
+                  class="form-control"
+                  [(ngModel)]="createEmail"
+                  name="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  required
+                />
                 <label>Email Addresse</label>
               </div>
               <div class="form-floating mb-3">
-                <input class="form-control" [(ngModel)]="createPassword" name="password" type="password" placeholder="Password" required>
+                <input
+                  class="form-control"
+                  [(ngModel)]="createPassword"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  required
+                />
                 <label>Passwort</label>
               </div>
               <div class="form-group">
-                <button mat-raised-button color="accent" id="register" type="button" name="registerSubmit" (click)="register()">Registrieren</button>
+                <button
+                  mat-raised-button
+                  color="accent"
+                  id="register"
+                  type="button"
+                  name="registerSubmit"
+                  (click)="register()"
+                >
+                  Registrieren
+                </button>
               </div>
             </form>
           </div>
           <div class="card-footer px-lg-5 py-lg-4">
-            <div>Du hast einen Account? <a (click)="goToLogin()">Zum Login</a></div>
+            <div>
+              Du hast einen Account? <a (click)="goToLogin()">Zum Login</a>
+            </div>
           </div>
         </div>
       </div>
-     <div class="col-lg-6 col-xl-6 text-center text-primary"><img width="700" src="/assets/img/DiabetesPicture.jpg">
-      <a href='https://de.freepik.com/vektoren/menschen'>Vektor erstellt von pch.vector - de.freepik.com</a>
+      <div class="col-lg-6 col-xl-6 text-center text-primary">
+        <img width="700" src="/assets/img/DiabetesPicture.jpg" />
+        <a href="https://de.freepik.com/vektoren/menschen"
+          >Vektor erstellt von pch.vector - de.freepik.com</a
+        >
+      </div>
     </div>
   </div>
 </div>
