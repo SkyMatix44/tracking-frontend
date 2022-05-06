@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -46,11 +47,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       progressBar: true,
       progressAnimation: 'decreasing',
-      preventDuplicates: true
+      preventDuplicates: true,
     }),
   ],
   providers: [],
