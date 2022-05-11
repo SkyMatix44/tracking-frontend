@@ -1,42 +1,80 @@
 <!-- Header -->
-<mat-toolbar color="primary">
-  <div class="txt">
-    <span style="font-size: 14pt">provisorischer Header</span>
-  </div>
-  <button
-    mat-raised-button
-    color="accent"
-    class="navigationBtt"
-    (click)="navigateToSite('dashboard')"
-  >
-    Dashboard
-  </button>
-  <button
-    mat-raised-button
-    color="accent"
-    class="navigationBtt"
-    (click)="navigateToSite('overview')"
-  >
-    Overview Page
-  </button>
-  <button
-    mat-raised-button
-    color="accent"
-    class="navigationBtt"
-    (click)="navigateToSite('analytics')"
-  >
-    Analytical List Page
-  </button>
-  <button
-    mat-raised-button
-    color="accent"
-    class="navigationBtt"
-    (click)="navigateToSite('listreport')"
-  >
-    Listreport
-  </button>
+<nav
+  class="navbar navbar-expand navbar-light"
+  style="background-color: #ffd64063"
+>
+  <!-- #ffd740 -->
+  <div class="container">
+    <div class="navbar-brand">
+      <span class="brand-text font-weight-light">Scientific-Analysis</span>
+    </div>
+    <!-- navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item"></li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/overview" class="nav-link">Overview Page</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/analytics" class="nav-link">Analytical List Page</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/listreport" class="nav-link">Listreport</a>
+      </li>
+    </ul>
+    <!-- SEARCH FORM -->
+    <form class="form-inline ml-3">
+      <div class="input-group input-group-sm">
+        <input
+          class="form-control form-control-navbar"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          style="color: black"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-navbar"
+            type="submit"
+            style="color: rgb(94, 94, 94)"
+          >
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- navbar rechts -->
+    <ul class="navbar-nav">
+      <!-- ml-auto -->
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-user"></i>
+        </a>
+        <span class="badge badge-warning navbar-badge">2</span>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-header">2 Notifications</span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> Vervollständige deine Daten!
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> Lege erste Nutzer an!
+            <!-- <span class="float-right text-muted text-sm">12 hours</span> -->
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item dropdown-footer"
+            >Benutzerkonto bearbeiten</a
+          >
+        </div>
+      </li>
 
-  <button mat-raised-button color="accent" class="logoutBtt" (click)="logout()">
-    Logout
-  </button>
-</mat-toolbar>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/login" class="nav-link">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
