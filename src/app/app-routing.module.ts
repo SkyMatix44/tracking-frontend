@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
+import { ProjectConfigurationComponent } from './project-configuration/project-configuration.component';
 import { ProjectListreportComponent } from './project-listreport/project-listreport.component';
-import { ProjectOverviewComponent } from './project-overview/project-overview.component';
 
 const routes: Routes = [
   {
@@ -20,8 +20,8 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'overview',
-    component: ProjectOverviewComponent,
+    path: 'configuration',
+    component: ProjectConfigurationComponent,
   },
   {
     path: 'analytics',

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, ChartItem, registerables } from 'chart.js';
+import { ProjectService } from '../common/project.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,10 +8,20 @@ import { Chart, ChartItem, registerables } from 'chart.js';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  constructor() {}
+  constructor(private prjService: ProjectService) {}
 
+  projectSubscription: any;
   ngOnInit(): void {
+    this.subscribeToActualProject();
     this.setDiagramData();
+  }
+
+  subscribeToActualProject() {
+    /*
+    this.projectSubscription.subscribe((v: any) => {
+      console.log('currentId: ' + v);
+    });
+    */
   }
 
   setDiagramData() {
@@ -73,5 +84,9 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
+  }
+
+  ngOnDestroy() {
+    //this.projectSubscription.unsubscribe();
   }
 }

@@ -1,9 +1,19 @@
 <!-- Header -->
 <nav
   class="navbar navbar-expand navbar-light"
-  style="background-color: #ffd64063"
+  style="background-color: rgb(119, 189, 255)"
 >
   <!-- #ffd740 -->
+  <div class="form-group">
+    <span class="brand-text font-weight-light">Studie auswählen:</span>
+    <select
+      id="inputStatus"
+      class="form-control custom-select"
+      (change)="onChangePrj($event)"
+    >
+      <option *ngFor="let i of studies">{{ i }}</option>
+    </select>
+  </div>
   <div class="container">
     <div class="navbar-brand">
       <span class="brand-text font-weight-light">Scientific-Analysis</span>
@@ -15,13 +25,13 @@
         <a href="/dashboard" class="nav-link">Dashboard</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/overview" class="nav-link">Overview Page</a>
+        <a href="/analytics" class="nav-link">Analytical Page</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/analytics" class="nav-link">Analytical List Page</a>
+        <a href="/configuration" class="nav-link">Study Configuration</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/listreport" class="nav-link">Listreport</a>
+        <a href="/listreport" class="nav-link">My Account</a>
       </li>
     </ul>
     <!-- SEARCH FORM -->
@@ -73,7 +83,7 @@
       </li>
 
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/login" class="nav-link">Logout</a>
+        <a (click)="logout()" class="nav-link">Logout</a>
       </li>
     </ul>
   </div>
