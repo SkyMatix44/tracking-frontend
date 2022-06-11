@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../common/auth.service';
 import { ProjectService } from '../common/project.service';
@@ -12,17 +12,30 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private prjService: ProjectService
+    private prjService: ProjectService,
+    private cdref: ChangeDetectorRef
   ) {}
 
   currentProjectId: any;
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit() {
     this.setInitialProject();
+    this.cdref.detectChanges();
   }
 
   setInitialProject() {
     this.currentProjectId = this.prjService.getCurrentProjectId();
-    console.log(this.currentProjectId);
+
+    var DropdownList = document.getElementById(
+      'inputStatus'
+    ) as HTMLSelectElement;
+
+    if (this.currentProjectId == -1) {
+      this.currentProjectId = 0;
+    }
+
+    DropdownList.selectedIndex = this.currentProjectId;
   }
 
   logout(): void {
@@ -34,5 +47,6 @@ export class HeaderComponent implements OnInit {
 
   onChangePrj(event: any) {
     this.prjService.setCurrentProjectId(event.target['selectedIndex']);
+    this.currentProjectId = event.target['selectedIndex'];
   }
 }

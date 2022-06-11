@@ -10,6 +10,7 @@
       id="inputStatus"
       class="form-control custom-select"
       (change)="onChangePrj($event)"
+      [selectedIndex]="currentProjectId"
     >
       <option *ngFor="let i of studies">{{ i }}</option>
     </select>
@@ -29,9 +30,6 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="/configuration" class="nav-link">Study Configuration</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="/listreport" class="nav-link">My Account</a>
       </li>
     </ul>
     <!-- SEARCH FORM -->

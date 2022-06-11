@@ -1,9 +1,14 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +22,7 @@ import { StudyTileComponent } from './dashboard/study-tile/study-tile.component'
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
+import { ProjectConfigDialogComponent } from './project-configuration/project-config-dialog/project-config-dialog.component';
 import { ProjectConfigurationComponent } from './project-configuration/project-configuration.component';
 import { ProjectListreportComponent } from './project-listreport/project-listreport.component';
 import { RegisterComponent } from './register/register.component';
@@ -36,6 +42,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     NotesTileComponent,
     RegisterComponent,
     ProjectConfigurationComponent,
+    ProjectConfigDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +60,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
       progressAnimation: 'decreasing',
       preventDuplicates: true,
     }),
+    MatTableModule,
+    MatDialogModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

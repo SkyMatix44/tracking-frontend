@@ -17,11 +17,8 @@ export class DashboardComponent implements OnInit {
   }
 
   subscribeToActualProject() {
-    /*
-    this.projectSubscription.subscribe((v: any) => {
-      console.log('currentId: ' + v);
-    });
-    */
+    var a = this.prjService.getCurrentProjectId();
+    //console.log(a);
   }
 
   setDiagramData() {

@@ -1,0 +1,120 @@
+<h1 mat-dialog-title>{{ dialogTitle }}</h1>
+<div mat-dialog-content>
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="studyNameFormGroup" [editable]="isEditable">
+      <form [formGroup]="studyNameFormGroup">
+        <ng-template matStepLabel>Name der Studie</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            formControlName="nameCtrl"
+            [(ngModel)]="studyName"
+            required
+          />
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="studyDescriptionFormGroup" [editable]="isEditable">
+      <form [formGroup]="studyDescriptionFormGroup">
+        <ng-template matStepLabel>Beschreibung der Studie</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>Beschreibung</mat-label>
+          <input
+            matInput
+            formControlName="descriptionCtrl"
+            [(ngModel)]="studyDescription"
+            required
+          />
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="startdateFormGroup" [editable]="isEditable">
+      <form [formGroup]="startdateFormGroup">
+        <ng-template matStepLabel>Startdatum der Studie</ng-template>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Datum auswählen/eingeben</mat-label>
+          <input
+            matInput
+            formControlName="startdateCtrl"
+            [min]="minDate"
+            [max]="maxDate"
+            [matDatepicker]="picker"
+            required
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="enddateFormGroup" [editable]="isEditable">
+      <form [formGroup]="enddateFormGroup">
+        <ng-template matStepLabel>Enddatum der Studie</ng-template>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Datum auswählen/eingeben</mat-label>
+          <input
+            matInput
+            formControlName="enddateCtrl"
+            [min]="minDate"
+            [max]="maxDate"
+            [matDatepicker]="picker2"
+            required
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="addScientistsFormGroup" [editable]="isEditable">
+      <form [formGroup]="addScientistsFormGroup">
+        <ng-template matStepLabel>Wissenschaftler hinzufügen</ng-template>
+        <p>Wissenschaftler per Email-Adresse hinzufügen:</p>
+        <mat-form-field appearance="fill">
+          <mat-label>Email des Wissenschaftlers</mat-label>
+          <input matInput placeholder="" />
+        </mat-form-field>
+        <button mat-raised-button (click)="inviteScientist()">
+          hinzufügen
+        </button>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Fertig</ng-template>
+      <p>Fertig, speichere deine Eingaben!</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="saveAndClose()">Speichern</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Abbruch</button>
+</div>

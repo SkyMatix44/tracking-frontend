@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
         .subscribe({
           next: () => {
             this.router.navigate(['/dashboard']);
+            this.toastr.success('Erfolgreich!');
           },
           error: () => {
             // TODO auf verschiedene Fehler reagieren
