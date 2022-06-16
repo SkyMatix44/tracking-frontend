@@ -41,8 +41,6 @@ export class ProjectConfigDialogComponent implements OnInit {
     this.dialogTitle = data.dialogTitle;
     this.studyName = data.studyName;
     this.studyDescription = data.studyDescription;
-    console.log(data.studyStartdate);
-    console.log(data.studyEnddate);
     this.startdateFormGroup = this._formBuilder.group({
       startdateCtrl: new FormControl(new Date(data.studyStartdate)),
     });

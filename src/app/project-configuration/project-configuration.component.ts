@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AuthService } from '../common/auth.service';
-import { Project, ProjectService } from '../common/project.service';
+import { ProjectService } from '../common/project.service';
 import { ProjectConfigDialogComponent } from './project-config-dialog/project-config-dialog.component';
 
 @Component({
@@ -37,23 +37,12 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   loadProject() {
-    this.authService.login('d@d.com', 'd').subscribe({
-      next: () => {
-        this.ProjectService.getProjects().subscribe((prj: Project[]) =>
-          console.log(prj)
-        );
-      },
-      error: () => {
-        console.log('error');
-      },
-    });
-
     this.dataSource.pop();
     this.dataSource.push({
       Name: 'Studie-Typ-2',
       Beschreibung: 'Es wird auf Typ-2 getestet.',
-      Startdatum: '10.06.2022',
-      Enddatum: '21.06.2022',
+      Startdatum: '08/15/2022',
+      Enddatum: '08/20/2022',
       Wissenschaftler: '5',
     });
   }
@@ -79,8 +68,9 @@ export class ProjectConfigurationComponent implements OnInit {
       dialogTitle: 'Studie hinzufügen',
     };
 
-    //this.dialog.open(ProjectConfigDialogComponent, dialogConfig);
+    this.dialog.open(ProjectConfigDialogComponent, dialogConfig);
 
+    /*
     var data = {
       name: 'StudieTypB',
       description: 'Es wird auf Typ B getestet.',
@@ -88,5 +78,6 @@ export class ProjectConfigurationComponent implements OnInit {
       end_date: 1614294000,
     };
     this.ProjectService.create(data);
+    */
   }
 }

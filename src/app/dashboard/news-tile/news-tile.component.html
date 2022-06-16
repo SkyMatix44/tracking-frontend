@@ -1,1 +1,35 @@
-<p>news-tile works!</p>
+<div class="card-body">
+  <div class="tab-content">
+    <div class="post" *ngFor="let news of newsData">
+      <div class="user-block">
+        <img
+          class="img-circle img-bordered-sm"
+          src="{{ news.picture }}"
+          alt="user image"
+        />
+        <span class="username">
+          <a>{{ news.name }}</a>
+        </span>
+        <span class="description">{{ news.type }} - {{ news.createdAt }}</span>
+      </div>
+
+      <p>{{ news.text }}</p>
+    </div>
+    <div class="input-group input-group-sm mb-0">
+      <input
+        class="form-control form-control-sm"
+        placeholder="Enter a public message here"
+        [(ngModel)]="publicMessage"
+      />
+      <div class="input-group-append">
+        <button
+          type="submit"
+          class="btn btn-danger"
+          (click)="sendMessage(publicMessage)"
+        >
+          Send public message
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
