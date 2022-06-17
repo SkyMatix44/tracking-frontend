@@ -1,1 +1,60 @@
-<p>study-tile works!</p>
+<div class="card bg-gradient-info">
+  <div class="card-header border-0">
+    <h3 class="card-title">
+      <i class="fas fa-th mr-1"></i>
+      User-Activity Graph
+    </h3>
+    <div class="card-tools">
+      <!-- Dropdown für Datenauswahl -->
+      <button
+        type="button"
+        class="btn bg-info btn-sm dropdown-toggle"
+        data-toggle="dropdown"
+        data-offset="-52"
+      >
+        {{ currentlySelectedPeriod }}
+        <i class="fas fa-calendar-day"></i>
+      </button>
+      <div class="dropdown-menu" role="menu">
+        <a (click)="selectTimeperiod('days')" class="dropdown-item"
+          >Last 7 days</a
+        >
+        <div class="dropdown-divider"></div>
+        <a (click)="selectTimeperiod('week')" class="dropdown-item"
+          >Last 4 weeks</a
+        >
+        <div class="dropdown-divider"></div>
+        <a (click)="selectTimeperiod('month')" class="dropdown-item"
+          >Last 6 months</a
+        >
+      </div>
+      <!-- --- -->
+      <button
+        type="button"
+        class="btn bg-info btn-sm"
+        data-card-widget="collapse"
+      >
+        <i class="fas fa-minus"></i>
+      </button>
+      <button
+        type="button"
+        class="btn bg-info btn-sm"
+        data-card-widget="remove"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <canvas
+      class="chart"
+      id="line-chart"
+      style="
+        min-height: 250px;
+        height: 250px;
+        max-height: 250px;
+        max-width: 100%;
+      "
+    ></canvas>
+  </div>
+</div>
