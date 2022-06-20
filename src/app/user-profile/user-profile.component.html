@@ -1,119 +1,121 @@
-<div class="container-fluid">
-  <br />
-  <div class="row">
-    <h1><u>User-Account:</u></h1>
-    <div class="tab-pane" id="settings">
-      <form class="form-horizontal">
-        <div class="form-group row">
-          <label for="firstName" class="col-sm-2 col-form-label"
-            >First Name</label
-          >
-          <div class="col-sm-10">
-            <input
-              type="text"
-              class="form-control"
-              id="firstName"
-              name="firstName"
-              [(ngModel)]="userFirstName"
-              placeholder="First Name"
-            />
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="lastName" class="col-sm-2 col-form-label"
-            >Last Name</label
-          >
-          <div class="col-sm-10">
-            <input
-              type="text"
-              class="form-control"
-              id="lastName"
-              name="lastName"
-              [(ngModel)]="userLastName"
-              placeholder="Last Name"
-            />
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="userUniversity" class="col-sm-2 col-form-label"
-            >University</label
-          >
-          <div class="col-sm-10">
-            <input
-              type="text"
-              class="form-control"
-              id="userUniversity"
-              name="userUniversity"
-              [(ngModel)]="userUniversity"
-              placeholder="University"
-            />
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="userAddress" class="col-sm-2 col-form-label"
-            >Address</label
-          >
-          <div class="col-sm-10">
-            <input
-              type="text"
-              class="form-control"
-              id="userAddress"
-              name="userAddress"
-              [(ngModel)]="userAddress"
-              placeholder="Address"
-            />
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="userEmail" class="col-sm-2 col-form-label">Email</label>
-          <div class="col-sm-10">
-            <input
-              type="email"
-              class="form-control"
-              id="userEmail"
-              name="userEmail"
-              [(ngModel)]="userEmail"
-              placeholder="Email"
-            />
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="userPassword" class="col-sm-2 col-form-label"
-            >Set new Password</label
-          >
-          <div class="col-sm-10">
-            <input
-              type="password"
-              class="form-control"
-              id="userPassword"
-              name="userPassword"
-              [(ngModel)]="userPassword"
-              placeholder="Password"
-            />
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="offset-sm-2 col-sm-10">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" /> I agree to the
-                <a href="#">terms and conditions</a>
-              </label>
+<div class="content" role="main">
+  <div class="container-fluid">
+    <br />
+    <div class="row">
+      <h1><u>User-Account:</u></h1>
+      <div class="tab-pane" id="settings">
+        <form class="form-horizontal">
+          <div class="form-group row">
+            <label for="firstName" class="col-sm-2 col-form-label"
+              >First Name</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                name="firstName"
+                [(ngModel)]="userFirstName"
+                placeholder="First Name"
+              />
             </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <div class="offset-sm-2 col-sm-10">
-            <button
-              type="submit"
-              class="btn btn-danger"
-              (click)="saveChanges()"
+          <div class="form-group row">
+            <label for="lastName" class="col-sm-2 col-form-label"
+              >Last Name</label
             >
-              Save
-            </button>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                name="lastName"
+                [(ngModel)]="userLastName"
+                placeholder="Last Name"
+              />
+            </div>
           </div>
-        </div>
-      </form>
+          <div class="form-group row">
+            <label for="userUniversity" class="col-sm-2 col-form-label"
+              >University</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="userUniversity"
+                name="userUniversity"
+                [(ngModel)]="userUniversity"
+                placeholder="University"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="userAddress" class="col-sm-2 col-form-label"
+              >Address</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="userAddress"
+                name="userAddress"
+                [(ngModel)]="userAddress"
+                placeholder="Address"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="userEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input
+                type="email"
+                class="form-control"
+                id="userEmail"
+                name="userEmail"
+                [(ngModel)]="userEmail"
+                placeholder="Email"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="userPassword" class="col-sm-2 col-form-label"
+              >Set new Password</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="password"
+                class="form-control"
+                id="userPassword"
+                name="userPassword"
+                [(ngModel)]="userPassword"
+                placeholder="Password"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" /> I agree to the
+                  <a href="#">terms and conditions</a>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-2 col-sm-10">
+              <button
+                type="submit"
+                class="btn btn-danger"
+                (click)="saveChanges()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

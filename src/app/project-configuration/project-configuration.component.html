@@ -1,7 +1,7 @@
 <div class="content" role="main">
   <h2><u>Übersicht Studiendaten:</u></h2>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="studyDataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="Name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let element">{{ element.Name }}</td>
@@ -35,8 +35,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedStudyColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedStudyColumns"></tr>
   </table>
 
   <br />
@@ -47,4 +47,46 @@
   <button mat-raised-button class="bttAdd" (click)="addStudy()">
     neue Studie hinzufügen
   </button>
+
+  <br />
+  <h2><u>Overview study participants:</u></h2>
+
+  <table mat-table [dataSource]="userDataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="Email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let element">{{ element.Email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="First Name">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.FirstName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Last Name">
+      <th mat-header-cell *matHeaderCellDef>Last Name</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.LastName }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedUserDataColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedUserDataColumns"></tr>
+  </table>
+
+  <br />
+  <h2><u>Generate enrollment key:</u></h2>
+  <p>People can use this enrollment key to sign up for this study.</p>
+  <button
+    mat-raised-button
+    class="bttEnrollmentKey"
+    (click)="generateEnrollmentKey()"
+  >
+    (nur zur Demo) Generate
+  </button>
+  <br />
+  <p>
+    Your Enrollment key is: <b>{{ enrollmentKey }}</b>
+  </p>
 </div>

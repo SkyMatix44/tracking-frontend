@@ -15,14 +15,14 @@ export class ProjectConfigurationComponent implements OnInit {
     private authService: AuthService,
     public dialog: MatDialog
   ) {}
-  displayedColumns: string[] = [
+  displayedStudyColumns: string[] = [
     'Name',
     'Beschreibung',
     'Startdatum',
     'Enddatum',
     'Wissenschaftler',
   ];
-  dataSource = [
+  studyDataSource = [
     {
       Name: '',
       Beschreibung: '',
@@ -32,13 +32,23 @@ export class ProjectConfigurationComponent implements OnInit {
     },
   ];
 
+  displayedUserDataColumns: string[] = ['Email', 'First Name', 'Last Name'];
+  userDataSource = [
+    {
+      Email: '',
+      FirstName: '',
+      LastName: '',
+    },
+  ];
+
   ngOnInit() {
     this.loadProject();
+    this.loadStudyParticipants();
   }
 
   loadProject() {
-    this.dataSource.pop();
-    this.dataSource.push({
+    this.studyDataSource.pop();
+    this.studyDataSource.push({
       Name: 'Studie-Typ-2',
       Beschreibung: 'Es wird auf Typ-2 getestet.',
       Startdatum: '08/15/2022',
@@ -47,15 +57,26 @@ export class ProjectConfigurationComponent implements OnInit {
     });
   }
 
+  loadStudyParticipants() {
+    this.userDataSource.pop();
+    for (let i = 0; i < 4; i++) {
+      this.userDataSource.push({
+        Email: 'test@test.com',
+        FirstName: 'Mark',
+        LastName: 'Becker',
+      });
+    }
+  }
+
   editStudyDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.data = {
       dialogTitle: 'Studie bearbeiten',
-      studyName: this.dataSource[0].Name,
-      studyDescription: this.dataSource[0].Beschreibung,
-      studyStartdate: this.dataSource[0].Startdatum,
-      studyEnddate: this.dataSource[0].Enddatum,
+      studyName: this.studyDataSource[0].Name,
+      studyDescription: this.studyDataSource[0].Beschreibung,
+      studyStartdate: this.studyDataSource[0].Startdatum,
+      studyEnddate: this.studyDataSource[0].Enddatum,
     };
 
     this.dialog.open(ProjectConfigDialogComponent, dialogConfig);
@@ -80,4 +101,19 @@ export class ProjectConfigurationComponent implements OnInit {
     this.ProjectService.create(data);
     */
   }
+
+  enrollmentKey = '';
+  generateEnrollmentKey() {
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
+    const lengthOfCode = 6;
+    this.enrollmentKey = makeRandomKey(lengthOfCode, possible);
+  }
+}
+
+function makeRandomKey(lengthOfCode: number, possible: string) {
+  let text = '';
+  for (let i = 0; i < lengthOfCode; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 }
