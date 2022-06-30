@@ -30,12 +30,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login(): void {
+    this.router.navigate(['/dashboard']);
     if (this.userInputEmail && this.userInputPassword != '') {
       this.authService
         .login(this.userInputEmail, this.userInputPassword)
         .subscribe({
           next: () => {
-            this.router.navigate(['/dashboard']);
+            
           },
           error: () => {
             // TODO auf verschiedene Fehler reagieren

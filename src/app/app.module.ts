@@ -4,7 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import{MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatSortModule } from '@angular/material/sort';
+import{MatSlideToggleModule} from '@angular/material/slide-toggle'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -43,7 +49,13 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatToolbarModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
     MatFormFieldModule,
+    MatSortModule,
+    MatSlideToggleModule,
+    MatTableModule,
+    MatMenuModule,
     MatInputModule,
     FormsModule,
     HttpClientModule,

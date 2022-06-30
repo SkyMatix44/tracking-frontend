@@ -1,5 +1,217 @@
 <app-header></app-header>
 
-<div class="content" role="main">
-  <p>project-analytics works!</p>
-</div>
+
+  <div class="row justify-content-center">
+    <!--<div class="col-sm-3 form-group">
+      <label for="location">location</label>
+      <input
+        type="text"
+        id="location"
+        class="form-control"
+        name="location"
+        ngModel
+        required
+        #location="ngModel"
+        #locationInput
+      />
+    </div>
+    <div class="col-sm-3 form-group">
+      <label for="date">date</label>
+      <input
+        type="text"
+        id="date"
+        class="form-control"
+        name="date"
+        ngModel
+        required
+        #date="ngModel"
+        #dateInput
+      />
+    </div>
+    <div class="col-sm-3 form-group">
+      <label for="activity">activity</label>
+      <input
+        type="text"
+        id="activity"
+        class="form-control"
+        name="activity"
+        ngModel
+        required
+        #activity="ngModel"
+        #activityInput
+      /> 
+    </div>-->
+    <div class=" form-group">
+    <input type="text" (keyup)="applyFilter($event)" placeholder="search for" class="form-control top-margin">
+    </div>
+   
+  </div>
+  <div class="row">
+    <section class="col-lg-7 connectedSortable">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-chart-pie mr-1"></i>
+            Activity
+          </h3>
+          <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  href="#revenue-first-chart"
+                  data-toggle="tab"
+                  >Bar chart</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#sales-first-chart" data-toggle="tab"
+                  >Donut chart</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="tab-content p-0">
+            <div
+              class="chart tab-pane active"
+              id="revenue-first-chart"
+              style="position: relative; height: 300px"
+            >
+              <canvas
+                id="first-chart"
+                height="80"
+                style="height: 80px"
+              ></canvas>
+            </div>
+            <div
+              class="chart tab-pane"
+              id="sales-first-chart"
+              style="position: relative; height: 300px"
+            >
+              <canvas
+                id="first-chart-donut"
+                height="80"
+                style="height: 80px"
+              ></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="row">
+    <div class="thead center">
+      <button
+        style="float: right"
+        class="btn btn-sm btn-outline-secondary top-margin"
+        #menuTrigger="matMenuTrigger"
+        [matMenuTriggerFor]="mainMenuButton"
+      >
+        hide
+      </button>
+      <mat-menu #mainMenuButton="matMenu">
+        <span
+          (click)="$event.stopPropagation()"
+          *ngFor="let column of columnShowHideList; index as i"
+        >
+          <mat-slide-toggle
+            [(ngModel)]="column.isActive"
+            (change)="toggleColumn(column)"
+          >
+          </mat-slide-toggle>
+          {{ column.name }}
+          <br />
+        </span>
+      </mat-menu>
+    </div>
+    <mat-table
+      class="mat-elevation-z8"
+      [dataSource]="userListMatTabDataSource"
+      matSort 
+      matSortActive="Location"
+      matSortDirection="asc"
+      matSortDisableClear
+    >
+      <ng-container matColumnDef="ID">
+        <mat-header-cell  *matHeaderCellDef>ID</mat-header-cell>
+        <mat-cell  *matCellDef="let user;let i = index;">
+          {{ i+1 }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Location">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Location</mat-header-cell
+        >
+        <mat-cell  *matCellDef="let user">
+          {{ user.location }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Activity">
+        <mat-header-cell *matHeaderCellDef  mat-sort-header
+          >Activity</mat-header-cell
+        >
+        <mat-cell  *matCellDef="let user">
+          {{ user.activity }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Calories">
+        <mat-header-cell *matHeaderCellDef  mat-sort-header
+          >Calories</mat-header-cell
+        >
+        <mat-cell  *matCellDef="let user">
+          {{ user.calories }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Distance">
+        <mat-header-cell *matHeaderCellDef  mat-sort-header
+          >Distance</mat-header-cell
+        >
+        <mat-cell  *matCellDef="let user">
+          {{ user.distance }}
+        </mat-cell>
+      </ng-container>
+       <ng-container matColumnDef="BPM">
+            <mat-header-cell *matHeaderCellDef  mat-sort-header
+              >BPM</mat-header-cell
+            >
+            <mat-cell  *matCellDef="let user">
+              {{ user.bpm }}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Achievement">
+            <mat-header-cell *matHeaderCellDef  mat-sort-header
+              >Achievement</mat-header-cell
+            >
+            <mat-cell  *matCellDef="let user">
+              {{ user.achievenent }}
+            </mat-cell>
+          </ng-container>
+          <!--<ng-container matColumnDef="length of time">
+            <mat-header-cell *matHeaderCellDef  mat-sort-header
+              >length of time</mat-header-cell
+            >
+            <mat-cell *matCellDef="let user">
+              {{ user.time }}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Date">
+            <mat-header-cell *matHeaderCellDef  mat-sort-header
+              >Date</mat-header-cell
+            >
+            <mat-cell *matCellDef="let user">
+              {{ user.date }}
+            </mat-cell>
+          </ng-container>-->
+      <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: columnList; let i = index"
+        [class.selected]="selectedRow == row.id"
+        (click)="rowClick(row.id)"
+      >
+      </mat-row>
+    </mat-table>
+  </div>
+
