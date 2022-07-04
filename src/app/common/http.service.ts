@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Authentication } from './auth.service';
 import { APP_URL } from './config';
 
@@ -8,7 +8,8 @@ import { APP_URL } from './config';
   providedIn: 'root',
 })
 export class HttpService {
-  private auth: Authentication | null = null;
+  private auth$: BehaviorSubject<Authentication | null> =
+    new BehaviorSubject<Authentication | null>(null);
 
   constructor(private httpClient: HttpClient) {}
 
@@ -82,14 +83,18 @@ export class HttpService {
    * @param auth
    */
   setAuthentication(auth: Authentication | null): void {
-    this.auth = auth;
+    this.auth$.next(auth);
   }
 
   /**
    * Return the user authentication
    */
   getAuthentication(): Authentication | null {
-    return this.auth;
+    return this.auth$.getValue();
+  }
+
+  getAuthenticationObs(): Observable<Authentication | null> {
+    return this.auth$.asObservable();
   }
 
   /**

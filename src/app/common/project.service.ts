@@ -11,13 +11,25 @@ export class ProjectService {
   public readonly currentProjectId$: BehaviorSubject<number> =
     new BehaviorSubject(-1);
 
-  // TODO load and set projects after login
   // projects of the current user
   public readonly projects$: BehaviorSubject<Project[]> = new BehaviorSubject(
     [] as Project[]
   );
 
   constructor(private httpService: HttpService) {}
+
+  init(): void {
+    // Load projects after login
+    this.httpService.getAuthenticationObs().subscribe((value) => {
+      if (null == value) {
+        this.projects$.next([]);
+      } else {
+        this.getAllProjects().subscribe((projects) => {
+          this.projects$.next(projects);
+        });
+      }
+    });
+  }
 
   /**
    * Creates a project
@@ -41,14 +53,7 @@ export class ProjectService {
   }
 
   /**
-   * Returns all projects which the user is assigned
-   */
-  getProjects(): Observable<Project[]> {
-    return this.httpService.get<Project[]>('project');
-  }
-
-  /**
-   * Returns all projects
+   * Returns all projects witch
    */
   getAllProjects(): Observable<Project[]> {
     return this.httpService.get<Project[]>('project/all');
@@ -57,11 +62,27 @@ export class ProjectService {
   /**
    * Returns all user of the projects
    */
-  getProjectUser(
+  getProjectUsers(
     projectId: number,
     option: 'all' | 'participants' | 'scientists' = 'all'
   ): Observable<User[]> {
     return this.httpService.get<User[]>(`project/${projectId}/users/${option}`);
+  }
+
+  /**
+   * Returns all user which are not in the project
+   */
+  getUsersNotInProject(projectId: number): Observable<User[]> {
+    return this.httpService.get<User[]>(`project/${projectId}/other-users`);
+  }
+
+  /**
+   * Add users to a project
+   * @param projectId
+   * @param userIds
+   */
+  addUsersToProject(projectId: number, userIds: number[]): Observable<void> {
+    return this.httpService.post(`project/${projectId}/users/add`, { userIds });
   }
 
   /**
