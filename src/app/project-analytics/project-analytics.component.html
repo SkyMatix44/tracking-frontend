@@ -102,8 +102,9 @@
     </section>
   </div>
 
-  <div class="row">
+  <div class="row" >
     <div class="thead center">
+      <button mat-raised-button color="primary" (click)="ExportTOExcel()">Export as Excel</button>
       <button
         style="float: right"
         class="btn btn-sm btn-outline-secondary top-margin"
@@ -118,7 +119,7 @@
           *ngFor="let column of columnShowHideList; index as i"
         >
           <mat-slide-toggle
-            [(ngModel)]="column.isActive"
+          [(ngModel)]="column.isActive"
             (change)="toggleColumn(column)"
           >
           </mat-slide-toggle>
@@ -127,13 +128,9 @@
         </span>
       </mat-menu>
     </div>
-    <mat-table
+    <table mat-table  #table #TABLE
       class="mat-elevation-z8"
       [dataSource]="userListMatTabDataSource"
-      matSort 
-      matSortActive="Location"
-      matSortDirection="asc"
-      matSortDisableClear
     >
       <ng-container matColumnDef="ID">
         <mat-header-cell  *matHeaderCellDef>ID</mat-header-cell>
@@ -142,7 +139,7 @@
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="Location">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
+        <mat-header-cell *matHeaderCellDef 
           >Location</mat-header-cell
         >
         <mat-cell  *matCellDef="let user">
@@ -150,7 +147,7 @@
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="Activity">
-        <mat-header-cell *matHeaderCellDef  mat-sort-header
+        <mat-header-cell *matHeaderCellDef  
           >Activity</mat-header-cell
         >
         <mat-cell  *matCellDef="let user">
@@ -158,7 +155,7 @@
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="Calories">
-        <mat-header-cell *matHeaderCellDef  mat-sort-header
+        <mat-header-cell *matHeaderCellDef  
           >Calories</mat-header-cell
         >
         <mat-cell  *matCellDef="let user">
@@ -166,7 +163,7 @@
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="Distance">
-        <mat-header-cell *matHeaderCellDef  mat-sort-header
+        <mat-header-cell *matHeaderCellDef  
           >Distance</mat-header-cell
         >
         <mat-cell  *matCellDef="let user">
@@ -174,7 +171,7 @@
         </mat-cell>
       </ng-container>
        <ng-container matColumnDef="BPM">
-            <mat-header-cell *matHeaderCellDef  mat-sort-header
+            <mat-header-cell *matHeaderCellDef  
               >BPM</mat-header-cell
             >
             <mat-cell  *matCellDef="let user">
@@ -182,36 +179,35 @@
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="Achievement">
-            <mat-header-cell *matHeaderCellDef  mat-sort-header
+            <mat-header-cell *matHeaderCellDef  
               >Achievement</mat-header-cell
             >
             <mat-cell  *matCellDef="let user">
-              {{ user.achievenent }}
+              {{ user.achievement }}
             </mat-cell>
           </ng-container>
-          <!--<ng-container matColumnDef="length of time">
-            <mat-header-cell *matHeaderCellDef  mat-sort-header
-              >length of time</mat-header-cell
+          <ng-container matColumnDef="Duration">
+            <mat-header-cell *matHeaderCellDef  
+              >Duration</mat-header-cell
             >
             <mat-cell *matCellDef="let user">
-              {{ user.time }}
+              {{ user.duration }}
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="Date">
-            <mat-header-cell *matHeaderCellDef  mat-sort-header
+            <mat-header-cell *matHeaderCellDef  
               >Date</mat-header-cell
             >
             <mat-cell *matCellDef="let user">
               {{ user.date }}
             </mat-cell>
-          </ng-container>-->
+          </ng-container>
       <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>
       <mat-row
         *matRowDef="let row; columns: columnList; let i = index"
         [class.selected]="selectedRow == row.id"
-        (click)="rowClick(row.id)"
       >
       </mat-row>
-    </mat-table>
+    </table>
   </div>
-
+  

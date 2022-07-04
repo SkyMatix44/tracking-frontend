@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
+import * as XLSX from 'xlsx';
 import { User } from './user';
 
 interface CustomColumn {
@@ -14,31 +14,45 @@ interface CustomColumn {
   templateUrl: './project-analytics.component.html',
   styleUrls: ['./project-analytics.component.scss'],
 })
-export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
+export class ProjectAnalyticsComponent implements OnInit {
   userList!: User[];
   selectedRow!: number;
+  @ViewChild('TABLE', { static: true })
+  table: ElementRef;
   public columnList = [
     'ID',
     'Location',
     'Activity',
     'Calories',
     'Distance',
-    'BPM' /*'Achievment','lenght of time', 'Date'*/,
+    'BPM',
+    'Achievement',
+    'Duration',
+    'Date',
   ];
   public columnShowHideList: CustomColumn[] = [];
 
   userListMatTabDataSource = new MatTableDataSource<User>(this.userList);
-  constructor() {}
-  @ViewChild(MatSort, { static: true })
-  sort = new MatSort();
+  constructor(table: ElementRef) {
+    this.table = table;
+  }
+
+  ExportTOExcel() {
+    console.log(this.table);
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+      this.table.nativeElement
+    );
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'SheetJS.xlsx');
+  }
 
   ngOnInit(): void {
     this.setDiagramData();
     this.initializeColumnProperties();
     this.getAlldata();
-  }
-  ngAfterViewInit() {
-    this.userListMatTabDataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
@@ -77,8 +91,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         calories: 123,
         distance: 2000,
         bpm: 90,
-        achievement: '',
-        time: 10,
+        achievement: 'yes',
+        duration: 10,
         date: '',
       },
       {
@@ -89,8 +103,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         calories: 500,
         distance: 10000,
         bpm: 160,
-        achievement: '',
-        time: 10,
+        achievement: 'no',
+        duration: 10,
         date: '',
       },
       {
@@ -101,8 +115,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         calories: 234,
         distance: 200,
         bpm: 148,
-        achievement: '',
-        time: 10,
+        achievement: 'no',
+        duration: 10,
         date: '',
       },
       {
@@ -113,8 +127,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         calories: 48,
         distance: 1000,
         bpm: 100,
-        achievement: '',
-        time: 10,
+        achievement: 'yes',
+        duration: 10,
         date: '',
       },
       {
@@ -125,8 +139,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         calories: 298,
         distance: 250,
         bpm: 136,
-        achievement: '',
-        time: 10,
+        achievement: 'yes',
+        duration: 10,
         date: '',
       },
       {
@@ -137,8 +151,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         calories: 398,
         distance: 5000,
         bpm: 97,
-        achievement: '',
-        time: 10,
+        achievement: 'yes',
+        duration: 10,
         date: '',
       },
       {
@@ -149,24 +163,20 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         calories: 947,
         distance: 6000,
         bpm: 157,
-        achievement: '',
-        time: 10,
+        achievement: 'no',
+        duration: 10,
         date: '',
       },
     ];
     this.userListMatTabDataSource.data = this.userList;
   }
 
-  rowClick(rowId: number) {
-    this.selectedRow = rowId;
-  }
   setDiagramData() {
     var labels = ['January', 'February', 'March', 'April', 'May', 'June'];
 
     var dataValues = [4, 13, 6, 5, 8, 3];
 
     this.showDiagram('first-chart', labels, dataValues);
-    //this.setDiagramme('second-chart-donut');
     //this.setDiagramme('second-chart-donut');
   }
 

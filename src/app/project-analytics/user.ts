@@ -7,7 +7,7 @@ export class User {
   distance!:number;
   bpm!:number;
   achievement!: String;
-  time!: number;
+  duration!: number;
   date!: String;
   constructor() { };
 }
