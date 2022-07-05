@@ -1,0 +1,110 @@
+@import "../node_modules/@angular/material/theming";
+@include mat-core();
+
+$pallete-withe: (
+  50: #fdfeff,
+  100: #fbfbff,
+  200: #f9f9ff,
+  300: #f6f7fe,
+  400: #f4f5fe,
+  500: #f2f3fe,
+  600: #f0f1fe,
+  700: #eeeffe,
+  800: #ecedfe,
+  900: #e8eafd,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffffff,
+  A700: #ffffff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$pallete-lightBlue: (
+  50: #fbfcff,
+  100: #f6f8ff,
+  200: #f0f4ff,
+  300: #eaefff,
+  400: #e6ebff,
+  500: #e1e8ff,
+  600: #dde5ff,
+  700: #d9e2ff,
+  800: #d5deff,
+  900: #cdd8ff,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffffff,
+  A700: #ffffff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$pallete-blue: (
+  50: #f0edfd,
+  100: #dbd1fb,
+  200: #c3b3f8,
+  300: #aa95f5,
+  400: #987ef3,
+  500: #8667f1,
+  600: #7e5fef,
+  700: #7354ed,
+  800: #694aeb,
+  900: #5639e7,
+  A100: #ffffff,
+  A200: #fefdff,
+  A400: #d2caff,
+  A700: #bdb1ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$project-primary: mat-palette($pallete-blue, 800);
+$project-accent: mat-palette($pallete-lightBlue, 800);
+$project-basic: mat-palette($pallete-withe, 800);
+//$my-warn: mat-palette($mat-ligth-green, 800);
+
+$my-theme: mat-light-theme($project-primary, $project-accent, $project-basic);
+
+@include angular-material-theme($my-theme);

@@ -14,7 +14,7 @@
           />
         </mat-form-field>
         <div>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
         </div>
       </form>
     </mat-step>
@@ -31,8 +31,10 @@
           />
         </mat-form-field>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperPrevious color="primary">
+            Back
+          </button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
         </div>
       </form>
     </mat-step>
@@ -57,8 +59,10 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperPrevious color="primary">
+            Back
+          </button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
         </div>
       </form>
     </mat-step>
@@ -83,8 +87,10 @@
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperPrevious color="primary">
+            Back
+          </button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
         </div>
       </form>
     </mat-step>
@@ -96,12 +102,14 @@
           <mat-label>Email des Wissenschaftlers</mat-label>
           <input matInput placeholder="" />
         </mat-form-field>
-        <button mat-raised-button (click)="inviteScientist()">
+        <button mat-raised-button (click)="inviteScientist()" color="primary">
           hinzufügen
         </button>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperPrevious color="primary">
+            Back
+          </button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
         </div>
       </form>
     </mat-step>
@@ -109,12 +117,16 @@
       <ng-template matStepLabel>Fertig</ng-template>
       <p>Fertig, speichere deine Eingaben!</p>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="saveAndClose()">Speichern</button>
+        <button mat-raised-button matStepperPrevious color="primary">
+          Back
+        </button>
+        <button mat-raised-button (click)="saveAndClose()" color="primary">
+          Speichern
+        </button>
       </div>
     </mat-step>
   </mat-stepper>
 </div>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Abbruch</button>
+  <button mat-raised-button mat-dialog-close color="primary">Abbruch</button>
 </div>

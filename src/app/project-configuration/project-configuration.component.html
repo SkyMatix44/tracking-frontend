@@ -40,11 +40,16 @@
   </table>
 
   <br />
-  <button mat-raised-button class="bttEdit" (click)="editStudyDialog()">
+  <button
+    mat-raised-button
+    class="bttEdit"
+    color="primary"
+    (click)="editStudyDialog()"
+  >
     Studie bearbeiten
   </button>
   <br />
-  <button mat-raised-button class="bttAdd" (click)="addStudy()">
+  <button mat-raised-button class="bttAdd" color="primary" (click)="addStudy()">
     neue Studie hinzufügen
   </button>
 
@@ -82,6 +87,7 @@
     mat-raised-button
     class="bttEnrollmentKey"
     (click)="generateEnrollmentKey()"
+    color="primary"
   >
     (nur zur Demo) Generate
   </button>

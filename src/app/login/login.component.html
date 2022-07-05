@@ -11,9 +11,9 @@
             <div class="card-heading text-primary">Login</div>
           </div>
           <div class="card-body p-lg-5">
-            <h3 class="mb-4">Willkommen zurück!</h3>
+            <h3 class="mb-4">Welcome back!</h3>
             <p class="text-muted mb-5">
-              Dieser Login führt dich zum Dashboard der Diabetes-App.
+              This login will take you to the diabetes dashboard.
             </p>
             <form id="loginForm" action="index.html">
               <div class="form-floating mb-3">
@@ -25,7 +25,7 @@
                   placeholder="name@example.com"
                   required
                 />
-                <label>Email Addresse</label>
+                <label>Email address</label>
               </div>
               <div class="form-floating mb-3">
                 <input
@@ -36,17 +36,17 @@
                   placeholder="Password"
                   required
                 />
-                <label>Passwort</label>
+                <label>Password</label>
               </div>
-              <button mat-raised-button color="accent" (click)="login()">
+              <button mat-raised-button color="primary" (click)="login()">
                 Login
               </button>
             </form>
           </div>
           <div class="card-footer px-lg-5 py-lg-4">
             <div>
-              Du hast noch keinen Account?
-              <a (click)="goToRegister()">Zur Registrierung</a>
+              You don't have an account yet?
+              <a (click)="goToRegister()">To the registration</a>
             </div>
           </div>
         </div>
@@ -55,13 +55,13 @@
       <div class="col-lg-6 px-lg-4" *ngIf="showRegister">
         <div class="card">
           <div class="card-header px-lg-5">
-            <div class="card-heading text-primary">Registrierung</div>
+            <div class="card-heading text-primary">Registration</div>
           </div>
           <div class="card-body p-lg-5">
-            <h3 class="mb-4">Registriere dich hier kostenlos!</h3>
+            <h3 class="mb-4">Register here for free!</h3>
             <p class="text-muted mb-5">
-              Lege deinen Vornamen und Nachnamen, deine Universität, deine Email
-              und ein Passwort fest.
+              Set your first and last name, your university, your email and a
+              password.
             </p>
             <form action="index.html">
               <div class="form-floating mb-3">
@@ -72,7 +72,7 @@
                   placeholder="name@example.com"
                   required
                 />
-                <label>Vorname</label>
+                <label>First name</label>
               </div>
               <div class="form-floating mb-3">
                 <input
@@ -82,7 +82,7 @@
                   placeholder="name@example.com"
                   required
                 />
-                <label>Nachname</label>
+                <label>Last name</label>
               </div>
               <div class="form-floating mb-3">
                 <input
@@ -92,7 +92,7 @@
                   placeholder="Universität"
                   required
                 />
-                <label>Universität</label>
+                <label>University</label>
               </div>
               <div class="form-floating mb-3">
                 <input
@@ -103,7 +103,7 @@
                   placeholder="name@example.com"
                   required
                 />
-                <label>Email Addresse</label>
+                <label>Email address</label>
               </div>
               <div class="form-floating mb-3">
                 <input
@@ -114,25 +114,25 @@
                   placeholder="Password"
                   required
                 />
-                <label>Passwort</label>
+                <label>Password</label>
               </div>
               <div class="form-group">
                 <button
                   mat-raised-button
-                  color="accent"
+                  color="primary"
                   id="register"
                   type="button"
                   name="registerSubmit"
                   (click)="register()"
                 >
-                  Registrieren
+                  Register
                 </button>
               </div>
             </form>
           </div>
           <div class="card-footer px-lg-5 py-lg-4">
             <div>
-              Du hast einen Account? <a (click)="goToLogin()">Zum Login</a>
+              You have an account? <a (click)="goToLogin()">To the login</a>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@
       <div class="col-lg-6 col-xl-6 text-center text-primary">
         <img width="700" src="/assets/img/DiabetesPicture.jpg" />
         <a href="https://de.freepik.com/vektoren/menschen"
-          >Vektor erstellt von pch.vector - de.freepik.com</a
+          >Vektor created by pch.vector - de.freepik.com</a
         >
       </div>
     </div>
