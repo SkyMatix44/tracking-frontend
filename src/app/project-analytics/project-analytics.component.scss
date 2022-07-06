@@ -1,0 +1,35 @@
+.row {
+  margin: 40px ;
+  background-color: white;
+}
+.btn{
+  margin: 10px;
+}
+.search{
+  margin-top: 18px;
+}
+.top-margin{
+  margin-top: 18px;
+}
+table {
+  width: 100%;
+}
+
+.mat-footer-row,
+.mat-header-row,
+.mat-row {
+    display: inline-flex;
+    min-width: 100%;
+}
+ .primary {
+  background-color:  (242, 243, 254, 1) !important;
+  color: (242, 243, 254, 1) !important;
+ }
+ .secondary{
+  color: (225, 232, 255, 1) !important;
+  background-color: (225, 232, 255, 1) !important;
+ } 
+ .accentColor {
+  color: (134, 103, 241, 1) !important;
+  background-color: (134, 103, 241, 1) !important;
+ }
