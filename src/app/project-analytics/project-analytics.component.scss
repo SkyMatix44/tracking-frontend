@@ -21,146 +21,15 @@ table {
     display: inline-flex;
     min-width: 100%;
 }
-table{
-  width: 100%;
+ .primary {
+  background-color:  (242, 243, 254, 1) !important;
+  color: (242, 243, 254, 1) !important;
  }
- 
- .mat-column-ID {
-   word-wrap: break-word !important;
-   white-space: unset !important;
-   flex: 0 0 10% !important;
-   width: 10% !important;
-   overflow-wrap: break-word;
-   word-wrap: break-word;
- 
-   word-break: break-word;
- 
-   -ms-hyphens: auto;
-   -moz-hyphens: auto;
-   -webkit-hyphens: auto;
-   hyphens: auto;
+ .secondary{
+  color: (225, 232, 255, 1) !important;
+  background-color: (225, 232, 255, 1) !important;
+ } 
+ .accentColor {
+  color: (134, 103, 241, 1) !important;
+  background-color: (134, 103, 241, 1) !important;
  }
- 
- .mat-column-Location {
-   word-wrap: break-word !important;
-   white-space: unset !important;
-   flex: 0 0 15% !important;
-   width: 15% !important;
-   overflow-wrap: break-word;
-   word-wrap: break-word;
- 
-   word-break: break-word;
- 
-   -ms-hyphens: auto;
-   -moz-hyphens: auto;
-   -webkit-hyphens: auto;
-   hyphens: auto;
- }
- 
- .mat-column-Activity {
-   word-wrap: break-word !important;
-   white-space: unset !important;
-   flex: 0 0 15% !important;
-   width: 15% !important;
-   overflow-wrap: break-word;
-   word-wrap: break-word;
- 
-   word-break: break-word;
- 
-   -ms-hyphens: auto;
-   -moz-hyphens: auto;
-   -webkit-hyphens: auto;
-   hyphens: auto;
- }
- 
- .mat-column-Calories {
-   word-wrap: break-word !important;
-   white-space: unset !important;
-   flex: 0 0 8% !important;
-   width: 8% !important;
-   overflow-wrap: break-word;
-   word-wrap: break-word;
- 
-   word-break: break-word;
- 
-   -ms-hyphens: auto;
-   -moz-hyphens: auto;
-   -webkit-hyphens: auto;
-   hyphens: auto;
- }
- 
- .mat-column-Distance {
-   word-wrap: break-word !important;
-   white-space: unset !important;
-   flex: 0 0 10% !important;
-   width: 10% !important;
-   overflow-wrap: break-word;
-   word-wrap: break-word;
- 
-   word-break: break-word;
- 
-   -ms-hyphens: auto;
-   -moz-hyphens: auto;
-   -webkit-hyphens: auto;
-   hyphens: auto;
- }
- .mat-column-BPM {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 10% !important;
-  width: 10% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-.mat-column-Achievment {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 10% !important;
-  width: 10% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-.mat-column-lenght-of-time {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 10% !important;
-  width: 10% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-.mat-column-Date {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 10% !important;
-  width: 10% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}

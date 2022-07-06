@@ -93,7 +93,7 @@ export class ProjectAnalyticsComponent implements OnInit {
         bpm: 90,
         achievement: 'yes',
         duration: 10,
-        date: '',
+        date: '01.01.1900',
       },
       {
         id: 2,
@@ -105,7 +105,7 @@ export class ProjectAnalyticsComponent implements OnInit {
         bpm: 160,
         achievement: 'no',
         duration: 10,
-        date: '',
+        date: '01.01.1900',
       },
       {
         id: 3,
@@ -117,7 +117,7 @@ export class ProjectAnalyticsComponent implements OnInit {
         bpm: 148,
         achievement: 'no',
         duration: 10,
-        date: '',
+        date: '01.01.1900',
       },
       {
         id: 4,
@@ -129,7 +129,7 @@ export class ProjectAnalyticsComponent implements OnInit {
         bpm: 100,
         achievement: 'yes',
         duration: 10,
-        date: '',
+        date: '01.01.1900',
       },
       {
         id: 5,
@@ -141,7 +141,7 @@ export class ProjectAnalyticsComponent implements OnInit {
         bpm: 136,
         achievement: 'yes',
         duration: 10,
-        date: '',
+        date: '01.01.1900',
       },
       {
         id: 6,
@@ -153,7 +153,7 @@ export class ProjectAnalyticsComponent implements OnInit {
         bpm: 97,
         achievement: 'yes',
         duration: 10,
-        date: '',
+        date: '01.01.1900',
       },
       {
         id: 7,
@@ -165,7 +165,7 @@ export class ProjectAnalyticsComponent implements OnInit {
         bpm: 157,
         achievement: 'no',
         duration: 10,
-        date: '',
+        date: '03.07.2022',
       },
     ];
     this.userListMatTabDataSource.data = this.userList;
@@ -193,8 +193,8 @@ export class ProjectAnalyticsComponent implements OnInit {
           {
             label: ' active',
             data: dataValues,
-            backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-            borderColor: ['rgba(54, 162, 235, 1)'],
+            backgroundColor: ['rgba(225, 232, 255, 1)'],
+            borderColor: ['rgba(242, 243, 254, 1)'],
             borderWidth: 1,
           },
         ],
