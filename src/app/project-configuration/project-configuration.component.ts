@@ -72,7 +72,7 @@ export class ProjectConfigurationComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.data = {
-      dialogTitle: 'Studie bearbeiten',
+      dialogTitle: 'Edit study',
       studyName: this.studyDataSource[0].Name,
       studyDescription: this.studyDataSource[0].Beschreibung,
       studyStartdate: this.studyDataSource[0].Startdatum,
@@ -86,7 +86,7 @@ export class ProjectConfigurationComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.data = {
-      dialogTitle: 'Studie hinzufügen',
+      dialogTitle: 'Add study',
     };
 
     this.dialog.open(ProjectConfigDialogComponent, dialogConfig);

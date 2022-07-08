@@ -3,7 +3,7 @@
   <mat-stepper linear #stepper>
     <mat-step [stepControl]="studyNameFormGroup" [editable]="isEditable">
       <form [formGroup]="studyNameFormGroup">
-        <ng-template matStepLabel>Name der Studie</ng-template>
+        <ng-template matStepLabel>Study name</ng-template>
         <mat-form-field appearance="fill">
           <mat-label>Name</mat-label>
           <input
@@ -20,9 +20,9 @@
     </mat-step>
     <mat-step [stepControl]="studyDescriptionFormGroup" [editable]="isEditable">
       <form [formGroup]="studyDescriptionFormGroup">
-        <ng-template matStepLabel>Beschreibung der Studie</ng-template>
+        <ng-template matStepLabel>Study description</ng-template>
         <mat-form-field appearance="fill">
-          <mat-label>Beschreibung</mat-label>
+          <mat-label>Description</mat-label>
           <input
             matInput
             formControlName="descriptionCtrl"
@@ -40,9 +40,9 @@
     </mat-step>
     <mat-step [stepControl]="startdateFormGroup" [editable]="isEditable">
       <form [formGroup]="startdateFormGroup">
-        <ng-template matStepLabel>Startdatum der Studie</ng-template>
+        <ng-template matStepLabel>Study start date</ng-template>
         <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Datum auswählen/eingeben</mat-label>
+          <mat-label>Select/enter date</mat-label>
           <input
             matInput
             formControlName="startdateCtrl"
@@ -68,9 +68,9 @@
     </mat-step>
     <mat-step [stepControl]="enddateFormGroup" [editable]="isEditable">
       <form [formGroup]="enddateFormGroup">
-        <ng-template matStepLabel>Enddatum der Studie</ng-template>
+        <ng-template matStepLabel>End date of the study</ng-template>
         <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Datum auswählen/eingeben</mat-label>
+          <mat-label>Select/enter date</mat-label>
           <input
             matInput
             formControlName="enddateCtrl"
@@ -96,14 +96,14 @@
     </mat-step>
     <mat-step [stepControl]="addScientistsFormGroup" [editable]="isEditable">
       <form [formGroup]="addScientistsFormGroup">
-        <ng-template matStepLabel>Wissenschaftler hinzufügen</ng-template>
-        <p>Wissenschaftler per Email-Adresse hinzufügen:</p>
+        <ng-template matStepLabel>Add scientist</ng-template>
+        <p>Add scientist by email address:</p>
         <mat-form-field appearance="fill">
-          <mat-label>Email des Wissenschaftlers</mat-label>
+          <mat-label>Email of the scientist</mat-label>
           <input matInput placeholder="" />
         </mat-form-field>
         <button mat-raised-button (click)="inviteScientist()" color="primary">
-          hinzufügen
+          add
         </button>
         <div>
           <button mat-raised-button matStepperPrevious color="primary">
@@ -114,8 +114,8 @@
       </form>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Fertig</ng-template>
-      <p>Fertig, speichere deine Eingaben!</p>
+      <ng-template matStepLabel>Ready</ng-template>
+      <p>Done, save your entries!</p>
       <div>
         <button mat-raised-button matStepperPrevious color="primary">
           Back
@@ -128,5 +128,5 @@
   </mat-stepper>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button mat-dialog-close color="primary">Abbruch</button>
+  <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
 </div>

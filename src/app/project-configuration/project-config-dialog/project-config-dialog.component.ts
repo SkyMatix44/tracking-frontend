@@ -28,7 +28,7 @@ export class ProjectConfigDialogComponent implements OnInit {
   isEditable = true;
   minDate: Date | undefined;
   maxDate: Date | undefined;
-  dialogTitle = 'Studie bearbeiten';
+  dialogTitle = 'Edit study';
   studyName = '';
   studyDescription = '';
 

@@ -13,6 +13,7 @@ export class UserProfileComponent implements OnInit {
   userLastName = '';
   userEmail = '';
   userPassword = '';
+  userOldPassword = '';
   userUniversity = '';
   userAddress = '';
   ngOnInit(): void {
