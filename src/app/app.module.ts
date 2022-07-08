@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -7,14 +8,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatStepperModule } from '@angular/material/stepper';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import{MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { MatSortModule } from '@angular/material/sort';
-import{MatSlideToggleModule} from '@angular/material/slide-toggle'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -22,6 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NewsTileComponent } from './dashboard/news-tile/news-tile.component';
+import { NotesConfigDialogComponent } from './dashboard/notes-tile/notes-config-dialog/notes-config-dialog.component';
 import { NotesTileComponent } from './dashboard/notes-tile/notes-tile.component';
 import { StudyTileComponent } from './dashboard/study-tile/study-tile.component';
 import { HeaderComponent } from './header/header.component';
@@ -45,6 +47,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     NewsTileComponent,
     StudyTileComponent,
     NotesTileComponent,
+    NotesConfigDialogComponent,
     RegisterComponent,
     ProjectConfigurationComponent,
     ProjectConfigDialogComponent,
@@ -78,7 +81,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

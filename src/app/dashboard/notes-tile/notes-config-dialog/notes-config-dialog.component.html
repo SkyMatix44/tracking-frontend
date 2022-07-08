@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Edit Notes & Dates</h1>
+<div mat-dialog-content>
+  <ng-template matStepLabel>Study name</ng-template>
+
+  <mat-form-field appearance="fill">
+    <p>Headline</p>
+    <input matInput [(ngModel)]="noteHeadline" />
+  </mat-form-field>
+  <br />
+  <mat-form-field appearance="fill">
+    <p>Description</p>
+    <input matInput [(ngModel)]="noteDescription" />
+  </mat-form-field>
+  <br />
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Select/enter date</mat-label>
+    <input
+      matInput
+      (dateChange)="onChangeDate($event.value)"
+      [min]="minDate"
+      [max]="maxDate"
+      [matDatepicker]="picker"
+      required
+    />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <button mat-raised-button (click)="saveAndClose()" color="primary">
+    Speichern
+  </button>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+</div>

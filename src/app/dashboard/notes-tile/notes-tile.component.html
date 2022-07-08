@@ -1,26 +1,61 @@
-<div class="tab-pane" id="timeline">
-  <div class="timeline timeline-inverse">
-    <div class="time-label">
-      <span class="bg-danger"> {{ enddate }} </span>
+<div class="card" style="background-color: #e1e8ff">
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="fas fa-calendar-check mr-1"></i>
+      Notes & Dates
+    </h3>
+    <div class="card-tools">
+      <button
+        mat-raised-button
+        type="button"
+        color="primary"
+        (click)="editNotesDialog()"
+      >
+        <a style="color: #ffffff"> <i class="fas"></i> Edit Notes & Dates </a>
+      </button>
+      <button
+        mat-raised-button
+        type="button"
+        data-card-widget="collapse"
+        color="primary"
+      >
+        <i class="fas fa-minus"></i>
+      </button>
     </div>
+  </div>
+  <div class="card-body">
+    <!-- Notes Komponente -->
 
-    <div *ngFor="let notes of notesData">
-      <i class="fas {{ notes.icon }}"></i>
-      <div class="timeline-item">
-        <span class="time"><i class="far fa-clock"></i> {{ notes.date }}</span>
-        <h3 class="timeline-header">
-          <a>{{ notes.headline }}</a>
-        </h3>
-        <div class="timeline-body">{{ notes.text }}</div>
+    <div class="tab-pane" id="timeline">
+      <div class="timeline timeline-inverse">
+        <div class="time-label">
+          <span class="bg-danger"> {{ enddate }} </span>
+        </div>
+
+        <div *ngFor="let notes of notesData">
+          <i class="fas {{ notes.icon }}"></i>
+          <div class="timeline-item">
+            <span class="time"
+              ><i class="far fa-clock"></i>
+              {{ notes.date | date: "dd MMM, yyyy" }}</span
+            >
+            <h3 class="timeline-header">
+              <a>{{ notes.headline }}</a>
+            </h3>
+            <div class="timeline-body">{{ notes.text }}</div>
+          </div>
+        </div>
+
+        <div class="time-label">
+          <span class="bg-success"> {{ startdate }} </span>
+        </div>
+
+        <div>
+          <i class="far fa-clock bg-gray"></i>
+        </div>
       </div>
-    </div>
 
-    <div class="time-label">
-      <span class="bg-success"> {{ startdate }} </span>
-    </div>
-
-    <div>
-      <i class="far fa-clock bg-gray"></i>
+      <!-- Notes Komponente -->
     </div>
   </div>
 </div>
