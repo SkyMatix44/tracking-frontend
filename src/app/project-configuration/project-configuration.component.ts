@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import dateFormat from 'dateformat';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../common/auth.service';
 import { ProjectService } from '../common/project.service';
 import { ProjectConfigDialogComponent } from './project-config-dialog/project-config-dialog.component';
@@ -12,11 +13,13 @@ import { ProjectConfigDialogComponent } from './project-config-dialog/project-co
   styleUrls: ['./project-configuration.component.scss'],
 })
 export class ProjectConfigurationComponent implements OnInit {
-  @ViewChild(MatTable) table: MatTable<any> | undefined;
+  @ViewChild('table') table!: MatTable<any>;
+  @ViewChild('tableStudyParticipants') tableStudyParticipants!: MatTable<any>;
   constructor(
     private ProjectService: ProjectService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private toastr: ToastrService
   ) {}
   displayedStudyColumns: string[] = [
     'Name',
@@ -35,12 +38,19 @@ export class ProjectConfigurationComponent implements OnInit {
     },
   ];
 
-  displayedUserDataColumns: string[] = ['Email', 'First Name', 'Last Name'];
+  displayedUserDataColumns: string[] = [
+    'Email',
+    'First Name',
+    'Last Name',
+    'Status',
+    'Action',
+  ];
   userDataSource = [
     {
       Email: '',
       FirstName: '',
       LastName: '',
+      Status: '',
     },
   ];
 
@@ -62,13 +72,24 @@ export class ProjectConfigurationComponent implements OnInit {
 
   loadStudyParticipants() {
     this.userDataSource.pop();
-    for (let i = 0; i < 4; i++) {
-      this.userDataSource.push({
-        Email: 'test@test.com',
-        FirstName: 'Mark',
-        LastName: 'Becker',
-      });
-    }
+    this.userDataSource.push({
+      Email: 'test@1.com',
+      FirstName: 'Mark',
+      LastName: 'Becker',
+      Status: 'accepted',
+    });
+    this.userDataSource.push({
+      Email: 'test@2.com',
+      FirstName: 'Mark',
+      LastName: 'Becker',
+      Status: 'accepted',
+    });
+    this.userDataSource.push({
+      Email: 'test@3.com',
+      FirstName: 'Mark',
+      LastName: 'Becker',
+      Status: 'accepted',
+    });
   }
 
   editStudyDialog() {
@@ -81,15 +102,6 @@ export class ProjectConfigurationComponent implements OnInit {
       studyStartdate: this.studyDataSource[0].Startdatum,
       studyEnddate: this.studyDataSource[0].Enddatum,
     };
-    var data = {
-      Name: this.studyDataSource[0].Name,
-      Beschreibung: this.studyDataSource[0].Beschreibung,
-      Startdatum: this.studyDataSource[0].Startdatum,
-      Enddatum: this.studyDataSource[0].Enddatum,
-      Wissenschaftler: '5',
-    };
-
-    this.deleteRow(0);
 
     this.dialog
       .open(ProjectConfigDialogComponent, dialogConfig)
@@ -99,6 +111,9 @@ export class ProjectConfigurationComponent implements OnInit {
           returnValue.name != undefined &&
           returnValue.description != undefined
         ) {
+          this.studyDataSource = this.studyDataSource.filter(
+            (item: any, index: number) => index !== 0
+          );
           var name = returnValue.name;
           var description = returnValue.description;
           var startDate = dateFormat(returnValue.startDate, 'mm/d/yyyy');
@@ -114,12 +129,6 @@ export class ProjectConfigurationComponent implements OnInit {
           this.table?.renderRows();
         }
       });
-  }
-
-  deleteRow(rowid: number) {
-    this.studyDataSource = this.studyDataSource.filter(
-      (item, index) => index !== rowid
-    );
   }
 
   addStudy() {
@@ -170,6 +179,38 @@ export class ProjectConfigurationComponent implements OnInit {
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
     const lengthOfCode = 6;
     this.enrollmentKey = makeRandomKey(lengthOfCode, possible);
+  }
+
+  removeUserFromStudy(rowNr: number) {
+    this.userDataSource = this.userDataSource.filter(
+      (item: any, index: number) => index !== rowNr
+    );
+    this.toastr.success('User successfully removed!');
+  }
+
+  blockOrAcceptUserForStudy(rowNr: number, actStatus: string) {
+    console.log(rowNr);
+    if (actStatus == 'accepted') {
+      this.userDataSource[rowNr] = {
+        Email: this.userDataSource[rowNr].Email,
+        FirstName: this.userDataSource[rowNr].FirstName,
+        LastName: this.userDataSource[rowNr].LastName,
+        Status: 'blocked',
+      };
+      this.tableStudyParticipants?.renderRows();
+
+      this.toastr.success('User successfully blocked!');
+    } else if (actStatus == 'blocked') {
+      this.userDataSource[rowNr] = {
+        Email: this.userDataSource[rowNr].Email,
+        FirstName: this.userDataSource[rowNr].FirstName,
+        LastName: this.userDataSource[rowNr].LastName,
+        Status: 'accepted',
+      };
+      this.tableStudyParticipants?.renderRows();
+
+      this.toastr.success('User successfully accepted!');
+    }
   }
 }
 

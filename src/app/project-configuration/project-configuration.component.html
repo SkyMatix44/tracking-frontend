@@ -2,6 +2,7 @@
   <h2><u>Overview of study data:</u></h2>
 
   <table
+    #table
     mat-table
     [dataSource]="studyDataSource"
     class="mat-elevation-z8"
@@ -62,6 +63,7 @@
   <h2><u>Overview study participants:</u></h2>
 
   <table
+    #tableStudyParticipants
     mat-table
     [dataSource]="userDataSource"
     class="mat-elevation-z8"
@@ -83,6 +85,44 @@
       <th mat-header-cell *matHeaderCellDef>Last Name</th>
       <td mat-cell *matCellDef="let element">
         {{ element.LastName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.Status }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element; let rowNr = index">
+        <button
+          mat-raised-button
+          (click)="removeUserFromStudy(rowNr)"
+          color="primary"
+        >
+          Remove User
+        </button>
+        <div *ngIf="element.Status == 'accepted'">
+          <button
+            mat-raised-button
+            (click)="blockOrAcceptUserForStudy(rowNr, element.Status)"
+            color="primary"
+          >
+            Block User
+          </button>
+        </div>
+        <div *ngIf="element.Status == 'blocked'">
+          <button
+            mat-raised-button
+            (click)="blockOrAcceptUserForStudy(rowNr, element.Status)"
+            color="primary"
+          >
+            Accept User
+          </button>
+        </div>
       </td>
     </ng-container>
 
