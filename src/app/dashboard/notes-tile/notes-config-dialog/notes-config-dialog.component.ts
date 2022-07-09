@@ -28,16 +28,13 @@ export class NotesConfigDialogComponent implements OnInit {
     this.maxDate = new Date(currentYear + 1, 11, 31);
   }
 
-  /*
-    icon: 'fa-clock bg-purple',
-    date: '03.07.2022 09:00',
-    headline: 'Kickoff event',
-    text: 'The Kickoff event will take place at the university.',
-  */
-
   onChangeDate(data: any) {
     this.noteDate = dateFormat(data, 'm d yyyy');
   }
+
+  /*
+    icon: 'fa-clock bg-purple',
+  */
 
   noteHeadline = '';
   noteDescription = '';

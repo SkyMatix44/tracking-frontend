@@ -14,6 +14,7 @@ export class NotesTileComponent implements OnInit {
     this.startdate = '03 Juli 2022';
     this.enddate = '15 Aug. 2022';
     this.loadNotes();
+    this.sortNotesDates();
   }
 
   startdate: string = '';

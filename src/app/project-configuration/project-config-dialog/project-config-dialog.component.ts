@@ -56,7 +56,13 @@ export class ProjectConfigDialogComponent implements OnInit {
   ngOnInit() {}
 
   saveAndClose() {
-    this.dialogRef.close();
+    this.dialogRef.close({
+      name: this.studyName,
+      description: this.studyDescription,
+      startDate: this.startdateFormGroup.value.startdateCtrl,
+      endDate: this.enddateFormGroup.value.enddateCtrl,
+      scientists: '0',
+    });
     this.toastr.success('Änderungen gespeichert.');
   }
 
