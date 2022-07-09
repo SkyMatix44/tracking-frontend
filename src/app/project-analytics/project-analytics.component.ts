@@ -45,18 +45,6 @@ export class ProjectAnalyticsComponent implements OnInit {
     this.table = table;
   }
 
-  ExportTOExcel() {
-    console.log(this.table);
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
-      this.table.nativeElement
-    );
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    /* save to file */
-    XLSX.writeFile(wb, 'SheetJS.xlsx');
-  }
-
   ngOnInit(): void {
     this.initializeColumnProperties();
     this.getAlldata();

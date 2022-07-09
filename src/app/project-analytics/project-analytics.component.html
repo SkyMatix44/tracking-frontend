@@ -83,12 +83,10 @@
 
 <div class="row">
   <div class="thead center">
-    <button
-      class="btn btn-sm btn-outline-primary top-margin"
-      (click)="ExportTOExcel()"
-    >
-      Export as Excel
-    </button>
+    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('xlsx')">Excel</button>
+    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('csv')">Csv</button>
+    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('json')">Json</button>
+    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('txt')">Txt</button>
     <button
       style="float: right"
       class="btn btn-sm btn-outline-primary top-margin"
@@ -114,10 +112,12 @@
   </div>
   <table
     mat-table
+    matTableExporter
     #table
     #TABLE
     class="mat-elevation-z8"
     [dataSource]="userListMatTabDataSource"
+    #exporter="matTableExporter"
   >
     <ng-container matColumnDef="ID">
       <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
