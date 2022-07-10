@@ -1,5 +1,5 @@
-// Here can you at global Variabels
+// Here can you add global Variabels
 export const EMAIL_PATTERN: string = '';
 
 // App URL
-export const APP_URL: string = 'http://localhost:3333';
+export const APP_URL: string = 'https://impl-tracker.herokuapp.com/'; // 'http://localhost:3333';
