@@ -38,6 +38,12 @@ export class HeaderComponent implements OnInit {
     DropdownList.selectedIndex = this.currentProjectId;
   }
 
+  redirectTo(uri: string) {
+    this.router
+      .navigateByUrl('/', { skipLocationChange: true })
+      .then(() => this.router.navigate([uri]));
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);

@@ -18,7 +18,7 @@ export class ProjectConfigurationComponent implements OnInit {
   @ViewChild('tableStudyParticipants') tableStudyParticipants!: MatTable<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   constructor(
-    private ProjectService: ProjectService,
+    private prjService: ProjectService,
     private authService: AuthService,
     public dialog: MatDialog,
     private toastr: ToastrService
@@ -41,7 +41,6 @@ export class ProjectConfigurationComponent implements OnInit {
   ];
 
   displayedUserDataColumns: string[] = [
-    'position',
     'Email',
     'First Name',
     'Last Name',
@@ -50,7 +49,6 @@ export class ProjectConfigurationComponent implements OnInit {
   ];
   userDataSource = [
     {
-      position: 1,
       Email: '',
       FirstName: '',
       LastName: '',
@@ -67,66 +65,44 @@ export class ProjectConfigurationComponent implements OnInit {
 
   loadProject() {
     this.studyDataSource.pop();
-    this.studyDataSource.push({
-      Name: 'Studie-Typ-2',
-      Beschreibung: 'Es wird auf Typ-2 getestet.',
-      Startdatum: '08/15/2022',
-      Enddatum: '08/20/2022',
-      Wissenschaftler: '5',
+    this.prjService.getAllProjects().subscribe((projects) => {
+      projects.forEach((element) => {
+        console.log(element);
+        this.studyDataSource.push({
+          Name: element.name,
+          Beschreibung: element.description,
+          Startdatum: new Date(element.start_date).toUTCString(),
+          Enddatum: new Date(element.end_date).toUTCString(),
+          Wissenschaftler: '5',
+        });
+      });
+      this.table?.renderRows();
     });
   }
 
   loadStudyParticipants() {
     this.userDataSource.pop();
+    this.prjService.getProjectUsers(2, 'participants').subscribe((projects) => {
+      projects.forEach((element) => {
+        console.log(element);
+        this.userDataSource.push({
+          Email: element.email,
+          FirstName: element.firstName,
+          LastName: element.lastName,
+          Status: 'accepted',
+        });
+      });
+      this.tableStudyParticipants?.renderRows();
+    });
+
+    /*
     this.userDataSource.push({
-      position: 1,
       Email: 'test@1.com',
       FirstName: 'Mark',
       LastName: 'Becker',
       Status: 'accepted',
     });
-    this.userDataSource.push({
-      position: 2,
-      Email: 'test@2.com',
-      FirstName: 'Mark',
-      LastName: 'Becker',
-      Status: 'accepted',
-    });
-    this.userDataSource.push({
-      position: 3,
-      Email: 'test@3.com',
-      FirstName: 'Mark',
-      LastName: 'Becker',
-      Status: 'accepted',
-    });
-    this.userDataSource.push({
-      position: 4,
-      Email: 'test@3.com',
-      FirstName: 'Mark',
-      LastName: 'Becker',
-      Status: 'accepted',
-    });
-    this.userDataSource.push({
-      position: 5,
-      Email: 'test@3.com',
-      FirstName: 'Mark',
-      LastName: 'Becker',
-      Status: 'accepted',
-    });
-    this.userDataSource.push({
-      position: 6,
-      Email: 'test@3.com',
-      FirstName: 'Mark',
-      LastName: 'Becker',
-      Status: 'accepted',
-    });
-    this.userDataSource.push({
-      position: 7,
-      Email: 'test@3.com',
-      FirstName: 'Mark',
-      LastName: 'Becker',
-      Status: 'accepted',
-    });
+    */
   }
 
   editStudyDialog() {
@@ -187,7 +163,19 @@ export class ProjectConfigurationComponent implements OnInit {
           var description = returnValue.description;
           var startDate = dateFormat(returnValue.startDate, 'mm/d/yyyy');
           var endDate = dateFormat(returnValue.endDate, 'mm/d/yyyy');
+          var startDateNr = new Date(returnValue.startDate);
+          var endDateNr = new Date(returnValue.endDate);
           var scientists = returnValue.scientists;
+
+          var data = {
+            name: name, //'StudieTypB'
+            description: description, //'Es wird auf Typ B getestet.'
+            start_date: startDateNr.getTime(), //1614034800
+            end_date: endDateNr.getTime(), //1614294000
+          };
+          this.prjService.create(data).subscribe((observer) => {
+            console.log(observer);
+          });
 
           this.studyDataSource.push({
             Name: name,
@@ -199,16 +187,6 @@ export class ProjectConfigurationComponent implements OnInit {
           this.table?.renderRows();
         }
       });
-
-    /*
-    var data = {
-      name: 'StudieTypB',
-      description: 'Es wird auf Typ B getestet.',
-      start_date: 1614034800,
-      end_date: 1614294000,
-    };
-    this.ProjectService.create(data);
-    */
   }
 
   removeUserFromStudy(rowNr: number) {
@@ -221,7 +199,6 @@ export class ProjectConfigurationComponent implements OnInit {
   blockOrAcceptUserForStudy(rowNr: number, actStatus: string) {
     if (actStatus == 'accepted') {
       this.userDataSource[rowNr] = {
-        position: this.userDataSource[rowNr].position,
         Email: this.userDataSource[rowNr].Email,
         FirstName: this.userDataSource[rowNr].FirstName,
         LastName: this.userDataSource[rowNr].LastName,
@@ -232,7 +209,6 @@ export class ProjectConfigurationComponent implements OnInit {
       this.toastr.success('User successfully blocked!');
     } else if (actStatus == 'blocked') {
       this.userDataSource[rowNr] = {
-        position: this.userDataSource[rowNr].position,
         Email: this.userDataSource[rowNr].Email,
         FirstName: this.userDataSource[rowNr].FirstName,
         LastName: this.userDataSource[rowNr].LastName,

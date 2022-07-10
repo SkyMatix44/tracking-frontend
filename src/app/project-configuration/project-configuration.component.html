@@ -133,6 +133,15 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedUserDataColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedUserDataColumns"></tr>
+    <!--
+    <mat-paginator
+      [length]="100"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+    -->
   </table>
 
   <br />

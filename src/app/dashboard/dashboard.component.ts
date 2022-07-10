@@ -10,5 +10,9 @@ export class DashboardComponent implements OnInit {
   constructor(private prjService: ProjectService) {}
 
   projectSubscription: any;
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const a = this.prjService.getCurrentProjectObs().subscribe((observer) => {
+      console.log(observer);
+    });
+  }
 }

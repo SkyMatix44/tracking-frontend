@@ -23,16 +23,20 @@
     <ul class="navbar-nav">
       <li class="nav-item"></li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a (click)="redirectTo('/dashboard')" class="nav-link">Dashboard</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/analytics" class="nav-link">Analytical Page</a>
+        <a (click)="redirectTo('/analytics')" class="nav-link"
+          >Analytical Page</a
+        >
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/configuration" class="nav-link">Study Configuration</a>
+        <a (click)="redirectTo('/configuration')" class="nav-link"
+          >Study Configuration</a
+        >
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/admin" class="nav-link">Admin Section</a>
+        <a (click)="redirectTo('/admin')" class="nav-link">Admin Section</a>
       </li>
     </ul>
     <!-- SEARCH FORM
