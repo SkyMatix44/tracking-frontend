@@ -63,15 +63,16 @@ export class NotesTileComponent implements OnInit {
       .open(NotesConfigDialogComponent, dialogConfig)
       .afterClosed()
       .subscribe((returnValue) => {
-        if (returnValue.noteHeadline != '') {
+        console.log(returnValue.noteHeadline);
+        if (returnValue.noteHeadline != undefined) {
           this.notesData?.push({
             icon: 'fa-envelope bg-primary',
             date: returnValue.noteDate,
             headline: returnValue.noteHeadline,
             text: returnValue.noteDescription,
           });
+          this.sortNotesDates();
         }
-        this.sortNotesDates();
       });
   }
 

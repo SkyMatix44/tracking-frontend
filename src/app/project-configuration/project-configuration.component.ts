@@ -148,8 +148,8 @@ export class ProjectConfigurationComponent implements OnInit {
         ) {
           var name = returnValue.name;
           var description = returnValue.description;
-          var startDate = dateFormat(returnValue.startDate, 'm/d/yyyy');
-          var endDate = dateFormat(returnValue.endDate, 'm/d/yyyy');
+          var startDate = dateFormat(returnValue.startDate, 'mm/d/yyyy');
+          var endDate = dateFormat(returnValue.endDate, 'mm/d/yyyy');
           var scientists = returnValue.scientists;
 
           this.studyDataSource.push({
@@ -189,7 +189,6 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   blockOrAcceptUserForStudy(rowNr: number, actStatus: string) {
-    console.log(rowNr);
     if (actStatus == 'accepted') {
       this.userDataSource[rowNr] = {
         Email: this.userDataSource[rowNr].Email,

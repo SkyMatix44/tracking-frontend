@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminSectionComponent } from './admin-section/admin-section.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'userprofile',
     component: UserProfileComponent,
+  },
+  {
+    path: 'admin',
+    component: AdminSectionComponent,
   },
 ];
 

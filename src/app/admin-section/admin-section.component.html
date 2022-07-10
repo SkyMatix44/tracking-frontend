@@ -1,0 +1,113 @@
+<div class="content" role="main">
+  <h2><u>Overview of all users:</u></h2>
+
+  <table
+    #tableAllParticipants
+    mat-table
+    [dataSource]="userDataSource"
+    class="mat-elevation-z8"
+    class="color-primary"
+  >
+    <ng-container matColumnDef="Email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let element">{{ element.Email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="First Name">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.FirstName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Last Name">
+      <th mat-header-cell *matHeaderCellDef>Last Name</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.LastName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="University">
+      <th mat-header-cell *matHeaderCellDef>University</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.University }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Address">
+      <th mat-header-cell *matHeaderCellDef>Address</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.Address }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="User role">
+      <th mat-header-cell *matHeaderCellDef>User role</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.UserRole }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.Status }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element; let rowNr = index">
+        <button
+          mat-raised-button
+          (click)="deleteUserFromStudy(rowNr)"
+          color="primary"
+        >
+          Delete User
+        </button>
+        <div *ngIf="element.Status == 'accepted'">
+          <button
+            mat-raised-button
+            (click)="blockOrAcceptUserForStudy(rowNr, element.Status)"
+            color="primary"
+          >
+            Block User
+          </button>
+        </div>
+        <div *ngIf="element.Status == 'blocked' || element.Status == ''">
+          <button
+            mat-raised-button
+            (click)="blockOrAcceptUserForStudy(rowNr, element.Status)"
+            color="primary"
+          >
+            Accept User
+          </button>
+        </div>
+        <button
+          mat-raised-button
+          (click)="
+            openAddEditUserDialog(
+              rowNr,
+              element.Email,
+              element.FirstName,
+              element.LastName,
+              element.University,
+              element.Address,
+              element.UserRole,
+              element.Status
+            )
+          "
+          color="primary"
+        >
+          Edit User
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedUserDataColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedUserDataColumns"></tr>
+  </table>
+  <button mat-raised-button (click)="createNewUser()" color="primary">
+    Create new User
+  </button>
+</div>
