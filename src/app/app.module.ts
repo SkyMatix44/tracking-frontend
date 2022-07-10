@@ -25,6 +25,8 @@ import { AddOrEditUserDialogComponent } from './admin-section/addOrEditUser-dial
 import { AdminSectionComponent } from './admin-section/admin-section.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpService } from './common/http.service';
+import { ProjectService } from './common/project.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NewsTileComponent } from './dashboard/news-tile/news-tile.component';
 import { NotesConfigDialogComponent } from './dashboard/notes-tile/notes-config-dialog/notes-config-dialog.component';
@@ -90,7 +92,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MatNativeDateModule,
     MatSelectModule,
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, HttpService, ProjectService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

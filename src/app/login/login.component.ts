@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
           },
         });
     } else {
-      this.toastr.error('Please fill in all fields!'); // TODO besser Button sperren
+      this.toastr.error('Please fill in all fields!');
     }
   }
 
@@ -54,8 +54,8 @@ export class LoginComponent implements OnInit {
       this.createUserFirstName &&
       this.createUserLastName &&
       this.createEmail &&
-      this.createPassword &&
-      this.university != ''
+      this.createPassword
+      // this.university != ''
     ) {
       // TODO nochmal absprechen welche Daten wirklich bei der registierung benötigt werden
       this.authService
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
           },
         });
     } else {
-      this.toastr.error('Please fill in all fields!'); // TODO besser Button sperren
+      this.toastr.error('Please fill in all fields!');
     }
   }
 

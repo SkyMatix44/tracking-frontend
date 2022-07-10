@@ -66,9 +66,11 @@ export class AuthService {
    * Validate a user
    */
   validate(email: string, token: string): Observable<void> {
+    const emailBase64: string = btoa(email);
+    const tokenBase64: string = btoa(token);
     return this.httpService
       .postWithoutAuth<Authentication>(
-        `auth/confirm/email/${email}/${token}`,
+        `auth/confirm/email/${emailBase64}/${tokenBase64}`,
         {}
       )
       .pipe(
@@ -96,8 +98,10 @@ export class AuthService {
    * Confirm new email
    */
   confirmNewEmail(email: string, token: string): Observable<void> {
+    const emailBase64: string = btoa(email);
+    const tokenBase64: string = btoa(token);
     return this.httpService.post(
-      `auth/confirm/new-email/${email}/${token}`,
+      `auth/confirm/new-email/${emailBase64}/${tokenBase64}`,
       null
     );
   }
