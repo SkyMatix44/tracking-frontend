@@ -69,12 +69,16 @@
 
     <div class="card-body">
       <div class="tab-content p-0">
-        <div
-          class="chart tab-pane active"
-          id="bar-chart"
-          style="position: relative; height: flex"
-        >
-          <canvas id="myChart"></canvas>
+        <div class="chart tab-pane active" id="bar-chart">
+          <canvas
+            id="myChart"
+            style="
+              min-height: 250px;
+              height: 250px;
+              max-height: 300px;
+              width: flex;
+            "
+          ></canvas>
         </div>
       </div>
     </div>
@@ -83,10 +87,30 @@
 
 <div class="row">
   <div class="thead center">
-    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('xlsx')">Excel</button>
-    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('csv')">Csv</button>
-    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('json')">Json</button>
-    <button class="btn btn-sm btn-outline-primary top-margin" (click)="exporter.exportTable('txt')">Txt</button>
+    <button
+      class="btn btn-sm btn-outline-primary top-margin"
+      (click)="exporter.exportTable('xlsx')"
+    >
+      Excel
+    </button>
+    <button
+      class="btn btn-sm btn-outline-primary top-margin"
+      (click)="exporter.exportTable('csv')"
+    >
+      Csv
+    </button>
+    <button
+      class="btn btn-sm btn-outline-primary top-margin"
+      (click)="exporter.exportTable('json')"
+    >
+      Json
+    </button>
+    <button
+      class="btn btn-sm btn-outline-primary top-margin"
+      (click)="exporter.exportTable('txt')"
+    >
+      Txt
+    </button>
     <button
       style="float: right"
       class="btn btn-sm btn-outline-primary top-margin"

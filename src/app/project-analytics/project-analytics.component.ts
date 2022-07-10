@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
-import * as XLSX from 'xlsx';
 import { User } from './user';
 
 interface CustomColumn {
@@ -178,7 +177,14 @@ export class ProjectAnalyticsComponent implements OnInit {
         {
           label: ' active',
           data: dataValues,
-          backgroundColor: ['rgba(242, 243, 254, 1)'],
+          backgroundColor: [
+            'rgb(207, 210, 245)',
+            'rgb(187, 191, 238)',
+            'rgb(165, 170, 227)',
+            'rgb(157, 140, 215)',
+            'rgb(178, 163, 228)',
+            'rgb(198, 186, 238)',
+          ],
           borderColor: ['rgba(225, 232, 255, 1)'],
           borderWidth: 1,
         },
