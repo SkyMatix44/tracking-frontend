@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
-import * as XLSX from 'xlsx';
 import { User } from './user';
 
 interface CustomColumn {
@@ -9,6 +8,7 @@ interface CustomColumn {
   name: string;
   isActive: boolean;
 }
+
 @Component({
   selector: 'app-project-analytics',
   templateUrl: './project-analytics.component.html',
@@ -16,15 +16,22 @@ interface CustomColumn {
 })
 export class ProjectAnalyticsComponent implements OnInit {
   userList!: User[];
+
   selectedRow!: number;
+  selected!: String;
+  type!: 'line';
+  date!: number;
+  chartname!: 'chart-bar';
+  myChart!: any;
+  myDonut!: Chart;
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
   public columnList = [
     'ID',
+    'UserID',
     'Location',
     'Activity',
     'Calories',
-    'Distance',
     'BPM',
     'Achievement',
     'Duration',
@@ -37,26 +44,14 @@ export class ProjectAnalyticsComponent implements OnInit {
     this.table = table;
   }
 
-  ExportTOExcel() {
-    console.log(this.table);
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
-      this.table.nativeElement
-    );
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    /* save to file */
-    XLSX.writeFile(wb, 'SheetJS.xlsx');
-  }
-
   ngOnInit(): void {
-    this.setDiagramData();
     this.initializeColumnProperties();
     this.getAlldata();
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event?.target as HTMLInputElement).value;
+  applyFilter() {
+    const filterValue = this.selected || this.date;
+    console.log(filterValue);
     this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -85,120 +80,139 @@ export class ProjectAnalyticsComponent implements OnInit {
     this.userList = [
       {
         id: 1,
+        userID: 1,
         location: 'Siegen',
         activity: 'walking',
         steps: 5466,
         calories: 123,
-        distance: 2000,
         bpm: 90,
         achievement: 'yes',
         duration: 10,
-        date: '01.01.1900',
+        date: '2022-07-04',
       },
       {
         id: 2,
+        userID: 3,
         location: 'Berlin',
         activity: 'running',
         steps: 23546,
         calories: 500,
-        distance: 10000,
         bpm: 160,
         achievement: 'no',
         duration: 10,
-        date: '01.01.1900',
+        date: '2022-07-03',
       },
       {
         id: 3,
+        userID: 4,
         location: 'Siegen',
         activity: 'swimming',
         steps: 0,
         calories: 234,
-        distance: 200,
         bpm: 148,
         achievement: 'no',
         duration: 10,
-        date: '01.01.1900',
+        date: '2022-07-01',
       },
       {
         id: 4,
+        userID: 2,
         location: 'Hamburg',
         activity: 'walking',
         steps: 3509,
         calories: 48,
-        distance: 1000,
         bpm: 100,
         achievement: 'yes',
         duration: 10,
-        date: '01.01.1900',
+        date: '2022-07-07',
       },
       {
         id: 5,
+        userID: 4,
         location: 'Dortmund',
         activity: 'swimming',
         steps: 0,
         calories: 298,
-        distance: 250,
         bpm: 136,
         achievement: 'yes',
         duration: 10,
-        date: '01.01.1900',
+        date: '2021-12-17',
       },
       {
         id: 6,
+        userID: 1,
         location: 'Siegen',
         activity: 'walking',
         steps: 9786,
         calories: 398,
-        distance: 5000,
         bpm: 97,
         achievement: 'yes',
         duration: 10,
-        date: '01.01.1900',
+        date: '2020-12-13',
       },
       {
         id: 7,
+        userID: 1,
         location: 'Berlin',
         activity: 'running',
         steps: 9766,
         calories: 947,
-        distance: 6000,
         bpm: 157,
         achievement: 'no',
         duration: 10,
-        date: '03.07.2022',
+        date: '2022-07-03',
       },
     ];
     this.userListMatTabDataSource.data = this.userList;
   }
 
   setDiagramData() {
-    var labels = ['January', 'February', 'March', 'April', 'May', 'June'];
-
+    if (this.myChart !== undefined) {
+      this.myChart.destroy();
+    }
     var dataValues = [4, 13, 6, 5, 8, 3];
-
-    this.showDiagram('first-chart', labels, dataValues);
-    //this.setDiagramme('second-chart-donut');
+    var myData = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      datasets: [
+        {
+          label: ' active',
+          data: dataValues,
+          backgroundColor: [
+            'rgb(207, 210, 245)',
+            'rgb(187, 191, 238)',
+            'rgb(165, 170, 227)',
+            'rgb(157, 140, 215)',
+            'rgb(178, 163, 228)',
+            'rgb(198, 186, 238)',
+          ],
+          borderColor: ['rgba(225, 232, 255, 1)'],
+          borderWidth: 1,
+        },
+      ],
+    };
+    var charttype = this.type;
+    this.showDiagram('myChart', charttype, myData);
   }
 
-  showDiagram(diagramName: string, dataLabels: string[], dataValues: number[]) {
+  showDiagram(
+    diagramName: string,
+    charttype: any,
+    myData: {
+      labels: string[];
+      datasets: {
+        label: string;
+        data: number[];
+        backgroundColor: string[];
+        borderColor: string[];
+        borderWidth: number;
+      }[];
+    }
+  ) {
     Chart.register(...registerables);
-
     const ctx = document.getElementById(diagramName) as ChartItem;
-
-    const myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: dataLabels,
-        datasets: [
-          {
-            label: ' active',
-            data: dataValues,
-            backgroundColor: ['rgba(225, 232, 255, 1)'],
-            borderColor: ['rgba(242, 243, 254, 1)'],
-            borderWidth: 1,
-          },
-        ],
-      },
+    this.myChart = new Chart(ctx, {
+      type: charttype,
+      data: myData,
       options: {
         scales: {
           y: {
