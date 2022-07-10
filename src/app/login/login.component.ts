@@ -17,9 +17,9 @@ export class LoginComponent implements OnInit {
   createEmail = '';
   createPassword = '';
   university = '';
+  validationCode = '';
 
-  showLogin = true;
-  showRegister = false;
+  currentCard = 'login';
 
   constructor(
     private router: Router,
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
         })
         .subscribe({
           next: () => {
-            this.router.navigate(['/dashboard']); // TODO zur validation navigieren
+            this.goToCard('validation');
           },
           error: () => {
             this.toastr.error('Fehler bei der Registierung!');
@@ -83,13 +83,15 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  goToRegister() {
-    this.showLogin = false;
-    this.showRegister = true;
+  validate(): void {
+    this.authService
+      .validate(this.userInputEmail, this.validationCode)
+      .subscribe(() => {
+        this.router.navigate(['/dashboard']);
+      });
   }
 
-  goToLogin() {
-    this.showLogin = true;
-    this.showRegister = false;
+  goToCard(card: string): void {
+    this.currentCard = card;
   }
 }

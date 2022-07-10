@@ -3,9 +3,9 @@
   style="background-color: #ecf0f5"
 >
   <div class="container">
-    <div class="row align-items-center">
+    <div class="row align-items-center" [ngSwitch]="currentCard">
       <!-- Login -->
-      <div class="col-lg-6 px-lg-4" *ngIf="showLogin">
+      <div class="col-lg-6 px-lg-4" *ngSwitchCase="'login'">
         <div class="card">
           <div class="card-header px-lg-5">
             <div class="card-heading text-primary">Login</div>
@@ -46,13 +46,13 @@
           <div class="card-footer px-lg-5 py-lg-4">
             <div>
               You don't have an account yet?
-              <a (click)="goToRegister()">To the registration</a>
+              <a (click)="goToCard('register')">To the registration</a>
             </div>
           </div>
         </div>
       </div>
       <!-- Registrierung -->
-      <div class="col-lg-6 px-lg-4" *ngIf="showRegister">
+      <div class="col-lg-6 px-lg-4" *ngSwitchCase="'register'">
         <div class="card">
           <div class="card-header px-lg-5">
             <div class="card-heading text-primary">Registration</div>
@@ -132,11 +132,44 @@
           </div>
           <div class="card-footer px-lg-5 py-lg-4">
             <div>
-              You have an account? <a (click)="goToLogin()">To the login</a>
+              You have an account?
+              <a (click)="goToCard('login')">To the login</a>
             </div>
           </div>
         </div>
       </div>
+      <!-- Validation -->
+      <div class="col-lg-6 px-lg-4" *ngSwitchCase="'validation'">
+        <div class="card">
+          <div class="card-header px-lg-5">
+            <div class="card-heading text-primary">Account validieren</div>
+          </div>
+          <div class="card-body p-lg-5">
+            <h3 class="mb-4">Account validieren</h3>
+            <p class="text-muted mb-5">
+              Bitte gibt den Code ein, den du per Email erhalten hast, um deine
+              Email Adresse zu validieren.
+            </p>
+            <form id="validationForm" action="index.html">
+              <div class="form-floating mb-3">
+                <input
+                  class="form-control"
+                  [(ngModel)]="validationCode"
+                  name="inputCode"
+                  placeholder="XXX-XXX"
+                  required
+                />
+                <label>XXX-XXX</label>
+              </div>
+              <button mat-raised-button color="accent" (click)="validate()">
+                Senden
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Illustration -->
       <div class="col-lg-6 col-xl-6 text-center text-primary">
         <img width="700" src="/assets/img/DiabetesPicture.jpg" />
         <!--

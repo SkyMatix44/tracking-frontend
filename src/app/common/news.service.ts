@@ -13,7 +13,7 @@ export class NewsService {
   }
 
   update(newsId: number, data: UpdateNewsDto): Observable<News> {
-    return this.httpService.post(`news/${newsId}`, data);
+    return this.httpService.patch(`news/${newsId}`, data);
   }
 
   delete(newsId: number): Observable<void> {

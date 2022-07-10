@@ -114,7 +114,7 @@ export class HttpService {
     if (null != auth) {
       return new HttpHeaders({
         // 'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth.access_token}`,
+        Authorization: `Bearer ${auth.accessToken}`,
       });
     }
     throw new Error('No Auth');

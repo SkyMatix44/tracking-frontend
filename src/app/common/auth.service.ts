@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { HttpService } from './http.service';
-import { Gender } from './user.service';
+import { Gender, User } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,17 +26,11 @@ export class AuthService {
    * Register
    */
   register(data: SignUpDto): Observable<void> {
-    return this.httpService
-      .postWithoutAuth<Authentication>('auth/signup', data)
-      .pipe(
-        map((result) => {
-          this.setAuthentication(result);
-        })
-      );
+    return this.httpService.postWithoutAuth<void>('auth/signup', data);
   }
 
   /**
-   * TODO
+   * Logout
    */
   logout(): void {
     this.setAuthentication(null);
@@ -56,10 +50,62 @@ export class AuthService {
   getAuthentication(): Authentication | null {
     return this.httpService.getAuthentication();
   }
+
+  /**
+   * Return true if the user is logged in
+   */
+  isLoggedIn(): Observable<boolean> {
+    return this.httpService.getAuthenticationObs().pipe(
+      map((auth) => {
+        return auth !== null;
+      })
+    );
+  }
+
+  /**
+   * Validate a user
+   */
+  validate(email: string, token: string): Observable<void> {
+    return this.httpService
+      .postWithoutAuth<Authentication>(
+        `auth/confirm/email/${email}/${token}`,
+        {}
+      )
+      .pipe(
+        map((result) => {
+          this.setAuthentication(result);
+        })
+      );
+  }
+
+  /**
+   * Reset the password
+   */
+  resetPassword(data: ResetPasswordDto): Observable<void> {
+    return this.httpService.post('auth/password/reset', data);
+  }
+
+  /**
+   * Reset the password
+   */
+  changePassword(data: ChangePasswordDto): Observable<void> {
+    return this.httpService.post('auth/password/change', data);
+  }
+
+  /**
+   * Confirm new email
+   */
+  confirmNewEmail(email: string, token: string): Observable<void> {
+    return this.httpService.post(
+      `auth/confirm/new-email/${email}/${token}`,
+      null
+    );
+  }
 }
 
 export interface Authentication {
-  access_token: string;
+  accessToken: string;
+  user: User;
 }
 
 export interface SignUpDto {
@@ -72,4 +118,14 @@ export interface SignUpDto {
   birthday: number;
   height: number;
   weight: number;
+}
+
+export interface ResetPasswordDto {
+  email: string;
+}
+
+export interface ChangePasswordDto {
+  email: string;
+  newPassword: string;
+  token: string;
 }
