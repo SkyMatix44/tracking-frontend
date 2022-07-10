@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../common/auth.service';
-import { Gender } from '../common/user.service';
+import { Role } from '../common/user.service';
 
 @Component({
   selector: 'app-login',
@@ -64,11 +64,7 @@ export class LoginComponent implements OnInit {
           password: this.createPassword,
           firstName: this.createUserFirstName,
           lastName: this.createUserLastName,
-          address: 'Teststraße',
-          birthday: 0,
-          gender: Gender.MALE,
-          height: 0,
-          weight: 0,
+          role: Role.SCIENTIST,
         })
         .subscribe({
           next: () => {
@@ -85,7 +81,7 @@ export class LoginComponent implements OnInit {
 
   validate(): void {
     this.authService
-      .validate(this.userInputEmail, this.validationCode)
+      .validate(this.createEmail, this.validationCode)
       .subscribe(() => {
         this.router.navigate(['/dashboard']);
       });

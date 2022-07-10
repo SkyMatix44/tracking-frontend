@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { HttpService } from './http.service';
-import { Gender, User } from './user.service';
+import { Gender, Role, User } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -113,11 +113,13 @@ export interface SignUpDto {
   password: string;
   firstName: string;
   lastName: string;
-  gender: Gender;
-  address: string;
-  birthday: number;
-  height: number;
-  weight: number;
+  gender?: Gender;
+  address?: string;
+  birthday?: number;
+  height?: number;
+  weight?: number;
+  role: Role;
+  universityId?: number;
 }
 
 export interface ResetPasswordDto {
