@@ -37,15 +37,15 @@ export class LoginComponent implements OnInit {
         .subscribe({
           next: () => {
             this.router.navigate(['/dashboard']);
-            this.toastr.success('Erfolgreich!');
+            this.toastr.success('Successful!');
           },
           error: () => {
             // TODO auf verschiedene Fehler reagieren
-            this.toastr.error('Bitte geben Sie gültige Anmeldedaten an!');
+            this.toastr.error('Please provide valid login data!');
           },
         });
     } else {
-      this.toastr.error('Bitte alle Felder ausfüllen!'); // TODO besser Button sperren
+      this.toastr.error('Please fill in all fields!'); // TODO besser Button sperren
     }
   }
 
@@ -75,11 +75,11 @@ export class LoginComponent implements OnInit {
             this.goToCard('validation');
           },
           error: () => {
-            this.toastr.error('Fehler bei der Registierung!');
+            this.toastr.error('Error during registration!');
           },
         });
     } else {
-      this.toastr.error('Bitte alle Felder ausfüllen!'); // TODO besser Button sperren
+      this.toastr.error('Please fill in all fields!'); // TODO besser Button sperren
     }
   }
 
