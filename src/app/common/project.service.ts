@@ -148,6 +148,7 @@ export interface Project {
   id: number;
   start_date: number;
   end_date: number;
+  invite_token: string;
   name: string;
   description: string;
 }

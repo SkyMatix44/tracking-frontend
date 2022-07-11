@@ -48,6 +48,7 @@ export class AddOrEditUserDialogComponent implements OnInit {
     ) {
       this.dialogRef.close({
         email: this.userEmail,
+        password: this.userPassword,
         firstName: this.userFirstName,
         lastName: this.userLastName,
         status: this.status,

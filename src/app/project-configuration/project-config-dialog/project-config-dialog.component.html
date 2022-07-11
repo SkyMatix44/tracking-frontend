@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{ dialogTitle }}</h1>
 <div mat-dialog-content>
-  <mat-stepper linear #stepper>
+  <mat-stepper [linear]="isLinear" #stepper>
     <mat-step [stepControl]="studyNameFormGroup" [editable]="isEditable">
       <form [formGroup]="studyNameFormGroup">
         <ng-template matStepLabel>Study name</ng-template>

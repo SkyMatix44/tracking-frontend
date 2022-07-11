@@ -73,16 +73,18 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-header">2 Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="/userprofile" class="dropdown-item">
+          <a (click)="redirectTo('/userprofile')" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> Complete your data!
           </a>
           <div class="dropdown-divider"></div>
-          <a href="/configuration" class="dropdown-item">
+          <a (click)="redirectTo('/configuration')" class="dropdown-item">
             <i class="fas fa-users mr-2"></i> Create first users!
             <!-- <span class="float-right text-muted text-sm">12 hours</span> -->
           </a>
           <div class="dropdown-divider"></div>
-          <a href="/userprofile" class="dropdown-item dropdown-footer"
+          <a
+            (click)="redirectTo('/userprofile')"
+            class="dropdown-item dropdown-footer"
             >Edit user account</a
           >
         </div>

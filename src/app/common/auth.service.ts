@@ -17,6 +17,7 @@ export class AuthService {
       .postWithoutAuth<Authentication>('auth/signin', { email, password })
       .pipe(
         map((result) => {
+          sessionStorage.setItem('auth', JSON.stringify(result));
           this.setAuthentication(result);
         })
       );
@@ -33,6 +34,7 @@ export class AuthService {
    * Logout
    */
   logout(): void {
+    sessionStorage.removeItem('auth');
     this.setAuthentication(null);
   }
 

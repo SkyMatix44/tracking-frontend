@@ -31,6 +31,7 @@ export class ProjectConfigDialogComponent implements OnInit {
   dialogTitle = 'Edit study';
   studyName = '';
   studyDescription = '';
+  isLinear = true;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -53,7 +54,11 @@ export class ProjectConfigDialogComponent implements OnInit {
     this.maxDate = new Date(currentYear + 1, 11, 31);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.dialogTitle == 'Edit study') {
+      this.isLinear = false;
+    }
+  }
 
   saveAndClose() {
     this.dialogRef.close({

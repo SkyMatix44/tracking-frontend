@@ -4,8 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
 import dateFormat from 'dateformat';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../common/auth.service';
 import { ProjectService } from '../common/project.service';
+import { UserService } from '../common/user.service';
 import { ProjectConfigDialogComponent } from './project-config-dialog/project-config-dialog.component';
 
 @Component({
@@ -21,7 +23,8 @@ export class ProjectConfigurationComponent implements OnInit {
     private prjService: ProjectService,
     private authService: AuthService,
     public dialog: MatDialog,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private userService: UserService
   ) {}
   displayedStudyColumns: string[] = [
     'Name',
@@ -29,16 +32,9 @@ export class ProjectConfigurationComponent implements OnInit {
     'Startdatum',
     'Enddatum',
     'Wissenschaftler',
+    'Action',
   ];
-  studyDataSource = [
-    {
-      Name: '',
-      Beschreibung: '',
-      Startdatum: '',
-      Enddatum: '',
-      Wissenschaftler: '',
-    },
-  ];
+  studyDataSource: studyDataSource[] = [];
 
   displayedUserDataColumns: string[] = [
     'Email',
@@ -49,6 +45,7 @@ export class ProjectConfigurationComponent implements OnInit {
   ];
   userDataSource = [
     {
+      Id: -1,
       Email: '',
       FirstName: '',
       LastName: '',
@@ -56,64 +53,84 @@ export class ProjectConfigurationComponent implements OnInit {
     },
   ];
 
-  enrollmentKey = 'XYZ';
+  enrollmentKeyStudyname = '';
+  enrollmentKey = '';
+  subscr: Subscription | undefined;
 
   ngOnInit() {
     this.loadProject();
     this.loadStudyParticipants();
   }
 
+  actPrjNumber = 2;
   loadProject() {
-    this.studyDataSource.pop();
-    this.prjService.getAllProjects().subscribe((projects) => {
+    this.studyDataSource = [];
+
+    this.subscr = this.prjService.getAllProjects().subscribe((projects) => {
       projects.forEach((element) => {
-        console.log(element);
         this.studyDataSource.push({
+          Id: element.id,
           Name: element.name,
           Beschreibung: element.description,
-          Startdatum: new Date(element.start_date).toUTCString(),
-          Enddatum: new Date(element.end_date).toUTCString(),
-          Wissenschaftler: '5',
+          Startdatum: new Date(Number(element.start_date)),
+          Enddatum: new Date(Number(element.end_date)),
+          Wissenschaftler: 0,
         });
+        this.getNrOfScientists(element.id);
+        this.showEnrollmentKey(element.name, element.invite_token);
       });
       this.table?.renderRows();
     });
   }
 
-  loadStudyParticipants() {
-    this.userDataSource.pop();
-    this.prjService.getProjectUsers(2, 'participants').subscribe((projects) => {
-      projects.forEach((element) => {
-        console.log(element);
-        this.userDataSource.push({
-          Email: element.email,
-          FirstName: element.firstName,
-          LastName: element.lastName,
-          Status: 'accepted',
-        });
+  getNrOfScientists(prjId: number): number {
+    var nrOfScientists = 0;
+    this.prjService
+      .getProjectUsers(prjId, 'scientists')
+      .subscribe((results) => {
+        nrOfScientists = results.length;
+        for (let project of this.studyDataSource) {
+          if (project.Id === prjId) {
+            project.Wissenschaftler = results.length;
+            break;
+          }
+        }
       });
-      this.tableStudyParticipants?.renderRows();
-    });
-
-    /*
-    this.userDataSource.push({
-      Email: 'test@1.com',
-      FirstName: 'Mark',
-      LastName: 'Becker',
-      Status: 'accepted',
-    });
-    */
+    return nrOfScientists;
   }
 
-  editStudyDialog() {
+  loadStudyParticipants() {
+    this.userDataSource.pop();
+    this.subscr = this.prjService
+      .getProjectUsers(this.actPrjNumber, 'participants')
+      .subscribe((projects) => {
+        projects.forEach((element) => {
+          this.userDataSource.push({
+            Id: element.id,
+            Email: element.email,
+            FirstName: element.firstName,
+            LastName: element.lastName,
+            Status: this.getBlocked(element.blocked),
+          });
+        });
+        this.tableStudyParticipants?.renderRows();
+      });
+  }
+
+  showEnrollmentKey(studyname: string, key: string) {
+    this.enrollmentKey = key;
+    this.enrollmentKeyStudyname = studyname;
+  }
+
+  editStudyDialog(rowNr: number, studyId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.data = {
       dialogTitle: 'Edit study',
-      studyName: this.studyDataSource[0].Name,
-      studyDescription: this.studyDataSource[0].Beschreibung,
-      studyStartdate: this.studyDataSource[0].Startdatum,
-      studyEnddate: this.studyDataSource[0].Enddatum,
+      studyName: this.studyDataSource[rowNr].Name,
+      studyDescription: this.studyDataSource[rowNr].Beschreibung,
+      studyStartdate: this.studyDataSource[rowNr].Startdatum,
+      studyEnddate: this.studyDataSource[rowNr].Enddatum,
     };
 
     this.dialog
@@ -124,20 +141,30 @@ export class ProjectConfigurationComponent implements OnInit {
           returnValue.name != undefined &&
           returnValue.description != undefined
         ) {
+          var data = {
+            name: returnValue.name,
+            description: returnValue.description,
+            start_date: returnValue.startDate.getTime(),
+            end_date: returnValue.endDate.getTime(),
+          };
+
+          this.subscr = this.prjService
+            .update(studyId, data)
+            .subscribe((observer) => {
+              console.log(observer);
+            });
+
           this.studyDataSource = this.studyDataSource.filter(
-            (item: any, index: number) => index !== 0
+            (item, index) => index !== rowNr
           );
-          var name = returnValue.name;
-          var description = returnValue.description;
-          var startDate = dateFormat(returnValue.startDate, 'mm/d/yyyy');
-          var endDate = dateFormat(returnValue.endDate, 'mm/d/yyyy');
-          var scientists = returnValue.scientists;
+
           this.studyDataSource.push({
-            Name: name,
-            Beschreibung: description,
-            Startdatum: startDate,
-            Enddatum: endDate,
-            Wissenschaftler: scientists,
+            Id: studyId,
+            Name: returnValue.name,
+            Beschreibung: returnValue.description,
+            Startdatum: returnValue.startDate.getTime(),
+            Enddatum: returnValue.endDate.getTime(),
+            Wissenschaftler: returnValue.scientists,
           });
           this.table?.renderRows();
         }
@@ -159,32 +186,26 @@ export class ProjectConfigurationComponent implements OnInit {
           returnValue.name != undefined &&
           returnValue.description != undefined
         ) {
-          var name = returnValue.name;
-          var description = returnValue.description;
-          var startDate = dateFormat(returnValue.startDate, 'mm/d/yyyy');
-          var endDate = dateFormat(returnValue.endDate, 'mm/d/yyyy');
+          var startDate = new Date(
+            dateFormat(returnValue.startDate, 'mm/d/yyyy')
+          );
+          var endDate = new Date(dateFormat(returnValue.endDate, 'mm/d/yyyy'));
           var startDateNr = new Date(returnValue.startDate);
           var endDateNr = new Date(returnValue.endDate);
-          var scientists = returnValue.scientists;
 
           var data = {
-            name: name, //'StudieTypB'
-            description: description, //'Es wird auf Typ B getestet.'
+            name: returnValue.name, //'StudieTypB'
+            description: returnValue.description, //'Es wird auf Typ B getestet.'
             start_date: startDateNr.getTime(), //1614034800
             end_date: endDateNr.getTime(), //1614294000
           };
-          this.prjService.create(data).subscribe((observer) => {
-            console.log(observer);
-          });
 
-          this.studyDataSource.push({
-            Name: name,
-            Beschreibung: description,
-            Startdatum: startDate,
-            Enddatum: endDate,
-            Wissenschaftler: scientists,
+          console.log();
+          this.subscr = this.prjService.create(data).subscribe((observer) => {
+            console.log(observer.invite_token);
+            this.loadProject();
+            this.showEnrollmentKey(observer.name, observer.invite_token);
           });
-          this.table?.renderRows();
         }
       });
   }
@@ -196,9 +217,15 @@ export class ProjectConfigurationComponent implements OnInit {
     this.toastr.success('User successfully removed!');
   }
 
-  blockOrAcceptUserForStudy(rowNr: number, actStatus: string) {
+  blockOrAcceptUserForStudy(rowNr: number, userId: number, actStatus: string) {
     if (actStatus == 'accepted') {
+      this.subscr = this.userService
+        .blockUser(this.userDataSource[rowNr].Id)
+        .subscribe((result) => {
+          console.log(result);
+        });
       this.userDataSource[rowNr] = {
+        Id: this.userDataSource[rowNr].Id,
         Email: this.userDataSource[rowNr].Email,
         FirstName: this.userDataSource[rowNr].FirstName,
         LastName: this.userDataSource[rowNr].LastName,
@@ -208,7 +235,13 @@ export class ProjectConfigurationComponent implements OnInit {
 
       this.toastr.success('User successfully blocked!');
     } else if (actStatus == 'blocked') {
+      this.subscr = this.userService
+        .unblockUser(this.userDataSource[rowNr].Id)
+        .subscribe((result) => {
+          console.log(result);
+        });
       this.userDataSource[rowNr] = {
+        Id: this.userDataSource[rowNr].Id,
         Email: this.userDataSource[rowNr].Email,
         FirstName: this.userDataSource[rowNr].FirstName,
         LastName: this.userDataSource[rowNr].LastName,
@@ -219,12 +252,30 @@ export class ProjectConfigurationComponent implements OnInit {
       this.toastr.success('User successfully accepted!');
     }
   }
+
+  getBlocked(userBlocked: any) {
+    if (userBlocked == true) {
+      userBlocked = 'blocked';
+    } else if (userBlocked == false) {
+      userBlocked = 'accepted';
+    } else if (userBlocked == 'blocked') {
+      userBlocked = true;
+    } else if (userBlocked == 'accepted') {
+      userBlocked = false;
+    }
+    return userBlocked;
+  }
+
+  ngOnDestroy() {
+    this.subscr?.unsubscribe();
+  }
 }
 
-function makeRandomKey(lengthOfCode: number, possible: string) {
-  let text = '';
-  for (let i = 0; i < lengthOfCode; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
+export interface studyDataSource {
+  Id: number;
+  Name: string;
+  Beschreibung: string;
+  Startdatum: Date;
+  Enddatum: Date;
+  Wissenschaftler: number;
 }

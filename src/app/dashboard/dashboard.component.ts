@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../common/auth.service';
 import { ProjectService } from '../common/project.service';
 
 @Component({
@@ -7,12 +8,21 @@ import { ProjectService } from '../common/project.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  constructor(private prjService: ProjectService) {}
+  constructor(
+    private prjService: ProjectService,
+    private authService: AuthService
+  ) {}
 
   projectSubscription: any;
   ngOnInit(): void {
-    const a = this.prjService.getCurrentProjectObs().subscribe((observer) => {
-      console.log(observer);
-    });
+    this.projectSubscription = this.prjService
+      .getCurrentProjectObs()
+      .subscribe((observer) => {
+        console.log(observer);
+      });
+  }
+
+  ngOnDestroy() {
+    this.projectSubscription?.unsubscribe();
   }
 }

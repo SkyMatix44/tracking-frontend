@@ -17,15 +17,27 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   currentProjectId: any;
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAllProjects();
+  }
 
   ngAfterViewInit() {
     this.setInitialProject();
     this.cdref.detectChanges();
   }
 
+  getAllProjects() {
+    this.prjService.getAllProjects().subscribe((results) => {
+      console.log(results);
+      results.forEach((element) => {
+        this.studies.push(element.name);
+      });
+    });
+  }
+
   setInitialProject() {
     this.currentProjectId = this.prjService.getCurrentProjectId();
+    console.log(this.currentProjectId);
 
     var DropdownList = document.getElementById(
       'inputStatus'
@@ -49,10 +61,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  studies = ['Studie1', 'Studie2', 'Studie3'];
+  studies = [''];
 
   onChangePrj(event: any) {
     this.prjService.setCurrentProjectId(event.target['selectedIndex']);
     this.currentProjectId = event.target['selectedIndex'];
+    //getCurrentProjectObs
   }
 }

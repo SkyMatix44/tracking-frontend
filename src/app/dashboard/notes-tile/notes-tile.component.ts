@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { NewsService } from '../../common/news.service';
 import { NotesConfigDialogComponent } from './notes-config-dialog/notes-config-dialog.component';
 
 @Component({
@@ -8,7 +9,7 @@ import { NotesConfigDialogComponent } from './notes-config-dialog/notes-config-d
   styleUrls: ['./notes-tile.component.scss'],
 })
 export class NotesTileComponent implements OnInit {
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private newsService: NewsService) {}
 
   ngOnInit(): void {
     this.startdate = '03 Juli 2022';
@@ -25,7 +26,7 @@ export class NotesTileComponent implements OnInit {
   loadNotes() {
     this.notesData = [
       {
-        icon: 'fa-user bg-info',
+        icon: 'fa-envelope bg-primary',
         date: '07.25.2022',
         headline: 'Checking',
         text: 'Checking Beta Study',
