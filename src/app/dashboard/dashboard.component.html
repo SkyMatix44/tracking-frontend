@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <br />
   <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-7">
       <div class="small-box" style="background-color: #e1e8ff">
         <div class="inner" style="color: black">
           <h3>{{ nrOfScientists }}</h3>
@@ -23,9 +23,8 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-7">
       <div class="small-box" style="background-color: #e1e8ff">
-        <!-- bg-warning -->
         <div class="inner" style="color: black">
           <h3>{{ nrOfParticipants }}</h3>
           <p>People participate in this study</p>
@@ -45,7 +44,7 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-3 col-7">
       <div class="small-box" style="background-color: #e1e8ff">
         <div class="inner" style="color: black">
           <h3>{{ nrOfDaysLeft }}</h3>
@@ -68,23 +67,43 @@
   <div class="row">
     <!-- app study tile -->
     <section class="col-lg-7 connectedSortable">
-      <app-study-tile></app-study-tile>
+      <div class="card" style="background-color: #e1e8ff">
+        <div class="card-header border-0">
+          <h3 class="card-title">
+            <i class="fas fa-th mr-1"></i>
+            User-Activity Graph
+          </h3>
+          <div class="card-tools">
+            <app-study-tile></app-study-tile>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <canvas
+            class="chart"
+            id="line-chart"
+            style="
+              min-height: 250px;
+              height: 250px;
+              max-height: 250px;
+              max-width: 100%;
+            "
+          ></canvas>
+        </div>
+      </div>
       <!-- Study Komponente -->
+
+      <div class="card">
+        <app-notes-tile></app-notes-tile>
+      </div>
     </section>
 
-    <!-- notes -->
-    <section class="col-lg-7 connectedSortable">
-      <app-notes-tile></app-notes-tile>
-    </section>
-
-    <!-- news -->
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-5 connectedSortable">
       <div class="card" style="background-color: #e1e8ff">
         <div class="card-header">
           <h3 class="card-title">
             <i class="fas fa-envelope mr-1"></i>
-            Public messages (visible for participants and scientists of the
-            study)
+            Public messages (visible for participants and scientists)
           </h3>
           <div class="card-tools">
             <button

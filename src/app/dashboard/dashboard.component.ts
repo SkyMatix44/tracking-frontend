@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
       .getCurrentProjectObs()
       .subscribe((observer) => {
         if (observer?.id != undefined) {
+          console.log('initial ' + observer?.id);
           this.getNrOfScientists(observer?.id!);
           this.getNrOfParticipants(observer?.id!);
           this.getNrOfDaysLeft(observer.start_date, observer.end_date);
@@ -55,11 +56,11 @@ export class DashboardComponent implements OnInit {
     //Differenz bzw. Dauer
     var diff = endDate.valueOf() - startDate.valueOf();
     var diffDays = Math.ceil(diff / (1000 * 3600 * 24));
-    console.log(diffDays);
+    //console.log(diffDays);
 
     //Vergleich mit aktuellem Datum
     var actDate = Date.now();
-    console.log(actDate.valueOf());
+    //console.log(actDate.valueOf());
     var diffToday = diff.valueOf() - (endDate.valueOf() - actDate.valueOf());
     var diffDaysToday = Math.ceil(diffToday / (1000 * 3600 * 24));
 

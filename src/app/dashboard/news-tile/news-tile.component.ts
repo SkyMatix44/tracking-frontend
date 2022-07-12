@@ -31,7 +31,7 @@ export class NewsTileComponent implements OnInit {
       .getCurrentProjectObs()
       .subscribe((observer) => {
         if (observer?.id != undefined) {
-          console.log('load neue News');
+          //console.log('load neue News');
           this.actPrjId = observer.id;
           this.loadNewsData(observer.id);
         } else {
@@ -57,14 +57,12 @@ export class NewsTileComponent implements OnInit {
     this.projectSubscription = this.newsService
       .getProjectNews(prjId)
       .subscribe((results) => {
-        console.log(results);
+        // console.log(results);
         results.forEach((element) => {
-          //this.getUserNameById(element.userId!); //TODO ---------
-          console.log(element);
-
+          // console.log(element);
           this.newsData?.push({
             picture: '/assets/img/scientist-man.png',
-            name: 'Barbara Schmidt',
+            name: element.user_firstname + ' ' + element.user_lastname,
             createdAt: element.created_at,
             type: 'Shared publicly',
             title: element.title,
@@ -72,63 +70,37 @@ export class NewsTileComponent implements OnInit {
           });
         });
       });
-    /*
-    this.newsData = [
-      {
-        picture: '/assets/img/scientist-woman.png',
-        name: 'Barbara Schmidt',
-        createdAt: '3 days ago',
-        type: 'Shared publicly',
-        title: 'Note',
-        text: 'Exercise not only help to prevent type Diabetes II, but also have a positive effect if you already ill.',
-      },
-      {
-        picture: '/assets/img/scientist-man.png',
-        name: 'Andreas Schröder',
-        createdAt: '7:30 PM today',
-        type: 'Shared publicly',
-        title: 'Note',
-        text: 'We would like to remind you that the study has now started and you should track your daily activities.',
-      },
-    ];
-    */
-  }
-
-  getUserNameById(userId: number): string {
-    //var userFirstName = this.userService.;
-    return 'userFirstName!';
   }
 
   publicMessage = '';
   sendMessage(publicMessage: any) {
-    //var userFirstName = this.userService.getCurrentUser()?.firstName;
-    //var userLastName = this.userService.getCurrentUser()?.lastName;
+    var userFirstName = this.userService.getCurrentUser()?.firstName!;
+    var userLastName = this.userService.getCurrentUser()?.lastName!;
+
     if (isEmptyOrSpaces(publicMessage) == false) {
-      console.log(this.actPrjId);
-      this.actPrjId = 20;
       var data = {
         title: 'Note',
         text: publicMessage,
         projectId: this.actPrjId,
+        user_firstname: userFirstName,
+        user_lastname: userLastName,
       };
       this.newsService.create(data).subscribe((results) => {
-        console.log(results);
+        // console.log(results);
+        this.newsData?.push({
+          picture: '/assets/img/scientist-man.png',
+          name: userFirstName + ' ' + userLastName,
+          createdAt: results.updated_at!,
+          type: 'Shared publicly',
+          title: 'Note',
+          text: publicMessage,
+        });
       });
       this.toastr.success('Successfully sent');
-      /*
-      this.newsData?.push({
-        picture: '/assets/img/scientist-man.png', //Geschlecht des Wissenschaftlers
-        name: 'Andreas Schröder', //Name des Wissenschaftlers
-        createdAt: new Date,
-        type: 'Shared publicly',
-        title: 'Note',
-        text: publicMessage, //Exercise not only help to prevent type Diabetes II, but also have a positive effect if you already ill.
-        //We would like to remind you that the study has now started and you should track your daily activities.
-      });
-      */
     } else {
       this.toastr.error('Your message is empty');
     }
+    this.publicMessage = '';
   }
 }
 

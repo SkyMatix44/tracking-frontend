@@ -88,6 +88,7 @@ export enum Role {
   USER = 'USER',
   SCIENTIST = 'SCIENTIST',
   ADMIN = 'ADMIN',
+  Role = 'Role',
 }
 
 export interface ChangePasswordDto {

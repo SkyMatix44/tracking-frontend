@@ -39,8 +39,12 @@ export class LoginComponent implements OnInit {
             var userRole = this.userService.getCurrentUser()?.role;
             sessionStorage.setItem('role', JSON.stringify(userRole));
             console.log(userRole);
-            this.router.navigate(['/dashboard']);
-            this.toastr.success('Successful!');
+            if (userRole == Role.ADMIN || userRole == Role.SCIENTIST) {
+              this.router.navigate(['/dashboard']);
+              this.toastr.success('Successful!');
+            } else {
+              this.toastr.error('You do not have access to this website!');
+            }
           },
           error: () => {
             // TODO auf verschiedene Fehler reagieren

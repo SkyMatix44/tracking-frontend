@@ -9,7 +9,7 @@
         mat-raised-button
         type="button"
         color="primary"
-        (click)="editNotesDialog()"
+        (click)="editOrAddNotesDialog()"
       >
         <a style="color: #ffffff"> <i class="fas"></i> Add Notes & Dates </a>
       </button>
@@ -36,8 +36,7 @@
           <i class="fas {{ notes.icon }}"></i>
           <div class="timeline-item">
             <span class="time"
-              ><i class="far fa-clock"></i>
-              {{ notes.date | date: "dd MMM, yyyy" }}</span
+              ><i class="far fa-clock"></i> {{ notes.date }}</span
             >
             <h3 class="timeline-header">
               <a>{{ notes.headline }}</a>

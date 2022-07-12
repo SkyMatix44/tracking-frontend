@@ -44,6 +44,8 @@ export interface CreateNewsDto {
   title: string;
   text: string;
   projectId: number;
+  user_firstname: string | null;
+  user_lastname: string | null;
 }
 
 export interface UpdateNewsDto {

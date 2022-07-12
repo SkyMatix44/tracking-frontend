@@ -22,13 +22,13 @@ export class HeaderComponent implements OnInit {
   userRole: Role | undefined;
   ngOnInit(): void {
     this.userRole = this.userService.getCurrentUser()?.role;
-    console.log(this.userRole);
+    //console.log(this.userRole);
   }
 
   ngAfterViewInit() {
     this.getAllProjects();
     var a = this.prjService.getCurrentProjectId();
-    console.log(a);
+    //console.log(a);
     if (a == -1) {
       this.setInitialProject();
     }
@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
     this.studies.pop();
     this.studieIds.pop();
     this.prjService.getAllProjects().subscribe((results) => {
-      console.log(results);
+      //console.log(results);
       results.forEach((element) => {
         this.studies.push(element.name);
         this.studieIds.push(element.id);
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
 
   setInitialProject() {
     this.currentProjectId = this.prjService.getCurrentProjectId();
-    console.log(this.currentProjectId);
+    //console.log(this.currentProjectId);
 
     var DropdownList = document.getElementById(
       'inputStatus'
@@ -80,7 +80,7 @@ export class HeaderComponent implements OnInit {
 
   onChangePrj(event: any) {
     var id = this.studieIds[event.target['selectedIndex']];
-    console.log(id);
+    //console.log(id);
     this.prjService.setCurrentProjectId(id);
     //this.currentProjectId = id;
   }

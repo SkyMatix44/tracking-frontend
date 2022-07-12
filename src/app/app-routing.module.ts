@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminSectionComponent } from './admin-section/admin-section.component';
+import { AuthGuard } from './auth.guard';
+import { Role } from './common/user.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
@@ -21,26 +23,38 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.SCIENTIST] },
   },
   {
     path: 'configuration',
     component: ProjectConfigurationComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.SCIENTIST] },
   },
   {
     path: 'analytics',
     component: ProjectAnalyticsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.SCIENTIST] },
   },
   {
     path: 'listreport',
     component: ProjectListreportComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.SCIENTIST] },
   },
   {
     path: 'userprofile',
     component: UserProfileComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN, Role.SCIENTIST] },
   },
   {
     path: 'admin',
     component: AdminSectionComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.ADMIN] },
   },
   {
     path: 'tokens',
