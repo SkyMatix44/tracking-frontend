@@ -1,12 +1,18 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  Subscription,
+} from 'rxjs';
 import { HttpService } from './http.service';
 import { User } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectService {
+export class ProjectService implements OnDestroy {
   // current selected project id, -1 when no project selected
   public readonly currentProjectId$: BehaviorSubject<number> =
     new BehaviorSubject(-1);
@@ -16,21 +22,25 @@ export class ProjectService {
     [] as Project[]
   );
 
+  private authSub: Subscription | null = null;
+
   constructor(private httpService: HttpService) {
     this.init();
   }
 
-  init(): void {
+  private init(): void {
     // Load projects after login
-    this.httpService.getAuthenticationObs().subscribe((value) => {
-      if (null == value) {
-        this.projects$.next([]);
-      } else {
-        this.getAllProjects().subscribe((projects) => {
-          this.projects$.next(projects);
-        });
-      }
-    });
+    this.authSub = this.httpService
+      .getAuthenticationObs()
+      .subscribe((value) => {
+        if (null == value) {
+          this.projects$.next([]);
+        } else {
+          this.getAllProjects().subscribe((projects) => {
+            this.projects$.next(projects);
+          });
+        }
+      });
   }
 
   /**
@@ -143,6 +153,12 @@ export class ProjectService {
       })
       // shareReplay()
     );
+  }
+
+  ngOnDestroy(): void {
+    if (null != this.authSub) {
+      this.authSub.unsubscribe();
+    }
   }
 }
 

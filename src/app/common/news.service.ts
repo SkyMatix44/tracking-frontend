@@ -36,6 +36,8 @@ export interface News {
   title: string;
   text: string;
   userId: number | null;
+  user_firstname: string | null;
+  user_lastname: string | null;
 }
 
 export interface CreateNewsDto {
