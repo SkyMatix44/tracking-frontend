@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../common/user.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -7,7 +8,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit {
-  constructor(private toastr: ToastrService) {}
+  constructor(
+    private toastr: ToastrService,
+    private userService: UserService
+  ) {}
 
   userFirstName = '';
   userLastName = '';
@@ -21,15 +25,28 @@ export class UserProfileComponent implements OnInit {
   }
 
   getUserAttributes() {
+    var user = this.userService.getCurrentUser();
+    console.log(user);
     // TODO Datenbank
-    this.userFirstName = 'Manuel';
-    this.userLastName = 'Neuer';
-    this.userEmail = 'manuel@gmail.com';
-    this.userUniversity = 'Siegen';
-    this.userAddress = 'Gartenstraße 1, Siegen';
+    this.userFirstName = user?.firstName || '';
+    this.userLastName = user?.lastName || '';
+    this.userEmail = user?.email || '';
+    this.userUniversity = user?.universityId?.toString() || '';
+    this.userAddress = user?.address || '';
   }
 
   saveChanges() {
-    this.toastr.success('TODO saved');
+    console.log(
+      this.userFirstName + ' ' + this.userLastName + ' ' + this.userAddress
+    );
+    var data = {
+      firstName: this.userFirstName,
+      lastName: this.userLastName,
+      address: this.userAddress,
+    };
+    this.userService.update(data).subscribe((results) => {
+      console.log(results);
+    });
+    this.toastr.success('Changes saved');
   }
 }

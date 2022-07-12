@@ -55,32 +55,53 @@ export class ProjectConfigurationComponent implements OnInit {
 
   enrollmentKeyStudyname = '';
   enrollmentKey = '';
-  subscr: Subscription | undefined;
+  projectSubscription: Subscription | undefined;
 
   ngOnInit() {
+    this.prjService.setCurrentProjectId(20); //TODO Set initial Projekt
+    this.actPrjNumber = 20;
+    this.getActProject();
     this.loadProject();
-    this.loadStudyParticipants();
+    //this.loadStudyParticipants();
+  }
+
+  getActProject() {
+    //this.prjService.setCurrentProjectId(20);
+    this.projectSubscription = this.prjService
+      .getCurrentProjectObs()
+      .subscribe((observer) => {
+        if (observer?.id != undefined) {
+          console.log('load neue News');
+          this.actPrjNumber = observer.id;
+          console.log(this.actPrjNumber);
+          this.loadStudyParticipants(observer.id);
+          this.loadEnrollmentKey();
+        } else {
+          //console.log('fix initial undefined');
+        }
+      });
   }
 
   actPrjNumber = 2;
   loadProject() {
     this.studyDataSource = [];
 
-    this.subscr = this.prjService.getAllProjects().subscribe((projects) => {
-      projects.forEach((element) => {
-        this.studyDataSource.push({
-          Id: element.id,
-          Name: element.name,
-          Beschreibung: element.description,
-          Startdatum: new Date(Number(element.start_date)),
-          Enddatum: new Date(Number(element.end_date)),
-          Wissenschaftler: 0,
+    this.projectSubscription = this.prjService
+      .getAllProjects()
+      .subscribe((projects) => {
+        projects.forEach((element) => {
+          this.studyDataSource.push({
+            Id: element.id,
+            Name: element.name,
+            Beschreibung: element.description,
+            Startdatum: new Date(Number(element.start_date)),
+            Enddatum: new Date(Number(element.end_date)),
+            Wissenschaftler: 0,
+          });
+          this.getNrOfScientists(element.id);
         });
-        this.getNrOfScientists(element.id);
-        this.showEnrollmentKey(element.name, element.invite_token);
+        this.table?.renderRows();
       });
-      this.table?.renderRows();
-    });
   }
 
   getNrOfScientists(prjId: number): number {
@@ -99,10 +120,10 @@ export class ProjectConfigurationComponent implements OnInit {
     return nrOfScientists;
   }
 
-  loadStudyParticipants() {
-    this.userDataSource.pop();
-    this.subscr = this.prjService
-      .getProjectUsers(this.actPrjNumber, 'participants')
+  loadStudyParticipants(actPrjNumber: number) {
+    this.userDataSource = [];
+    this.projectSubscription = this.prjService
+      .getProjectUsers(actPrjNumber, 'participants')
       .subscribe((projects) => {
         projects.forEach((element) => {
           this.userDataSource.push({
@@ -117,7 +138,15 @@ export class ProjectConfigurationComponent implements OnInit {
       });
   }
 
+  loadEnrollmentKey() {
+    var prj = this.prjService.getCurrentProject();
+    console.log('----------------');
+    console.log(prj);
+    this.showEnrollmentKey(prj?.name!, prj?.invite_token!);
+  }
+
   showEnrollmentKey(studyname: string, key: string) {
+    console.log(studyname + ' ' + key);
     this.enrollmentKey = key;
     this.enrollmentKeyStudyname = studyname;
   }
@@ -148,7 +177,7 @@ export class ProjectConfigurationComponent implements OnInit {
             end_date: returnValue.endDate.getTime(),
           };
 
-          this.subscr = this.prjService
+          this.projectSubscription = this.prjService
             .update(studyId, data)
             .subscribe((observer) => {
               console.log(observer);
@@ -201,11 +230,13 @@ export class ProjectConfigurationComponent implements OnInit {
           };
 
           console.log();
-          this.subscr = this.prjService.create(data).subscribe((observer) => {
-            console.log(observer.invite_token);
-            this.loadProject();
-            this.showEnrollmentKey(observer.name, observer.invite_token);
-          });
+          this.projectSubscription = this.prjService
+            .create(data)
+            .subscribe((observer) => {
+              console.log(observer.invite_token);
+              this.loadProject();
+              this.showEnrollmentKey(observer.name, observer.invite_token);
+            });
         }
       });
   }
@@ -219,7 +250,7 @@ export class ProjectConfigurationComponent implements OnInit {
 
   blockOrAcceptUserForStudy(rowNr: number, userId: number, actStatus: string) {
     if (actStatus == 'accepted') {
-      this.subscr = this.userService
+      this.projectSubscription = this.userService
         .blockUser(this.userDataSource[rowNr].Id)
         .subscribe((result) => {
           console.log(result);
@@ -235,7 +266,7 @@ export class ProjectConfigurationComponent implements OnInit {
 
       this.toastr.success('User successfully blocked!');
     } else if (actStatus == 'blocked') {
-      this.subscr = this.userService
+      this.projectSubscription = this.userService
         .unblockUser(this.userDataSource[rowNr].Id)
         .subscribe((result) => {
           console.log(result);
@@ -267,7 +298,10 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscr?.unsubscribe();
+    this.studyDataSource = [];
+    this.userDataSource = [];
+    this.tableStudyParticipants.ngOnDestroy;
+    this.projectSubscription?.unsubscribe();
   }
 }
 

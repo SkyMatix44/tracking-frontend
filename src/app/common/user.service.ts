@@ -54,7 +54,7 @@ export class UserService {
   }
 
   update(data: UpdateUserDto): Observable<User> {
-    return this.httpService.post(`user/update`, data);
+    return this.httpService.patch(`user/update`, data);
   }
 
   create(data: CreateUserDto): Observable<User> {

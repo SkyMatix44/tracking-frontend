@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../common/auth.service';
-import { Role } from '../common/user.service';
+import { Role, UserService } from '../common/user.service';
 
 @Component({
   selector: 'app-login',
@@ -24,18 +24,21 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {}
 
   login(): void {
-    this.router.navigate(['/dashboard']);
     if (this.userInputEmail && this.userInputPassword != '') {
       this.authService
         .login(this.userInputEmail, this.userInputPassword)
         .subscribe({
           next: () => {
+            var userRole = this.userService.getCurrentUser()?.role;
+            sessionStorage.setItem('role', JSON.stringify(userRole));
+            console.log(userRole);
             this.router.navigate(['/dashboard']);
             this.toastr.success('Successful!');
           },

@@ -1,10 +1,11 @@
+<app-header></app-header>
 <div class="container-fluid">
   <br />
   <div class="row">
     <div class="col-lg-3 col-6">
       <div class="small-box" style="background-color: #e1e8ff">
         <div class="inner" style="color: black">
-          <h3>5</h3>
+          <h3>{{ nrOfScientists }}</h3>
           <p>Scientists have access to this study</p>
         </div>
         <div class="icon">
@@ -26,7 +27,7 @@
       <div class="small-box" style="background-color: #e1e8ff">
         <!-- bg-warning -->
         <div class="inner" style="color: black">
-          <h3>28</h3>
+          <h3>{{ nrOfParticipants }}</h3>
           <p>People participate in this study</p>
         </div>
         <div class="icon">
@@ -47,7 +48,7 @@
     <div class="col-lg-3 col-6">
       <div class="small-box" style="background-color: #e1e8ff">
         <div class="inner" style="color: black">
-          <h3>41 von 70</h3>
+          <h3>{{ nrOfDaysLeft }}</h3>
           <p>days of the study period are completed</p>
         </div>
         <div class="icon">

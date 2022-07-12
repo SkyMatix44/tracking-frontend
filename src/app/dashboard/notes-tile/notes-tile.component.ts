@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { NewsService } from '../../common/news.service';
+import { ProjectService } from '../../common/project.service';
 import { NotesConfigDialogComponent } from './notes-config-dialog/notes-config-dialog.component';
 
 @Component({
@@ -9,13 +11,51 @@ import { NotesConfigDialogComponent } from './notes-config-dialog/notes-config-d
   styleUrls: ['./notes-tile.component.scss'],
 })
 export class NotesTileComponent implements OnInit {
-  constructor(public dialog: MatDialog, private newsService: NewsService) {}
+  constructor(
+    public dialog: MatDialog,
+    private newsService: NewsService,
+    private prjService: ProjectService
+  ) {}
 
+  projectSubscription: Subscription | undefined;
   ngOnInit(): void {
     this.startdate = '03 Juli 2022';
     this.enddate = '15 Aug. 2022';
-    this.loadNotes();
+    this.getActProject();
+    this.loadNotes(20);
     this.sortNotesDates();
+  }
+
+  getActProject() {
+    //this.prjService.setCurrentProjectId(20);
+    this.projectSubscription = this.prjService
+      .getCurrentProjectObs()
+      .subscribe((observer) => {
+        if (observer?.id != undefined) {
+          //console.log('load neue Notes');
+          //this.loadNotes(observer.id);
+
+          var startDateNormal = new Date(
+            parseInt(observer.start_date.toString(), 10)
+          ).toLocaleString('default', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          });
+          var endDateNormal = new Date(
+            parseInt(observer.end_date.toString(), 10)
+          ).toLocaleString('default', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          });
+          console.log(startDateNormal + ' ' + endDateNormal);
+          this.startdate = startDateNormal;
+          this.enddate = endDateNormal;
+        } else {
+          //console.log('fix initial undefined');
+        }
+      });
   }
 
   startdate: string = '';
@@ -23,7 +63,16 @@ export class NotesTileComponent implements OnInit {
   notesData:
     | Array<{ icon: string; date: string; headline: string; text: string }>
     | undefined;
-  loadNotes() {
+  loadNotes(prjId: number) {
+    /*
+    this.newsService.getProjectNews(prjId).subscribe((results) => {
+      console.log(results);
+      results.forEach((element) => {
+        console.log(element);
+      });
+    });
+    */
+
     this.notesData = [
       {
         icon: 'fa-envelope bg-primary',

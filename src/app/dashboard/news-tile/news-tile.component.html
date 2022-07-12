@@ -10,7 +10,9 @@
         <span class="username">
           <a>{{ news.name }}</a>
         </span>
-        <span class="description">{{ news.type }} - {{ news.createdAt }}</span>
+        <span class="description"
+          >{{ news.type }} - {{ news.createdAt | date: "dd MMM, yyyy" }}</span
+        >
       </div>
 
       <p>{{ news.text }}</p>

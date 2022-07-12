@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../common/auth.service';
 import { ProjectService } from '../common/project.service';
+import { Role, UserService } from '../common/user.service';
 
 @Component({
   selector: 'app-header',
@@ -13,24 +14,35 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private prjService: ProjectService,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    private userService: UserService
   ) {}
 
   currentProjectId: any;
+  userRole: Role | undefined;
   ngOnInit(): void {
-    this.getAllProjects();
+    this.userRole = this.userService.getCurrentUser()?.role;
+    console.log(this.userRole);
   }
 
   ngAfterViewInit() {
-    this.setInitialProject();
+    this.getAllProjects();
+    var a = this.prjService.getCurrentProjectId();
+    console.log(a);
+    if (a == -1) {
+      this.setInitialProject();
+    }
     this.cdref.detectChanges();
   }
 
   getAllProjects() {
+    this.studies.pop();
+    this.studieIds.pop();
     this.prjService.getAllProjects().subscribe((results) => {
       console.log(results);
       results.forEach((element) => {
         this.studies.push(element.name);
+        this.studieIds.push(element.id);
       });
     });
   }
@@ -47,7 +59,8 @@ export class HeaderComponent implements OnInit {
       this.currentProjectId = 0;
     }
 
-    DropdownList.selectedIndex = this.currentProjectId;
+    DropdownList.selectedIndex = 0;
+    //this.prjService.setCurrentProjectId(20);
   }
 
   redirectTo(uri: string) {
@@ -58,14 +71,17 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    this.userRole = undefined;
     this.router.navigate(['/login']);
   }
 
   studies = [''];
+  studieIds = [-1];
 
   onChangePrj(event: any) {
-    this.prjService.setCurrentProjectId(event.target['selectedIndex']);
-    this.currentProjectId = event.target['selectedIndex'];
-    //getCurrentProjectObs
+    var id = this.studieIds[event.target['selectedIndex']];
+    console.log(id);
+    this.prjService.setCurrentProjectId(id);
+    //this.currentProjectId = id;
   }
 }
