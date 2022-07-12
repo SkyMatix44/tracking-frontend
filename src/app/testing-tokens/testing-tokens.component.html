@@ -1,0 +1,50 @@
+<div style="margin: 50px">
+  <h2>Only for Testing - Show User Validation Tokens</h2>
+
+  <div class="form-floating mb-3">
+    <input
+      class="form-control"
+      [(ngModel)]="email"
+      name="inputEmail"
+      type="email"
+      placeholder="name@example.com"
+      required
+    />
+    <label>Email address</label>
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="loadTokens()"
+    style="margin-bottom: 32px"
+  >
+    Load Tokens
+  </button>
+
+  <div *ngIf="data != null && data.validation_token != null">
+    <h4 style="font-weight: bold">Email Validation Token:</h4>
+    <span>{{ data.validation_token }}</span>
+  </div>
+
+  <div *ngIf="data != null && data.new_email_token != null">
+    <h4 style="font-weight: bold">New Email Validation Token:</h4>
+    <span>{{ data.new_email_token }}</span>
+  </div>
+
+  <div *ngIf="data != null && data.new_password_token != null">
+    <h4 style="font-weight: bold">New Password Validation Token:</h4>
+    <span>{{ data.new_password_token }}</span>
+  </div>
+
+  <div
+    *ngIf="
+      data != null &&
+      data.new_email_token == null &&
+      data.new_password_token == null &&
+      data.validation_token == null
+    "
+  >
+    <span>No aktiv tokens</span>
+  </div>
+</div>

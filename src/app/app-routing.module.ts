@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
 import { ProjectConfigurationComponent } from './project-configuration/project-configuration.component';
 import { ProjectListreportComponent } from './project-listreport/project-listreport.component';
+import { TestingTokensComponent } from './testing-tokens/testing-tokens.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminSectionComponent,
+  },
+  {
+    path: 'tokens',
+    component: TestingTokensComponent,
   },
 ];
 

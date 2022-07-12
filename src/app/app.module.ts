@@ -39,6 +39,7 @@ import { ProjectConfigDialogComponent } from './project-configuration/project-co
 import { ProjectConfigurationComponent } from './project-configuration/project-configuration.component';
 import { ProjectListreportComponent } from './project-listreport/project-listreport.component';
 import { RegisterComponent } from './register/register.component';
+import { TestingTokensComponent } from './testing-tokens/testing-tokens.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
@@ -59,6 +60,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     ProjectConfigDialogComponent,
     AdminSectionComponent,
     AddOrEditUserDialogComponent,
+    TestingTokensComponent,
   ],
   imports: [
     BrowserModule,

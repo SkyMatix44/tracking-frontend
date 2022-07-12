@@ -79,6 +79,15 @@ export class HttpService {
   }
 
   /**
+   * Send a Get-Request without authentication
+   * @param url URL of the request
+   * @param responseType Response type (default: `json`)
+   */
+  getWithoutAuth<T>(url: string): Observable<T> {
+    return this.httpClient.get<T>(this.buildUrl(url));
+  }
+
+  /**
    * Set User Authentication
    * @param auth
    */
