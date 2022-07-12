@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
-import { User } from './user';
+import { ActivityService } from '../common/activity.service';
 
 interface CustomColumn {
   possition: number;
@@ -15,7 +15,19 @@ interface CustomColumn {
   styleUrls: ['./project-analytics.component.scss'],
 })
 export class ProjectAnalyticsComponent implements OnInit {
-  userList!: User[];
+  userList = [
+    {
+      id: 0,
+      userID: 0,
+      activity: 0,
+      steps: 0,
+      distance: 0,
+      heartrate: 0,
+      bloodSugarOxygen: 0,
+      start_date: '',
+      end_date: '',
+    },
+  ];
 
   selectedRow!: number;
   selected!: String;
@@ -29,18 +41,18 @@ export class ProjectAnalyticsComponent implements OnInit {
   public columnList = [
     'ID',
     'UserID',
-    'Location',
     'Activity',
-    'Calories',
-    'BPM',
-    'Achievement',
-    'Duration',
-    'Date',
+    'Steps',
+    'Distance',
+    'Heartrate',
+    'BloodSugarOxygen',
+    'StartDate',
+    'EndDate',
   ];
   public columnShowHideList: CustomColumn[] = [];
 
-  userListMatTabDataSource = new MatTableDataSource<User>(this.userList);
-  constructor(table: ElementRef) {
+  userListMatTabDataSource = new MatTableDataSource(this.userList);
+  constructor(table: ElementRef, private actService: ActivityService) {
     this.table = table;
   }
 
@@ -77,96 +89,29 @@ export class ProjectAnalyticsComponent implements OnInit {
     });
   }
   getAlldata() {
-    this.userList = [
-      {
-        id: 1,
-        userID: 1,
-        location: 'Siegen',
-        activity: 'walking',
-        steps: 5466,
-        calories: 123,
-        bpm: 90,
-        achievement: 'yes',
-        duration: 10,
-        date: '2022-07-04',
-      },
-      {
-        id: 2,
-        userID: 3,
-        location: 'Berlin',
-        activity: 'running',
-        steps: 23546,
-        calories: 500,
-        bpm: 160,
-        achievement: 'no',
-        duration: 10,
-        date: '2022-07-03',
-      },
-      {
-        id: 3,
-        userID: 4,
-        location: 'Siegen',
-        activity: 'swimming',
-        steps: 0,
-        calories: 234,
-        bpm: 148,
-        achievement: 'no',
-        duration: 10,
-        date: '2022-07-01',
-      },
-      {
-        id: 4,
-        userID: 2,
-        location: 'Hamburg',
-        activity: 'walking',
-        steps: 3509,
-        calories: 48,
-        bpm: 100,
-        achievement: 'yes',
-        duration: 10,
-        date: '2022-07-07',
-      },
-      {
-        id: 5,
-        userID: 4,
-        location: 'Dortmund',
-        activity: 'swimming',
-        steps: 0,
-        calories: 298,
-        bpm: 136,
-        achievement: 'yes',
-        duration: 10,
-        date: '2021-12-17',
-      },
-      {
-        id: 6,
-        userID: 1,
-        location: 'Siegen',
-        activity: 'walking',
-        steps: 9786,
-        calories: 398,
-        bpm: 97,
-        achievement: 'yes',
-        duration: 10,
-        date: '2020-12-13',
-      },
-      {
-        id: 7,
-        userID: 1,
-        location: 'Berlin',
-        activity: 'running',
-        steps: 9766,
-        calories: 947,
-        bpm: 157,
-        achievement: 'no',
-        duration: 10,
-        date: '2022-07-03',
-      },
-    ];
+    this.userList.pop();
+    this.actService.getProjectActivties(2).subscribe((activities) => {
+      console.log(activities)
+      activities.forEach((element) => {
+        this.userList.push({
+          id: element.id,
+          userID: element.userId,
+          activity: element.activityTypeId,
+          steps: element.steps,
+          distance: element.distance,
+          heartrate: element.hearthrate,
+          bloodSugarOxygen: element.bloodSugarOxygen,
+          start_date:element.start_date,
+          end_date:element.end_date,
+        });
+      });
+    });
     this.userListMatTabDataSource.data = this.userList;
+    
   }
 
   setDiagramData() {
+
     if (this.myChart !== undefined) {
       this.myChart.destroy();
     }
