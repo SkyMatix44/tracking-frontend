@@ -1,12 +1,18 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  Subscription,
+} from 'rxjs';
 import { HttpService } from './http.service';
 import { User } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectService {
+export class ProjectService implements OnDestroy {
   // current selected project id, -1 when no project selected
   public readonly currentProjectId$: BehaviorSubject<number> =
     new BehaviorSubject(-1);
@@ -16,21 +22,25 @@ export class ProjectService {
     [] as Project[]
   );
 
+  private authSub: Subscription | null = null;
+
   constructor(private httpService: HttpService) {
     this.init();
   }
 
-  init(): void {
+  private init(): void {
     // Load projects after login
-    this.httpService.getAuthenticationObs().subscribe((value) => {
-      if (null == value) {
-        this.projects$.next([]);
-      } else {
-        this.getAllProjects().subscribe((projects) => {
-          this.projects$.next(projects);
-        });
-      }
-    });
+    this.authSub = this.httpService
+      .getAuthenticationObs()
+      .subscribe((value) => {
+        if (null == value) {
+          this.projects$.next([]);
+        } else {
+          this.getAllProjects().subscribe((projects) => {
+            this.projects$.next(projects);
+          });
+        }
+      });
   }
 
   /**
@@ -85,6 +95,47 @@ export class ProjectService {
    */
   addUsersToProject(projectId: number, userIds: number[]): Observable<void> {
     return this.httpService.post(`project/${projectId}/users/add`, { userIds });
+  }
+
+  /**
+   * Create milestone
+   * @param projectId
+   * @param data
+   */
+  createMilestone(
+    projectId: number,
+    data: CreateMilestoneDto
+  ): Observable<Milestone> {
+    return this.httpService.post(`project/${projectId}/milestone`, data);
+  }
+
+  /**
+   * Update milestone
+   * @param projectId
+   * @param data
+   */
+  updateMilestone(
+    milestoneId: number,
+    data: CreateMilestoneDto
+  ): Observable<Milestone> {
+    return this.httpService.patch(`project/milestone/${milestoneId}`, data);
+  }
+
+  /**
+   * Delete milestone
+   * @param projectId
+   * @param data
+   */
+  deleteMilestone(milestoneId: number): Observable<void> {
+    return this.httpService.delete(`project/milestone/${milestoneId}`);
+  }
+
+  /**
+   * Get all milestones of a project
+   * @param projectId
+   */
+  getMilestonesOfProject(projectId: number): Observable<Milestone[]> {
+    return this.httpService.get(`project/${projectId}/milestone`);
   }
 
   /**
@@ -144,6 +195,12 @@ export class ProjectService {
       // shareReplay()
     );
   }
+
+  ngOnDestroy(): void {
+    if (null != this.authSub) {
+      this.authSub.unsubscribe();
+    }
+  }
 }
 
 export interface Project {
@@ -167,4 +224,18 @@ export interface UpdateProjectDto {
   description?: string;
   start_date?: number;
   end_date?: number;
+}
+
+export interface CreateMilestoneDto {
+  title: string;
+  description: string;
+  due_date: number;
+}
+
+export interface Milestone {
+  id: number;
+  projectId: number;
+  title: string;
+  description: string;
+  due_date: string;
 }
