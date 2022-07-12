@@ -44,7 +44,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   date!: Date;
   chartname!: 'chart-bar';
   myChart!: any;
-  projectid!: number;
+  
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
   dataValues=[0];
@@ -82,7 +82,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeColumnProperties();
-    this.getAlldata(this.projectid);
   }
   getActProject() {
     //this.prjService.setCurrentProjectId(20);
@@ -96,6 +95,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           console.log('fix initial undefined');
         }
       });
+      
   }
 
   applyFilter() {
@@ -127,9 +127,9 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     });
   }
   getAlldata(projectid: number) {
-    this.userList.pop();
-    this.activitylist.pop();
-    this.userIDlist.pop();
+    this.userList=[];
+    this.activitylist=[];
+    this.userIDlist=[];
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userList.push({
@@ -145,27 +145,36 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         });
       });
     });
-    this.actService.getProjectActivties(2).subscribe((activities) => {
+    this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.activitylist.push(element.activityTypeId);
       });
     });
-    this.actService.getProjectActivties(2).subscribe((activities) => {
+    this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userIDlist.push(element.userId);
       });
     });
     this.userListMatTabDataSource.data = this.userList;
-    console.log(this.activitylist);
+    var filteredArray: number[] = [];
+    for (let i = 0; i < this.activitylist.length; i++) {
+      if (!filteredArray.includes(this.activitylist[i])) {
+        filteredArray.push(this.activitylist[i]);
+      }
+    }
+    this.activitylist.filter((item,index)=>this.activitylist.indexOf(item)===index)
+    console.log(this.activitylist)
+    
     
   }
 
   setDiagramData(projectid:number) {
+    projectid=this.prjService.getCurrentProjectId();
     if (this.myChart !== undefined) {
       this.myChart.destroy();
     }
-    this.dataValues.pop();
-    this.tlabels.pop();
+    this.dataValues=[];
+    this.tlabels=[];
     this.actService.getProjectActivties(projectid).subscribe((result)=>{
       result.forEach((element)=>
       this.dataValues.push(
@@ -178,10 +187,13 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         new Date(Number(element.start_date)).toDateString(),
       ))
     })
-    console.log(this.tlabels)
-    for(let x in this.tlabels){
-      console.log(x)
+    var filteredArray: string[] = [];
+    for (let i = 0; i < this.tlabels.length; i++) {
+      if (!filteredArray.includes(this.tlabels[i])) {
+        filteredArray.push(this.tlabels[i]);
+      }
     }
+    console.log(filteredArray)
    
     
     var myData = {
@@ -238,6 +250,5 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
   ngOnDestroy() {
     this.projectSubscription?.unsubscribe();
-    this.activitylist = [];
   }
 }
