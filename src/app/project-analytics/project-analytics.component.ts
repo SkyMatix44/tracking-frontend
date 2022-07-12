@@ -48,7 +48,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
   dataValues=[0];
-  labels=[''];
+  tlabels=[''];
+ 
   public columnList = [
     'ID',
     'UserID',
@@ -98,8 +99,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter() {
-    //var arr= this.date.toString().split("-");
-    //var datum=arr[2] + "." + arr[1] + "." + arr[0];
     var datum= new Date(this.date).toDateString()
     const filterValue = this.selected || datum || this.uID;
     console.log(filterValue);
@@ -166,7 +165,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       this.myChart.destroy();
     }
     this.dataValues.pop();
-    this.labels.pop();
+    this.tlabels.pop();
     this.actService.getProjectActivties(projectid).subscribe((result)=>{
       result.forEach((element)=>
       this.dataValues.push(
@@ -175,13 +174,19 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     })
     this.actService.getProjectActivties(projectid).subscribe((result)=>{
       result.forEach((element)=>
-      this.labels.push(
+      this.tlabels.push(
         new Date(Number(element.start_date)).toDateString(),
       ))
     })
+    console.log(this.tlabels)
+    for(let x in this.tlabels){
+      console.log(x)
+    }
+   
+    
     var myData = {
       
-      labels: this.labels,
+      labels: [],
       datasets: [
         {
           label: ' active',
@@ -207,7 +212,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     diagramName: string,
     charttype: any,
     myData: {
-      labels: string[];
+      labels: Set<string>[];
       datasets: {
         label: string;
         data: number[];
