@@ -51,7 +51,7 @@
           class="form-select"
           id="chartType"
           [(ngModel)]="type"
-          (ngModelChange)="setDiagramData()"
+          (ngModelChange)="setDiagramData(projectid)"
         >
           <option selected value="line">Line</option>
           <option value="bar">Bar</option>
@@ -183,13 +183,13 @@
     <ng-container matColumnDef="StartDate">
       <mat-header-cell *matHeaderCellDef>Startdate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.start_date  | date: "dd.MM.yyyy" }}
+        {{ userList.start_date   }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="EndDate">
       <mat-header-cell *matHeaderCellDef>Enddate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.end_date | date: "dd.MM.yyyy" }}
+        {{ userList.end_date  }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>
