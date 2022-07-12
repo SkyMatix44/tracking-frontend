@@ -26,19 +26,19 @@ export class ProjectAnalyticsComponent implements OnInit {
       distance: 0,
       heartrate: 0,
       bloodSugarOxygen: 0,
-      start_date:'' ,
+      start_date: '',
       end_date: '',
     },
   ];
 
   selectedRow!: number;
   selected!: String;
-  uID!:number;
+  uID!: number;
   type!: 'line';
-  date!: number;
+  date!: Date ;
   chartname!: 'chart-bar';
   myChart!: any;
-  projectid!:number;
+  projectid!: number;
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
   public columnList = [
@@ -52,24 +52,39 @@ export class ProjectAnalyticsComponent implements OnInit {
     'StartDate',
     'EndDate',
   ];
+  public activitylist=[
+    0,
+  ];
+  public userIDlist=[
+    0,
+  ]
+  uniqueuserIDlist=[]
   public columnShowHideList: CustomColumn[] = [];
 
   userListMatTabDataSource = new MatTableDataSource(this.userList);
-  constructor(table: ElementRef, private actService: ActivityService, private prjService:ProjectService, private actype:ActivityTypeService) {
+  constructor(
+    table: ElementRef,
+    private actService: ActivityService,
+    private prjService: ProjectService,
+    private actype: ActivityTypeService
+  ) {
     this.table = table;
   }
 
   ngOnInit(): void {
+    this.getProjectId();
     this.initializeColumnProperties();
     this.getAlldata(this.projectid);
-    this.getProjectId();
+    
   }
 
-  getProjectId(){
-    this.projectid= this.prjService.getCurrentProjectId()
+  getProjectId() {
+    this.projectid = this.prjService.getCurrentProjectId();
   }
   applyFilter() {
-    const filterValue = this.selected || this.date||this.uID;
+    //var arr= this.date.toString().split("-");
+    //var datum=arr[2] + "." + arr[1] + "." + arr[0];
+    const filterValue = this.selected || this.date || this.uID;
     console.log(filterValue);
     this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -97,6 +112,8 @@ export class ProjectAnalyticsComponent implements OnInit {
   }
   getAlldata(projectid: number) {
     this.userList.pop();
+    this.activitylist.pop();
+    this.userIDlist.pop();
     this.actService.getProjectActivties(2).subscribe((activities) => {
       activities.forEach((element) => {
         this.userList.push({
@@ -108,16 +125,30 @@ export class ProjectAnalyticsComponent implements OnInit {
           heartrate: element.hearthrate,
           bloodSugarOxygen: element.bloodSugarOxygen,
           start_date: element.start_date,
-          end_date:element.end_date,
+          end_date: element.end_date,
         });
       });
     });
+    this.actService.getProjectActivties(2).subscribe((activities) => {
+      activities.forEach((element) => {
+        this.activitylist.push(
+          element.activityTypeId,
+        );
+      });
+    });
+    this.actService.getProjectActivties(2).subscribe((activities) => {
+      activities.forEach((element) => {
+        this.userIDlist.push(
+          element.userId,
+        );
+      });
+    });
     this.userListMatTabDataSource.data = this.userList;
+    console.log(this.activitylist);
     
   }
 
   setDiagramData() {
-
     if (this.myChart !== undefined) {
       this.myChart.destroy();
     }

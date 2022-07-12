@@ -9,8 +9,7 @@
       (ngModelChange)="applyFilter()"
     >
       <option value=""></option>
-      <option value="siegen">Siegen</option>
-      <option *ngFor="let userList">{{ userList.userID }}</option>
+      <option *ngFor="let userId of userIDlist">{{ userId }}</option>
     </select>
   </div>
   <div class="col-sm-3 form-group">
@@ -22,13 +21,8 @@
       [(ngModel)]="selected"
       (ngModelChange)="applyFilter()"
     >
-      <option value="{{userList}}"> {{ userList }}</option>  interpolation 
+      <option  *ngFor="let activity of activitylist" [value]="activity">{{ activity }}</option>
       <option value=""></option>
-      <option value="running">running</option>
-      <option value="swimming">swimming</option>
-      <option value="cycling">cycling</option>
-      <option value="hiking">hiking</option>
-      <option value="others">others</option>
     </select>
   </div>
   <div class="col-sm-3 form-group">
@@ -38,7 +32,7 @@
       id="date"
       class="form-control"
       name="date"
-      [(ngModel)]="selected"
+      [(ngModel)]="date"
       (ngModelChange)="applyFilter()"
     />
   </div>
@@ -188,13 +182,13 @@
     <ng-container matColumnDef="StartDate">
       <mat-header-cell *matHeaderCellDef>Startdate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.start_date| date: "dd MMM, yyyy" }}
+        {{ userList.start_date  | date: "dd.MM.yyyy" }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="EndDate">
       <mat-header-cell *matHeaderCellDef>Enddate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.end_date| date: "dd MMM, yyyy" }}
+        {{ userList.end_date | date: "dd.MM.yyyy" }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>
