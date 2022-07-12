@@ -1,16 +1,16 @@
 <div class="row justify-content-center">
   <div class="col-sm-3 form-group">
-    <label for="location">Location</label>
+    <label for="location">User ID</label>
     <select
-      name="location"
+      name="userid"
       class="form-select"
-      id="location"
-      [(ngModel)]="selected"
+      id="userid"
+      [(ngModel)]="uID"
       (ngModelChange)="applyFilter()"
     >
       <option value=""></option>
       <option value="siegen">Siegen</option>
-      <option *ngFor="let userList">{{ userList.location }}</option>
+      <option *ngFor="let userList">{{ userList.userID }}</option>
     </select>
   </div>
   <div class="col-sm-3 form-group">
@@ -48,7 +48,7 @@
     <div class="card-header">
       <h3 class="card-title">
         <i class="fas fa-chart-pie mr-1"></i>
-        Activity
+        Activities
       </h3>
       <div class="card-tools">
         <select
@@ -188,13 +188,13 @@
     <ng-container matColumnDef="StartDate">
       <mat-header-cell *matHeaderCellDef>Startdate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.start_date }}
+        {{ userList.start_date| date: "dd MMM, yyyy" }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="EndDate">
       <mat-header-cell *matHeaderCellDef>Enddate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.end_date }}
+        {{ userList.end_date| date: "dd MMM, yyyy" }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>

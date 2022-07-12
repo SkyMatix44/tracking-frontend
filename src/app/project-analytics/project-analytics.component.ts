@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
+import { ActivityTypeService } from '../common/activity-type.service';
 import { ActivityService } from '../common/activity.service';
+import { ProjectService } from '../common/project.service';
 
 interface CustomColumn {
   possition: number;
@@ -24,18 +26,19 @@ export class ProjectAnalyticsComponent implements OnInit {
       distance: 0,
       heartrate: 0,
       bloodSugarOxygen: 0,
-      start_date: '',
+      start_date:'' ,
       end_date: '',
     },
   ];
 
   selectedRow!: number;
   selected!: String;
+  uID!:number;
   type!: 'line';
   date!: number;
   chartname!: 'chart-bar';
   myChart!: any;
-  myDonut!: Chart;
+  projectid!:number;
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
   public columnList = [
@@ -52,17 +55,21 @@ export class ProjectAnalyticsComponent implements OnInit {
   public columnShowHideList: CustomColumn[] = [];
 
   userListMatTabDataSource = new MatTableDataSource(this.userList);
-  constructor(table: ElementRef, private actService: ActivityService) {
+  constructor(table: ElementRef, private actService: ActivityService, private prjService:ProjectService, private actype:ActivityTypeService) {
     this.table = table;
   }
 
   ngOnInit(): void {
     this.initializeColumnProperties();
-    this.getAlldata();
+    this.getAlldata(this.projectid);
+    this.getProjectId();
   }
 
+  getProjectId(){
+    this.projectid= this.prjService.getCurrentProjectId()
+  }
   applyFilter() {
-    const filterValue = this.selected || this.date;
+    const filterValue = this.selected || this.date||this.uID;
     console.log(filterValue);
     this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -88,10 +95,9 @@ export class ProjectAnalyticsComponent implements OnInit {
       });
     });
   }
-  getAlldata() {
+  getAlldata(projectid: number) {
     this.userList.pop();
     this.actService.getProjectActivties(2).subscribe((activities) => {
-      console.log(activities)
       activities.forEach((element) => {
         this.userList.push({
           id: element.id,
@@ -101,7 +107,7 @@ export class ProjectAnalyticsComponent implements OnInit {
           distance: element.distance,
           heartrate: element.hearthrate,
           bloodSugarOxygen: element.bloodSugarOxygen,
-          start_date:element.start_date,
+          start_date: element.start_date,
           end_date:element.end_date,
         });
       });
