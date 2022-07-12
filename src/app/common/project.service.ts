@@ -16,7 +16,9 @@ export class ProjectService {
     [] as Project[]
   );
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService) {
+    this.init();
+  }
 
   init(): void {
     // Load projects after login
