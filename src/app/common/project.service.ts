@@ -98,6 +98,47 @@ export class ProjectService implements OnDestroy {
   }
 
   /**
+   * Create milestone
+   * @param projectId
+   * @param data
+   */
+  createMilestone(
+    projectId: number,
+    data: CreateMilestoneDto
+  ): Observable<Milestone> {
+    return this.httpService.post(`project/${projectId}/milestone`, data);
+  }
+
+  /**
+   * Update milestone
+   * @param projectId
+   * @param data
+   */
+  updateMilestone(
+    milestoneId: number,
+    data: CreateMilestoneDto
+  ): Observable<Milestone> {
+    return this.httpService.patch(`project/milestone/${milestoneId}`, data);
+  }
+
+  /**
+   * Delete milestone
+   * @param projectId
+   * @param data
+   */
+  deleteMilestone(milestoneId: number): Observable<void> {
+    return this.httpService.delete(`project/milestone/${milestoneId}`);
+  }
+
+  /**
+   * Get all milestones of a project
+   * @param projectId
+   */
+  getMilestonesOfProject(projectId: number): Observable<Milestone[]> {
+    return this.httpService.get(`project/${projectId}/milestone`);
+  }
+
+  /**
    * Set current project id
    */
   setCurrentProjectId(projectId: number): void {
@@ -183,4 +224,18 @@ export interface UpdateProjectDto {
   description?: string;
   start_date?: number;
   end_date?: number;
+}
+
+export interface CreateMilestoneDto {
+  title: string;
+  description: string;
+  due_date: number;
+}
+
+export interface Milestone {
+  id: number;
+  projectId: number;
+  title: string;
+  description: string;
+  due_date: string;
 }
