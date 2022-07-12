@@ -87,28 +87,20 @@
 
 <div class="row">
   <div class="thead center">
-    <button
-      class="btn btn-sm btn-outline-primary top-margin"
-      (click)="exporter.exportTable('xlsx')"
-    >
+    <button class="btn btn-sm btn-outline-primary top-margin">
+      <!-- (click)="exporter.exportTable('xlsx')" -->
       Excel
     </button>
-    <button
-      class="btn btn-sm btn-outline-primary top-margin"
-      (click)="exporter.exportTable('csv')"
-    >
+    <button class="btn btn-sm btn-outline-primary top-margin">
+      <!-- (click)="exporter.exportTable('csv')" -->
       Csv
     </button>
-    <button
-      class="btn btn-sm btn-outline-primary top-margin"
-      (click)="exporter.exportTable('json')"
-    >
+    <button class="btn btn-sm btn-outline-primary top-margin">
+      <!-- (click)="exporter.exportTable('json')" -->
       Json
     </button>
-    <button
-      class="btn btn-sm btn-outline-primary top-margin"
-      (click)="exporter.exportTable('txt')"
-    >
+    <button class="btn btn-sm btn-outline-primary top-margin">
+      <!-- (click)="exporter.exportTable('txt')" -->
       Txt
     </button>
     <button
@@ -141,8 +133,8 @@
     #TABLE
     class="mat-elevation-z8"
     [dataSource]="userListMatTabDataSource"
-    #exporter="matTableExporter"
   >
+    <!--  #exporter="matTableExporter" -->
     <ng-container matColumnDef="ID">
       <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
       <mat-cell *matCellDef="let user; let i = index">

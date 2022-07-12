@@ -19,7 +19,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableExporterModule } from 'mat-table-exporter';
 import { ToastrModule } from 'ngx-toastr';
 import { AddOrEditUserDialogComponent } from './admin-section/addOrEditUser-dialog/addOrEditUser-dialog.component';
 import { AdminSectionComponent } from './admin-section/admin-section.component';
@@ -72,7 +71,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MatSortModule,
     MatSelectModule,
     MatSlideToggleModule,
-    MatTableExporterModule,
+    // MatTableExporterModule,
     MatTableModule,
     MatMenuModule,
     MatInputModule,
