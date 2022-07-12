@@ -1,17 +1,16 @@
 <app-header></app-header>
 <div class="row justify-content-center">
   <div class="col-sm-3 form-group">
-    <label for="location">Location</label>
+    <label for="location">User ID</label>
     <select
-      name="location"
+      name="userid"
       class="form-select"
-      id="location"
-      [(ngModel)]="selected"
+      id="userid"
+      [(ngModel)]="uID"
       (ngModelChange)="applyFilter()"
     >
       <option value=""></option>
-      <option value="siegen">Siegen</option>
-      <option *ngFor="let userList">{{ userList.location }}</option>
+      <option *ngFor="let userId of userIDlist">{{ userId }}</option>
     </select>
   </div>
   <div class="col-sm-3 form-group">
@@ -23,13 +22,8 @@
       [(ngModel)]="selected"
       (ngModelChange)="applyFilter()"
     >
-      <!--<option value="{{activity}}"> {{ userList.activity }}</option>  interpolation -->
+      <option  *ngFor="let activity of activitylist" [value]="activity">{{ activity }}</option>
       <option value=""></option>
-      <option value="running">running</option>
-      <option value="swimming">swimming</option>
-      <option value="cycling">cycling</option>
-      <option value="hiking">hiking</option>
-      <option value="others">others</option>
     </select>
   </div>
   <div class="col-sm-3 form-group">
@@ -39,7 +33,7 @@
       id="date"
       class="form-control"
       name="date"
-      [(ngModel)]="selected"
+      [(ngModel)]="date"
       (ngModelChange)="applyFilter()"
     />
   </div>
@@ -49,7 +43,7 @@
     <div class="card-header">
       <h3 class="card-title">
         <i class="fas fa-chart-pie mr-1"></i>
-        Activity
+        Activities
       </h3>
       <div class="card-tools">
         <select
@@ -146,56 +140,56 @@
   >
     <ng-container matColumnDef="ID">
       <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-      <mat-cell *matCellDef="let user; let i = index">
-        {{ i + 1 }}
+      <mat-cell *matCellDef="let userList; let i = index">
+        {{ userList.id }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="UserID">
-      <mat-header-cell *matHeaderCellDef>UserID</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.userID }}
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="Location">
-      <mat-header-cell *matHeaderCellDef>Location</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.location }}
+      <mat-header-cell *matHeaderCellDef>User ID</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.userID }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="Activity">
       <mat-header-cell *matHeaderCellDef>Activity</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.activity }}
+      <mat-cell *matCellDef="let userList">
+        {{ userList.activity }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="Calories">
-      <mat-header-cell *matHeaderCellDef>Calories</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.calories }}
+    <ng-container matColumnDef="Steps">
+      <mat-header-cell *matHeaderCellDef>Steps</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.steps }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="BPM">
-      <mat-header-cell *matHeaderCellDef>BPM</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.bpm }}
+    <ng-container matColumnDef="Distance">
+      <mat-header-cell *matHeaderCellDef>Distance</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.distance }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="Achievement">
-      <mat-header-cell *matHeaderCellDef>Achievement</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.achievement }}
+    <ng-container matColumnDef="Heartrate">
+      <mat-header-cell *matHeaderCellDef>Heartrate</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.heartrate }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="Duration">
-      <mat-header-cell *matHeaderCellDef>Duration</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.duration }}
+    <ng-container matColumnDef="BloodSugarOxygen">
+      <mat-header-cell *matHeaderCellDef>Blood Sugar</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.bloodSugarOxygen }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="Date">
-      <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        {{ user.date }}
+    <ng-container matColumnDef="StartDate">
+      <mat-header-cell *matHeaderCellDef>Startdate</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.start_date  | date: "dd.MM.yyyy" }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="EndDate">
+      <mat-header-cell *matHeaderCellDef>Enddate</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.end_date | date: "dd.MM.yyyy" }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>
