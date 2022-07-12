@@ -40,16 +40,16 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   selectedRow!: number;
   selected!: String;
   uID!: number;
-  type!: 'line';
+  type!: String;
   date!: Date;
   chartname!: 'chart-bar';
   myChart!: any;
-  
+
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
-  dataValues=[0];
-  tlabels=[''];
- 
+  dataValues = [0];
+  tlabels = [''];
+
   public columnList = [
     'ID',
     'UserID',
@@ -63,7 +63,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   ];
   public activitylist = [0];
   public userIDlist = [0];
- 
+
   public columnShowHideList: CustomColumn[] = [];
 
   userListMatTabDataSource = new MatTableDataSource(this.userList);
@@ -77,7 +77,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.getActProject();
-    
   }
 
   ngAfterViewInit(): void {
@@ -95,11 +94,10 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           console.log('fix initial undefined');
         }
       });
-      
   }
 
   applyFilter() {
-    var datum= new Date(this.date).toDateString()
+    var datum = new Date(this.date).toDateString();
     const filterValue = this.selected || datum || this.uID;
     console.log(filterValue);
     this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
@@ -127,9 +125,9 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     });
   }
   getAlldata(projectid: number) {
-    this.userList=[];
-    this.activitylist=[];
-    this.userIDlist=[];
+    this.userList = [];
+    this.activitylist = [];
+    this.userIDlist = [];
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userList.push({
@@ -162,43 +160,37 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         filteredArray.push(this.activitylist[i]);
       }
     }
-    this.activitylist.filter((item,index)=>this.activitylist.indexOf(item)===index)
-    console.log(this.activitylist)
-    
-    
+    this.activitylist.filter(
+      (item, index) => this.activitylist.indexOf(item) === index
+    );
+     console.log(this.activitylist)
   }
 
-  setDiagramData(projectid:number) {
-    projectid=this.prjService.getCurrentProjectId();
+  setDiagramData(projectid: number) {
+    projectid = this.prjService.getCurrentProjectId();
     if (this.myChart !== undefined) {
       this.myChart.destroy();
     }
-    this.dataValues=[];
-    this.tlabels=[];
-    this.actService.getProjectActivties(projectid).subscribe((result)=>{
-      result.forEach((element)=>
-      this.dataValues.push(
-        element.id
-      ))
-    })
-    this.actService.getProjectActivties(projectid).subscribe((result)=>{
-      result.forEach((element)=>
-      this.tlabels.push(
-        new Date(Number(element.start_date)).toDateString(),
-      ))
-    })
+    this.dataValues = [];
+    this.tlabels = [];
+    this.actService.getProjectActivties(projectid).subscribe((result) => {
+      result.forEach((element) => this.dataValues.push(element.id));
+    });
+    this.actService.getProjectActivties(projectid).subscribe((result) => {
+      result.forEach((element) =>
+        this.tlabels.push(new Date(Number(element.start_date)).toDateString())
+      );
+    });
+    console.log(this.tlabels)
     var filteredArray: string[] = [];
     for (let i = 0; i < this.tlabels.length; i++) {
       if (!filteredArray.includes(this.tlabels[i])) {
         filteredArray.push(this.tlabels[i]);
       }
     }
-    console.log(filteredArray)
-   
-    
+    console.log(filteredArray);
     var myData = {
-      
-      labels: [],
+      labels: filteredArray,
       datasets: [
         {
           label: ' active',
@@ -216,7 +208,10 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         },
       ],
     };
-    var charttype = 'bar';
+    if(this.type==undefined){
+      this.type='line'
+    }
+    var charttype = this.type;
     this.showDiagram('myChart', charttype, myData);
   }
 
@@ -224,7 +219,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     diagramName: string,
     charttype: any,
     myData: {
-      labels: Set<string>[];
+      labels: string[];
       datasets: {
         label: string;
         data: number[];
