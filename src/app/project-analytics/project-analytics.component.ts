@@ -63,6 +63,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   ];
   public activitylist = [0];
   public userIDlist = [0];
+  public filteredArray: number[] = [];
 
   public columnShowHideList: CustomColumn[] = [];
 
@@ -90,6 +91,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         if (observer?.id != undefined) {
           this.getAlldata(observer?.id!);
           this.setDiagramData(observer?.id!);
+          console.log(this.filteredArray);
         } else {
           console.log('fix initial undefined');
         }
@@ -99,7 +101,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   applyFilter() {
     var datum = new Date(this.date).toDateString();
     const filterValue = this.selected || datum || this.uID;
-    console.log(filterValue);
     this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -143,36 +144,31 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         });
       });
     });
+
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.activitylist.push(element.activityTypeId);
       });
+      for (let i = 0; i < this.activitylist.length; i++) {
+        if (!this.filteredArray.includes(this.activitylist[i])) {
+          this.filteredArray.push(this.activitylist[i]);
+        }
+      }
     });
+
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userIDlist.push(element.userId);
       });
     });
-    this.userListMatTabDataSource.data = this.userList;
-    var filteredArray: number[] = [];
-    for (let i = 0; i < this.activitylist.length; i++) {
-      if (!filteredArray.includes(this.activitylist[i])) {
-        filteredArray.push(this.activitylist[i]);
-      }
-    }
-    this.activitylist.filter(
-      (item, index) => this.activitylist.indexOf(item) === index
-    );
-     console.log(this.activitylist)
   }
 
   setDiagramData(projectid: number) {
-    
     projectid = this.prjService.getCurrentProjectId();
     if (this.myChart !== undefined) {
-      this.myChart.destroy()
+      this.myChart.destroy();
     }
-    
+
     this.actService.getProjectActivties(projectid).subscribe((result) => {
       result.forEach((element) => this.dataValues.push(element.steps));
     });
@@ -181,14 +177,14 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         this.tlabels.push(new Date(Number(element.start_date)).toDateString())
       );
     });
-   
+
     var filteredArray: string[] = [];
     for (let i = 0; i < this.tlabels.length; i++) {
       if (!filteredArray.includes(this.tlabels[i])) {
         filteredArray.push(this.tlabels[i]);
       }
     }
-    
+
     var myData = {
       labels: this.tlabels,
       datasets: [
@@ -208,10 +204,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         },
       ],
     };
-     console.log(this.tlabels)
-    console.log(this.dataValues)
-    if(this.type==undefined){
-      this.type='line'
+    if (this.type == undefined) {
+      this.type = 'line';
     }
     var charttype = this.type;
     this.showDiagram('myChart', charttype, myData);
