@@ -73,6 +73,12 @@ export class ProjectConfigurationComponent implements OnInit {
   ngAfterViewInit() {
     this.studyDataSourcePagination.paginator = this.paginator.toArray()[0];
     this.userDataSourcePagination.paginator = this.paginator.toArray()[1];
+    var pageIndex = this.studyDataSourcePagination.paginator.pageIndex;
+    var pageSize = this.studyDataSourcePagination.paginator.pageSize;
+    console.log(pageIndex + pageSize);
+    var pageIndexUser = this.userDataSourcePagination.paginator.pageIndex;
+    var pageSizeUser = this.userDataSourcePagination.paginator.pageSize;
+    console.log(pageIndexUser + pageSizeUser);
   }
 
   getActProject() {
@@ -157,15 +163,29 @@ export class ProjectConfigurationComponent implements OnInit {
     this.enrollmentKeyStudyname = studyname;
   }
 
+  /*
+  onContentChange(event: any) {
+    this.getCurrentIndex()
+  }
+
+  startingIndexOfPage: number | undefined;
+  endingIndexOfPage: number | undefined;
+  getCurrentIndex() {
+    this.startingIndexOfPage = this.paginator.[0]pageIndex * this.paginator.pageSize;
+    this.endingIndexOfPage = (this.paginator.pageIndex * this.paginator.pageSize) + this.paginator.pageSize;
+  }
+  */
+
   editStudyDialog(rowNr: number, studyId: number) {
+    //const realIndex = index + this.currentPage * this.itemsPerPage;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.data = {
       dialogTitle: 'Edit study',
-      studyName: this.studyDataSource[rowNr].Name,
-      studyDescription: this.studyDataSource[rowNr].Beschreibung,
-      studyStartdate: this.studyDataSource[rowNr].Startdatum,
-      studyEnddate: this.studyDataSource[rowNr].Enddatum,
+      studyName: this.studyDataSourcePagination.data[rowNr].Name,
+      studyDescription: this.studyDataSourcePagination.data[rowNr].Beschreibung,
+      studyStartdate: this.studyDataSourcePagination.data[rowNr].Startdatum,
+      studyEnddate: this.studyDataSourcePagination.data[rowNr].Enddatum,
     };
 
     this.dialog
@@ -204,6 +224,7 @@ export class ProjectConfigurationComponent implements OnInit {
           this.table?.renderRows();
         }
       });
+    this.studyDataSourcePagination.data = this.studyDataSource;
   }
 
   addStudy() {
@@ -245,6 +266,7 @@ export class ProjectConfigurationComponent implements OnInit {
             });
         }
       });
+    this.studyDataSourcePagination.data = this.studyDataSource;
   }
 
   removeUserFromStudy(rowNr: number, userId: number) {
@@ -253,13 +275,18 @@ export class ProjectConfigurationComponent implements OnInit {
       (item: any, index: number) => index !== rowNr
     );
     var nr: number[] = [userId];
-    this.prjService.removeUsersFromProject(prj?.id!, nr);
+    console.log(prj?.id! + ' ' + nr);
+    this.prjService
+      .removeUsersFromProject(prj?.id!, nr)
+      .subscribe((results) => {
+        this.toastr.success('User successfully removed!');
+      });
     this.userDataSourcePagination.data = this.userDataSource;
-    this.toastr.success('User successfully removed!');
   }
 
   blockOrAcceptUserForStudy(rowNr: number, userId: number, actStatus: string) {
     if (actStatus == 'accepted') {
+      console.log('User ' + this.userDataSource[rowNr].Id + ' blockieren');
       this.projectSubscription = this.userService
         .blockUser(this.userDataSource[rowNr].Id)
         .subscribe((result) => {
@@ -292,6 +319,7 @@ export class ProjectConfigurationComponent implements OnInit {
 
       this.toastr.success('User successfully accepted!');
     }
+    this.userDataSourcePagination.data = this.userDataSource;
   }
 
   getBlocked(userBlocked: any) {

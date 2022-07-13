@@ -121,6 +121,8 @@ export class AdminSectionComponent implements OnInit {
     );
     //this.userService.delete
     this.toastr.success('User successfully deleted!');
+    this.userDataSourcePagination.data = this.userDataSource;
+    this.tableStudyParticipants?.renderRows();
   }
 
   blockOrAcceptUserForStudy(rowNr: number, actStatus: string) {
@@ -159,8 +161,8 @@ export class AdminSectionComponent implements OnInit {
         UserRole: this.userDataSource[rowNr].UserRole,
         Status: 'accepted',
       };
+      this.userDataSourcePagination.data = this.userDataSource;
       this.tableStudyParticipants?.renderRows();
-
       this.toastr.success('User successfully accepted!');
     }
   }
@@ -246,6 +248,7 @@ export class AdminSectionComponent implements OnInit {
             UserRole: results.userRole,
             Status: results.status,
           });
+          this.userDataSourcePagination.data = this.userDataSource;
           this.tableStudyParticipants?.renderRows();
         }
       });
