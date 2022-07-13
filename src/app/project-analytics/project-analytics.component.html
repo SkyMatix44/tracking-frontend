@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div class="row justify-content-center">
   <div class="col-sm-3 form-group">
-   <label for="location">User ID</label>
+    <label for="location">User ID</label>
     <select
       name="userid"
       class="form-select"
@@ -10,7 +10,7 @@
       (ngModelChange)="applyFilter()"
     >
       <option value=""></option>
-      <option *ngFor="let userId of filteredUser ">{{ userId }}</option>
+      <option *ngFor="let userId of filteredUser">{{ userId }}</option>
     </select>
   </div>
   <div class="col-sm-3 form-group">
@@ -22,8 +22,10 @@
       [(ngModel)]="selected"
       (ngModelChange)="applyFilter()"
     >
-      <option  *ngFor="let activity of activity " [value]="activity">{{ activity }}</option>
       <option value=""></option>
+      <option *ngFor="let activity of activity" [value]="activity">
+        {{ activity }}
+      </option>
     </select>
   </div>
   <div class="col-sm-4 form-group">
@@ -174,6 +176,12 @@
         {{ userList.heartrate }}
       </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="Calories">
+      <mat-header-cell *matHeaderCellDef>Calorie Consumption</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.calories }}
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="BloodSugarOxygen">
       <mat-header-cell *matHeaderCellDef>Blood Sugar</mat-header-cell>
       <mat-cell *matCellDef="let userList">
@@ -183,13 +191,13 @@
     <ng-container matColumnDef="StartDate">
       <mat-header-cell *matHeaderCellDef>Startdate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.start_date   }}
+        {{ userList.start_date }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="EndDate">
       <mat-header-cell *matHeaderCellDef>Enddate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
-        {{ userList.end_date  }}
+        {{ userList.end_date }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>
