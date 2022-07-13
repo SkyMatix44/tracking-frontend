@@ -57,8 +57,11 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   type!: String;
   date!: Date;
   myChart!: any;
+  uID!:number;
+  public userIDlist=[0]
   public activitylist = [0];
   public filteredArray: number[] = [];
+  public filteredUser: number[] = [];
   public count=[0];
   public columnShowHideList: CustomColumn[] = [];
   public activity=['']
@@ -85,7 +88,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       .subscribe((observer) => {
         if (observer?.id != undefined) {
           this.getAlldata(observer?.id!);
-          
         } else {
           console.log('fix initial undefined');
         }
@@ -95,7 +97,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   applyFilter() {
     var datum = new Date(this.date).toDateString();
     
-    var filterValue = this.selected || datum ;
+    var filterValue = this.selected|| this.uID || datum ;
     if(filterValue=="Invalid Date"){
       filterValue= ''
     }
@@ -129,6 +131,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     this.activitylist = [];
     this.count=[]
     this.activity=[]
+    this.userIDlist=[]
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userList.push({
@@ -148,18 +151,24 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.activitylist.push(element.activityTypeId);
+        this.userIDlist.push(element.userId)
       });
       this.activitylist.forEach(element=>{
         this.count[element]=(this.count[element]||0)+1;
       })
-      for (let i = 0; i < this.activitylist.length; i++) {
-        if (!this.filteredArray.includes(this.activitylist[i])) {
-          this.filteredArray.push(this.activitylist[i]);
+      for (let i = 0; i < this.userIDlist.length; i++) {
+        if (!this.filteredUser.includes(this.userIDlist[i])) {
+          this.filteredUser.push(this.userIDlist[i]);
         }
       }
       this.filteredArray.sort(function(x,y){
         return x-y
       })
+      for (let i = 0; i < this.userIDlist.length; i++) {
+        if (!this.filteredArray.includes(this.activitylist[i])) {
+          this.filteredArray.push(this.activitylist[i]);
+        }
+      }
       this.userListMatTabDataSource.data = this.userList;
       this.setDiagramData(projectid);
     });
