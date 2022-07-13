@@ -64,9 +64,9 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   public activitylist = [0];
   public userIDlist = [0];
   public filteredArray: number[] = [];
-
+  public count=[0];
   public columnShowHideList: CustomColumn[] = [];
-
+  public activity=['']
   userListMatTabDataSource = new MatTableDataSource(this.userList);
   constructor(
     table: ElementRef,
@@ -91,7 +91,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         if (observer?.id != undefined) {
           this.getAlldata(observer?.id!);
           this.setDiagramData(observer?.id!);
-          console.log(this.filteredArray);
         } else {
           console.log('fix initial undefined');
         }
@@ -129,6 +128,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     this.userList = [];
     this.activitylist = [];
     this.userIDlist = [];
+    this.count=[]
+    this.activity=[]
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userList.push({
@@ -149,12 +150,25 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       activities.forEach((element) => {
         this.activitylist.push(element.activityTypeId);
       });
+      this.activitylist.forEach(element=>{
+        this.count[element]=(this.count[element]||0)+1;
+      })
       for (let i = 0; i < this.activitylist.length; i++) {
         if (!this.filteredArray.includes(this.activitylist[i])) {
           this.filteredArray.push(this.activitylist[i]);
         }
       }
+      this.filteredArray.sort(function(x,y){
+        return x-y
+      })
+      console.log(this.filteredArray)
+      this.userListMatTabDataSource.data = this.userList;
     });
+    this.actype.getAll().subscribe((activities)=> {
+      activities.forEach((element)=> {
+        this.activity.push(element.name)
+      })
+    })
 
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
@@ -168,7 +182,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     if (this.myChart !== undefined) {
       this.myChart.destroy();
     }
-
+  
     this.actService.getProjectActivties(projectid).subscribe((result) => {
       result.forEach((element) => this.dataValues.push(element.steps));
     });
@@ -177,20 +191,14 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         this.tlabels.push(new Date(Number(element.start_date)).toDateString())
       );
     });
-
-    var filteredArray: string[] = [];
-    for (let i = 0; i < this.tlabels.length; i++) {
-      if (!filteredArray.includes(this.tlabels[i])) {
-        filteredArray.push(this.tlabels[i]);
-      }
-    }
+    console.log(this.activity)
 
     var myData = {
-      labels: this.tlabels,
+      labels: this.activity,
       datasets: [
         {
-          label: 'Steps',
-          data: this.dataValues,
+          label: '',
+          data: this.count,
           backgroundColor: [
             'rgb(207, 210, 245)',
             'rgb(187, 191, 238)',
