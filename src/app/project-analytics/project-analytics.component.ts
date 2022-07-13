@@ -1,3 +1,4 @@
+import { invalid } from '@angular/compiler/src/render3/view/util';
 import {
   AfterViewInit,
   Component,
@@ -39,7 +40,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   projectSubscription: any;
   selectedRow!: number;
   selected!: String;
-  uID!: number;
   type!: String;
   date!: Date;
   chartname!: 'chart-bar';
@@ -99,7 +99,12 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
 
   applyFilter() {
     var datum = new Date(this.date).toDateString();
-    const filterValue = this.selected || datum || this.uID;
+    
+    var filterValue = this.selected || datum ;
+    if(filterValue=="Invalid Date"){
+      filterValue= ''
+    }
+    console.log(filterValue)
     this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
   }
 
