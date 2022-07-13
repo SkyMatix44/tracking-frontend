@@ -5,15 +5,18 @@
 >
   <!-- #ffd740 -->
   <div class="form-group">
-    <span class="brand-text font-weight-light">Select study:</span>
-    <select
-      id="inputStatus"
-      class="form-control custom-select"
-      (change)="onChangePrj($event)"
-      [selectedIndex]="currentProjectId"
-    >
-      <option *ngFor="let i of studies">{{ i }}</option>
-    </select>
+    <span class="brand-text font-weight-light">Select study: </span>
+    <mat-form-field appearance="fill">
+      <mat-select
+        placeholder="{{ selectedValue }}"
+        [(value)]="selectedValue"
+        (selectionChange)="onChangePrj($event)"
+      >
+        <mat-option *ngFor="let i of studieIds" [value]="i.id">{{
+          i.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div class="container">
     <div class="navbar-brand">

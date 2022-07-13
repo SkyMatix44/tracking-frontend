@@ -5,7 +5,7 @@
   <table
     #tableAllParticipants
     mat-table
-    [dataSource]="userDataSource"
+    [dataSource]="userDataSourcePagination"
     class="mat-elevation-z8"
     class="color-primary"
   >
@@ -115,7 +115,92 @@
     <tr mat-header-row *matHeaderRowDef="displayedUserDataColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedUserDataColumns"></tr>
   </table>
-  <button mat-raised-button (click)="createNewUser()" color="primary">
+  <mat-paginator
+    [length]="100"
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page participants"
+  >
+  </mat-paginator>
+
+  <button
+    mat-raised-button
+    class="longBtt"
+    (click)="createNewUser()"
+    color="primary"
+  >
     Create new User
   </button>
+
+  <br />
+  <br />
+
+  <h2><u>Overview of all Universitys:</u></h2>
+  <table
+    #tableAllUniversitys
+    mat-table
+    [dataSource]="uniDataSource"
+    class="mat-elevation-z8"
+    class="color-primary"
+  >
+    <ng-container matColumnDef="Id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let element">{{ element.Id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Address">
+      <th mat-header-cell *matHeaderCellDef>Address</th>
+      <td mat-cell *matCellDef="let element">{{ element.Address }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="University">
+      <th mat-header-cell *matHeaderCellDef>University</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.University }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedUniColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedUniColumns"></tr>
+  </table>
+
+  <br />
+  <br />
+  <h2><u>Create University:</u></h2>
+  <div class="tab-pane" id="settings">
+    <form class="form-horizontal">
+      <div class="form-group row">
+        <label for="userUniversity" class="col-sm-2 col-form-label"
+          >Name:</label
+        >
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="userUniversity"
+            name="userUniversity"
+            [(ngModel)]="inputUniversity"
+            placeholder="Name of University"
+          />
+        </div>
+        <br />
+        <label for="userUniversity" class="col-sm-2 col-form-label"
+          >Address:</label
+        >
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="userUniversity"
+            name="userUniversity"
+            [(ngModel)]="inputUniversityAddress"
+            placeholder="Address of University"
+          />
+        </div>
+        <button mat-raised-button color="primary" (click)="createUniversity()">
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

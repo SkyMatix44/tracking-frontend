@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatTable } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../common/auth.service';
+import { UniversityService } from '../common/university.service';
 import { Role, UserService } from '../common/user.service';
 import { AddOrEditUserDialogComponent } from './addOrEditUser-dialog/addOrEditUser-dialog.component';
 
@@ -14,17 +16,83 @@ import { AddOrEditUserDialogComponent } from './addOrEditUser-dialog/addOrEditUs
 })
 export class AdminSectionComponent implements OnInit {
   @ViewChild('tableAllParticipants') tableStudyParticipants!: MatTable<any>;
+  @ViewChild('tableAllUniversitys') tableAllUniversitys!: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
   constructor(
     private toastr: ToastrService,
     public dialog: MatDialog,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private uniService: UniversityService
   ) {}
+
+  displayedUserDataColumns: string[] = [
+    'Id',
+    'Email',
+    'First Name',
+    'Last Name',
+    'University',
+    'Address',
+    'User role',
+    'Status',
+    'Action',
+  ];
+
+  displayedUniColumns: string[] = ['Id', 'University', 'Address'];
+
+  userDataSource: userDataSource[] = [];
+  uniDataSource: uniDataSource[] = [];
+
+  userDataSourcePagination = new MatTableDataSource<userDataSource>(
+    this.userDataSource
+  );
 
   subscr: Subscription | undefined;
   ngOnInit() {
     this.loadStudyParticipants();
+    this.getAllUnis();
+  }
+
+  getAllUnis() {
+    this.uniDataSource = [];
+    console.log('getAllUnis');
+    this.uniService.getAll().subscribe((results) => {
+      results.forEach((element) => {
+        console.log(element);
+        this.uniDataSource.push({
+          Id: element.id,
+          University: element.name,
+          Address: element.address,
+        });
+      });
+      this.tableAllUniversitys?.renderRows();
+    });
+  }
+
+  inputUniversity = '';
+  inputUniversityAddress = '';
+  createUniversity() {
+    this.uniService
+      .create({
+        name: this.inputUniversity,
+        address: this.inputUniversityAddress,
+      })
+      .subscribe((results) => {
+        this.toastr.success('University was created');
+        this.uniDataSource.push({
+          Id: results.id,
+          University: results.name,
+          Address: results.address,
+        });
+        this.tableAllUniversitys?.renderRows();
+      });
+    this.inputUniversity = '';
+    this.inputUniversityAddress = '';
+  }
+
+  ngAfterViewInit() {
+    this.userDataSourcePagination.paginator = this.paginator!;
   }
 
   loadStudyParticipants() {
@@ -43,32 +111,9 @@ export class AdminSectionComponent implements OnInit {
         });
       });
       this.tableStudyParticipants?.renderRows();
+      this.userDataSourcePagination.data = this.userDataSource;
     });
   }
-
-  displayedUserDataColumns: string[] = [
-    'Id',
-    'Email',
-    'First Name',
-    'Last Name',
-    'University',
-    'Address',
-    'User role',
-    'Status',
-    'Action',
-  ];
-  userDataSource = [
-    {
-      Id: -1,
-      Email: '',
-      FirstName: '',
-      LastName: '',
-      University: '',
-      Address: '',
-      UserRole: '',
-      Status: '',
-    },
-  ];
 
   deleteUserFromStudy(rowNr: number) {
     this.userDataSource = this.userDataSource.filter(
@@ -254,4 +299,21 @@ export class AdminSectionComponent implements OnInit {
   ngOnDestroy() {
     this.subscr?.unsubscribe();
   }
+}
+
+export interface userDataSource {
+  Id: number;
+  Email: string;
+  FirstName: string;
+  LastName: string;
+  University: string;
+  Address: string;
+  UserRole: string;
+  Status: string;
+}
+
+export interface uniDataSource {
+  Id: number;
+  University: string;
+  Address: string;
 }
