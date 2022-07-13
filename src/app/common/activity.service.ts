@@ -53,4 +53,6 @@ export interface Activity {
   userId: number;
   activityTypeId: number;
   projectId: number;
+  activityType: string;
+  calories_consumption: number;
 }
