@@ -96,6 +96,15 @@ export class ProjectService implements OnDestroy {
   addUsersToProject(projectId: number, userIds: number[]): Observable<void> {
     return this.httpService.post(`project/${projectId}/users/add`, { userIds });
   }
+  
+  /**
+   * Remove users from a project
+   * @param projectId
+   * @param userIds
+   */
+  removeUsersFromProject(projectId: number, userIds: number[]): Observable<void> {
+    return this.httpService.post(`project/${projectId}/users/remove`, { userIds });
+  }
 
   /**
    * Create milestone
