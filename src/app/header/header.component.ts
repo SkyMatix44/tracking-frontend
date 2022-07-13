@@ -39,6 +39,9 @@ export class HeaderComponent implements OnInit {
       var currId = this.prjService.getCurrentProjectId();
       if (currId == -1) {
         this.setInitialProject();
+        if (this.studieIds.length == 0) {
+          this.selectedValue = 'Create study first!';
+        }
       } else {
         this.studieIds.forEach((element) => {
           if (element.id == currId) {

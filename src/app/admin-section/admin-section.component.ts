@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
@@ -99,20 +99,43 @@ export class AdminSectionComponent implements OnInit {
     this.userDataSource.pop();
     this.subscr = this.userService.getAll().subscribe((projects) => {
       projects.forEach((element) => {
+        this.setUserUniIntoTable(element, element.universityId!);
+      });
+    });
+  }
+
+  setUserUniIntoTable(element: any, uniId: number) {
+    var uniName = '';
+    if (uniId != null) {
+      this.uniService.get(uniId).subscribe((results) => {
+        uniName = results.name;
         this.userDataSource.push({
           Id: element.id,
           Email: element.email,
           FirstName: element.firstName,
           LastName: element.lastName,
-          University: 'element.universityId',
+          University: uniName,
           Address: element.address || '',
           UserRole: this.getUserRole(element.role),
           Status: this.getBlocked(element.blocked),
         });
+        this.tableStudyParticipants?.renderRows();
+        this.userDataSourcePagination.data = this.userDataSource;
+      });
+    } else {
+      this.userDataSource.push({
+        Id: element.id,
+        Email: element.email,
+        FirstName: element.firstName,
+        LastName: element.lastName,
+        University: '/',
+        Address: element.address || '/',
+        UserRole: this.getUserRole(element.role),
+        Status: this.getBlocked(element.blocked),
       });
       this.tableStudyParticipants?.renderRows();
       this.userDataSourcePagination.data = this.userDataSource;
-    });
+    }
   }
 
   deleteUserFromStudy(rowNr: number) {
@@ -125,40 +148,53 @@ export class AdminSectionComponent implements OnInit {
     this.tableStudyParticipants?.renderRows();
   }
 
+  currentPageUsers = 0;
+  pageSize = 0;
+  pageUsersChanged(event: PageEvent) {
+    console.log({ event });
+    this.pageSize = event.pageSize;
+    this.currentPageUsers = event.pageIndex;
+  }
+
   blockOrAcceptUserForStudy(rowNr: number, actStatus: string) {
+    var add = this.currentPageUsers * this.pageSize;
+    //console.log(add);
+    var actSite = this.userDataSourcePagination._pageData(this.userDataSource);
+
     if (actStatus == 'accepted') {
       this.subscr = this.userService
-        .blockUser(this.userDataSource[rowNr].Id)
+        .blockUser(actSite[rowNr].Id)
         .subscribe((result) => {
           console.log(result);
         });
-      this.userDataSource[rowNr] = {
-        Id: this.userDataSource[rowNr].Id,
-        Email: this.userDataSource[rowNr].Email,
-        FirstName: this.userDataSource[rowNr].FirstName,
-        LastName: this.userDataSource[rowNr].LastName,
-        University: this.userDataSource[rowNr].University,
-        Address: this.userDataSource[rowNr].Address,
-        UserRole: this.userDataSource[rowNr].UserRole,
+      this.userDataSource[rowNr + add] = {
+        Id: actSite[rowNr].Id,
+        Email: actSite[rowNr].Email,
+        FirstName: actSite[rowNr].FirstName,
+        LastName: actSite[rowNr].LastName,
+        University: actSite[rowNr].University,
+        Address: actSite[rowNr].Address,
+        UserRole: actSite[rowNr].UserRole,
         Status: 'blocked',
       };
       this.tableStudyParticipants?.renderRows();
+      this.userDataSourcePagination.data = this.userDataSource;
 
       this.toastr.success('User successfully blocked!');
     } else if (actStatus == 'blocked' || actStatus == '') {
       this.subscr = this.userService
-        .unblockUser(this.userDataSource[rowNr].Id)
+        .unblockUser(actSite[rowNr].Id)
         .subscribe((result) => {
           console.log(result);
         });
-      this.userDataSource[rowNr] = {
-        Id: this.userDataSource[rowNr].Id,
-        Email: this.userDataSource[rowNr].Email,
-        FirstName: this.userDataSource[rowNr].FirstName,
-        LastName: this.userDataSource[rowNr].LastName,
-        University: this.userDataSource[rowNr].University,
-        Address: this.userDataSource[rowNr].Address,
-        UserRole: this.userDataSource[rowNr].UserRole,
+      this.userDataSource[rowNr + add] = {
+        Id: actSite[rowNr].Id,
+        Email: actSite[rowNr].Email,
+        FirstName: actSite[rowNr].FirstName,
+        LastName: actSite[rowNr].LastName,
+        University: actSite[rowNr].University,
+        Address: actSite[rowNr].Address,
+        UserRole: actSite[rowNr].UserRole,
         Status: 'accepted',
       };
       this.userDataSourcePagination.data = this.userDataSource;
@@ -212,8 +248,8 @@ export class AdminSectionComponent implements OnInit {
               validated: results.validated,
               role: this.getUserRole(results.userRole),
             };
-            console.log('edit');
-            console.log(updateData);
+            //console.log('edit');
+            //console.log(updateData);
             this.subscr = this.userService
               .updateUserAsAdmin(userId, updateData)
               .subscribe((result) => {
