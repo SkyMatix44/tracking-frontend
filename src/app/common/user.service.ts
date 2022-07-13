@@ -143,6 +143,7 @@ export interface UpdateUserDto {
   birthday?: number;
   height?: number;
   weight?: number;
+  universityId?: number;
 }
 
 export interface CreateUserDto {
