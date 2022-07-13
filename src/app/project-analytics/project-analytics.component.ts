@@ -90,7 +90,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       .subscribe((observer) => {
         if (observer?.id != undefined) {
           this.getAlldata(observer?.id!);
-          this.setDiagramData(observer?.id!);
+          
         } else {
           console.log('fix initial undefined');
         }
@@ -166,20 +166,16 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       this.filteredArray.sort(function(x,y){
         return x-y
       })
-      console.log(this.filteredArray)
       this.userListMatTabDataSource.data = this.userList;
+      this.setDiagramData(projectid);
     });
     this.actype.getAll().subscribe((activities)=> {
       activities.forEach((element)=> {
         this.activity.push(element.name)
       })
+      
     })
-
-    this.actService.getProjectActivties(projectid).subscribe((activities) => {
-      activities.forEach((element) => {
-        this.userIDlist.push(element.userId);
-      });
-    });
+    
   }
 
   setDiagramData(projectid: number) {
@@ -187,17 +183,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     if (this.myChart !== undefined) {
       this.myChart.destroy();
     }
-  
-    this.actService.getProjectActivties(projectid).subscribe((result) => {
-      result.forEach((element) => this.dataValues.push(element.steps));
-    });
-    this.actService.getProjectActivties(projectid).subscribe((result) => {
-      result.forEach((element) =>
-        this.tlabels.push(new Date(Number(element.start_date)).toDateString())
-      );
-    });
-    console.log(this.activity)
-
+    
     var myData = {
       labels: this.activity,
       datasets: [
