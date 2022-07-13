@@ -167,33 +167,33 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
 
   setDiagramData(projectid: number) {
+    
     projectid = this.prjService.getCurrentProjectId();
     if (this.myChart !== undefined) {
-      this.myChart.destroy();
+      this.myChart.destroy()
     }
-    this.dataValues = [];
-    this.tlabels = [];
+    
     this.actService.getProjectActivties(projectid).subscribe((result) => {
-      result.forEach((element) => this.dataValues.push(element.id));
+      result.forEach((element) => this.dataValues.push(element.steps));
     });
     this.actService.getProjectActivties(projectid).subscribe((result) => {
       result.forEach((element) =>
         this.tlabels.push(new Date(Number(element.start_date)).toDateString())
       );
     });
-    console.log(this.tlabels)
+   
     var filteredArray: string[] = [];
     for (let i = 0; i < this.tlabels.length; i++) {
       if (!filteredArray.includes(this.tlabels[i])) {
         filteredArray.push(this.tlabels[i]);
       }
     }
-    console.log(filteredArray);
+    
     var myData = {
-      labels: filteredArray,
+      labels: this.tlabels,
       datasets: [
         {
-          label: ' active',
+          label: 'Steps',
           data: this.dataValues,
           backgroundColor: [
             'rgb(207, 210, 245)',
@@ -208,6 +208,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         },
       ],
     };
+     console.log(this.tlabels)
+    console.log(this.dataValues)
     if(this.type==undefined){
       this.type='line'
     }
@@ -242,6 +244,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         },
       },
     });
+    this.dataValues = [];
+    this.tlabels = [];
   }
   ngOnDestroy() {
     this.projectSubscription?.unsubscribe();
