@@ -37,19 +37,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       end_date: '',
     },
   ];
-  projectSubscription: any;
-  selectedRow!: number;
-  selected!: String;
-  type!: String;
-  date!: Date;
-  chartname!: 'chart-bar';
-  myChart!: any;
-
-  @ViewChild('TABLE', { static: true })
-  table: ElementRef;
-  dataValues = [0];
-  tlabels = [''];
-
+ 
   public columnList = [
     'ID',
     'UserID',
@@ -60,9 +48,16 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     'BloodSugarOxygen',
     'StartDate',
     'EndDate',
-  ];
+  ]; 
+  @ViewChild('TABLE', { static: true })
+  table: ElementRef;
+  projectSubscription: any;
+  selected!: String;
+  selectedRow!:number;
+  type!: String;
+  date!: Date;
+  myChart!: any;
   public activitylist = [0];
-  public userIDlist = [0];
   public filteredArray: number[] = [];
   public count=[0];
   public columnShowHideList: CustomColumn[] = [];
@@ -132,7 +127,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   getAlldata(projectid: number) {
     this.userList = [];
     this.activitylist = [];
-    this.userIDlist = [];
     this.count=[]
     this.activity=[]
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
@@ -204,7 +198,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       ],
     };
     if (this.type == undefined) {
-      this.type = 'line';
+      this.type = 'bar';
     }
     var charttype = this.type;
     this.showDiagram('myChart', charttype, myData);
@@ -237,8 +231,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         },
       },
     });
-    this.dataValues = [];
-    this.tlabels = [];
+    
   }
   ngOnDestroy() {
     this.projectSubscription?.unsubscribe();
