@@ -18,49 +18,42 @@ export class HeaderComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  currentProjectId: any;
   userRole: Role | undefined;
+  selectedValue: string | undefined;
   ngOnInit(): void {
-    this.userRole = this.userService.getCurrentUser()?.role;
-    //console.log(this.userRole);
+    this.userRole = this.userService.getCurrentUser()?.role; //hide the admin link
+    this.getAllPrjAndSetInitial();
   }
 
   ngAfterViewInit() {
-    this.getAllProjects();
-    var a = this.prjService.getCurrentProjectId();
-    //console.log(a);
-    if (a == -1) {
-      this.setInitialProject();
-    }
     this.cdref.detectChanges();
   }
 
-  getAllProjects() {
-    this.studies.pop();
-    this.studieIds.pop();
+  getAllPrjAndSetInitial() {
+    this.studieIds = [];
     this.prjService.getAllProjects().subscribe((results) => {
       //console.log(results);
       results.forEach((element) => {
-        this.studies.push(element.name);
-        this.studieIds.push(element.id);
+        this.studieIds.push({ id: element.id, name: element.name });
       });
+      var currId = this.prjService.getCurrentProjectId();
+      if (currId == -1) {
+        this.setInitialProject();
+      } else {
+        this.studieIds.forEach((element) => {
+          if (element.id == currId) {
+            this.selectedValue = element.name;
+          }
+        });
+      }
     });
   }
 
   setInitialProject() {
-    this.currentProjectId = this.prjService.getCurrentProjectId();
-    //console.log(this.currentProjectId);
-
-    var DropdownList = document.getElementById(
-      'inputStatus'
-    ) as HTMLSelectElement;
-
-    if (this.currentProjectId == -1) {
-      this.currentProjectId = 0;
+    if (this.studieIds[0] != undefined) {
+      this.selectedValue = this.studieIds[0].name;
+      this.prjService.setCurrentProjectId(this.studieIds[0].id);
     }
-
-    DropdownList.selectedIndex = 0;
-    //this.prjService.setCurrentProjectId(20);
   }
 
   redirectTo(uri: string) {
@@ -75,13 +68,9 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  studies = [''];
-  studieIds = [-1];
+  studieIds = [{ id: 20, name: 'StudieSiegen' }];
 
   onChangePrj(event: any) {
-    var id = this.studieIds[event.target['selectedIndex']];
-    //console.log(id);
-    this.prjService.setCurrentProjectId(id);
-    //this.currentProjectId = id;
+    this.prjService.setCurrentProjectId(event.value);
   }
 }

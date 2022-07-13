@@ -21,17 +21,14 @@ export class DashboardComponent implements OnInit {
   }
 
   getActProject() {
-    //this.prjService.setCurrentProjectId(20);
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()
       .subscribe((observer) => {
         if (observer?.id != undefined) {
-          console.log('initial ' + observer?.id);
+          //console.log('initial ' + observer?.id);
           this.getNrOfScientists(observer?.id!);
           this.getNrOfParticipants(observer?.id!);
           this.getNrOfDaysLeft(observer.start_date, observer.end_date);
-        } else {
-          console.log('fix initial undefined');
         }
       });
   }

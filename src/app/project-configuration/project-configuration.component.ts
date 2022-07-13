@@ -1,7 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTable } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import dateFormat from 'dateformat';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
@@ -18,7 +24,7 @@ import { ProjectConfigDialogComponent } from './project-config-dialog/project-co
 export class ProjectConfigurationComponent implements OnInit {
   @ViewChild('table') table!: MatTable<any>;
   @ViewChild('tableStudyParticipants') tableStudyParticipants!: MatTable<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   constructor(
     private prjService: ProjectService,
     private authService: AuthService,
@@ -34,7 +40,6 @@ export class ProjectConfigurationComponent implements OnInit {
     'Wissenschaftler',
     'Action',
   ];
-  studyDataSource: studyDataSource[] = [];
 
   displayedUserDataColumns: string[] = [
     'Email',
@@ -43,41 +48,43 @@ export class ProjectConfigurationComponent implements OnInit {
     'Status',
     'Action',
   ];
-  userDataSource = [
-    {
-      Id: -1,
-      Email: '',
-      FirstName: '',
-      LastName: '',
-      Status: '',
-    },
-  ];
 
+  studyDataSource: studyDataSource[] = [];
+  userDataSource: userDataSource[] = [];
+
+  studyDataSourcePagination = new MatTableDataSource<studyDataSource>(
+    this.studyDataSource
+  );
+  userDataSourcePagination = new MatTableDataSource<userDataSource>(
+    this.userDataSource
+  );
   enrollmentKeyStudyname = '';
   enrollmentKey = '';
   projectSubscription: Subscription | undefined;
+  actStudyName = '';
 
   ngOnInit() {
-    this.prjService.setCurrentProjectId(20); //TODO Set initial Projekt
-    this.actPrjNumber = 20;
+    this.userDataSource = [];
     this.getActProject();
     this.loadProject();
     //this.loadStudyParticipants();
   }
 
+  ngAfterViewInit() {
+    this.studyDataSourcePagination.paginator = this.paginator.toArray()[0];
+    this.userDataSourcePagination.paginator = this.paginator.toArray()[1];
+  }
+
   getActProject() {
-    //this.prjService.setCurrentProjectId(20);
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()
       .subscribe((observer) => {
         if (observer?.id != undefined) {
-          console.log('load neue News');
           this.actPrjNumber = observer.id;
-          console.log(this.actPrjNumber);
+          //console.log(this.actPrjNumber);
+          this.actStudyName = 'of "' + observer.name + '"';
           this.loadStudyParticipants(observer.id);
           this.loadEnrollmentKey();
-        } else {
-          //console.log('fix initial undefined');
         }
       });
   }
@@ -101,6 +108,7 @@ export class ProjectConfigurationComponent implements OnInit {
           this.getNrOfScientists(element.id);
         });
         this.table?.renderRows();
+        this.studyDataSourcePagination.data = this.studyDataSource;
       });
   }
 
@@ -135,18 +143,16 @@ export class ProjectConfigurationComponent implements OnInit {
           });
         });
         this.tableStudyParticipants?.renderRows();
+        this.userDataSourcePagination.data = this.userDataSource;
       });
   }
 
   loadEnrollmentKey() {
     var prj = this.prjService.getCurrentProject();
-    console.log('----------------');
-    console.log(prj);
     this.showEnrollmentKey(prj?.name!, prj?.invite_token!);
   }
 
   showEnrollmentKey(studyname: string, key: string) {
-    console.log(studyname + ' ' + key);
     this.enrollmentKey = key;
     this.enrollmentKeyStudyname = studyname;
   }
@@ -241,10 +247,14 @@ export class ProjectConfigurationComponent implements OnInit {
       });
   }
 
-  removeUserFromStudy(rowNr: number) {
+  removeUserFromStudy(rowNr: number, userId: number) {
+    var prj = this.prjService.getCurrentProject();
     this.userDataSource = this.userDataSource.filter(
       (item: any, index: number) => index !== rowNr
     );
+    var nr: number[] = [userId];
+    this.prjService.removeUsersFromProject(prj?.id!, nr);
+    this.userDataSourcePagination.data = this.userDataSource;
     this.toastr.success('User successfully removed!');
   }
 
@@ -312,4 +322,12 @@ export interface studyDataSource {
   Startdatum: Date;
   Enddatum: Date;
   Wissenschaftler: number;
+}
+
+export interface userDataSource {
+  Id: number;
+  Email: string;
+  FirstName: string;
+  LastName: string;
+  Status: string;
 }

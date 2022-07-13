@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { NewsService } from '../../common/news.service';
 import { ProjectService } from '../../common/project.service';
@@ -14,17 +15,17 @@ export class NotesTileComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private newsService: NewsService,
-    private prjService: ProjectService
+    private prjService: ProjectService,
+    private toastr: ToastrService
   ) {}
 
   projectSubscription: Subscription | undefined;
   actProjectId: number = 0;
   ngOnInit(): void {
-    this.startdate = '03 Juli 2022';
-    this.enddate = '15 Aug. 2022';
+    this.startdate = 'No study selected'; //03 Juli 2022
+    this.enddate = 'No study selected'; //15 Aug. 2022
     this.notesData = [];
     this.getActProject();
-    //this.loadNotes(20);
     this.sortNotesDates();
   }
 
@@ -75,7 +76,6 @@ export class NotesTileComponent implements OnInit {
           });
 
           this.sortNotesDates();
-        } else {
         }
       });
   }
@@ -114,44 +114,55 @@ export class NotesTileComponent implements OnInit {
   }
 
   editOrAddNotesDialog() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.data = {
-      studyName: '',
-      studyEnddate: '',
-    };
+    this.actProjectId = this.prjService.getCurrentProjectId();
 
-    this.dialog
-      .open(NotesConfigDialogComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((returnValue) => {
-        //console.log(returnValue.noteHeadline);
-        if (returnValue.noteHeadline != undefined) {
-          this.notesData?.push({
-            icon: 'fa-envelope bg-primary',
-            date: returnValue.noteDate,
-            headline: returnValue.noteHeadline,
-            text: returnValue.noteDescription,
-          });
+    if (this.actProjectId != -1) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.data = {
+        studyName: '',
+        studyEnddate: '',
+      };
 
-          var data = {
-            title: returnValue.noteHeadline,
-            description: returnValue.noteDescription,
-            due_date: new Date(returnValue.noteDate).getTime(),
-          };
-          //console.log(data);
-          this.projectSubscription = this.prjService
-            .createMilestone(this.actProjectId, data)
-            .subscribe((results) => {
-              //console.log(results);
+      this.dialog
+        .open(NotesConfigDialogComponent, dialogConfig)
+        .afterClosed()
+        .subscribe((returnValue) => {
+          //console.log(returnValue.noteHeadline);
+          if (returnValue.noteHeadline != undefined) {
+            this.notesData?.push({
+              icon: 'fa-envelope bg-primary',
+              date: returnValue.noteDate,
+              headline: returnValue.noteHeadline,
+              text: returnValue.noteDescription,
             });
-          this.sortNotesDates();
-        }
-      });
+
+            var data = {
+              title: returnValue.noteHeadline,
+              description: returnValue.noteDescription,
+              due_date: new Date(returnValue.noteDate).getTime(),
+            };
+            //console.log(data);
+
+            this.projectSubscription = this.prjService
+              .createMilestone(this.actProjectId, data)
+              .subscribe((results) => {
+                //console.log(results);
+              });
+            this.sortNotesDates();
+          }
+        });
+    } else {
+      this.toastr.error('No study selected');
+    }
   }
 
   sortNotesDates() {
     this.notesData!.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  }
+
+  ngOnDestroy() {
+    this.projectSubscription?.unsubscribe();
   }
 }
 

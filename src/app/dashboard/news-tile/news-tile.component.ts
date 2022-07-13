@@ -19,23 +19,20 @@ export class NewsTileComponent implements OnInit {
   ) {}
 
   projectSubscription: Subscription | undefined;
-  actPrjId: number = -1;
+  actPrjId: number = 0;
   ngOnInit(): void {
-    this.getActProject();
-    this.loadNewsData(this.actPrjId);
+    this.getActPrjAndLoadNews();
   }
 
-  getActProject() {
-    //this.prjService.setCurrentProjectId(20);
+  getActPrjAndLoadNews() {
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()
       .subscribe((observer) => {
         if (observer?.id != undefined) {
-          //console.log('load neue News');
           this.actPrjId = observer.id;
-          this.loadNewsData(observer.id);
-        } else {
-          //console.log('fix initial undefined');
+          if (this.actPrjId != -1) {
+            this.loadNewsData(observer.id);
+          }
         }
       });
   }
@@ -74,33 +71,43 @@ export class NewsTileComponent implements OnInit {
 
   publicMessage = '';
   sendMessage(publicMessage: any) {
-    var userFirstName = this.userService.getCurrentUser()?.firstName!;
-    var userLastName = this.userService.getCurrentUser()?.lastName!;
+    this.actPrjId = this.prjService.getCurrentProjectId();
 
-    if (isEmptyOrSpaces(publicMessage) == false) {
-      var data = {
-        title: 'Note',
-        text: publicMessage,
-        projectId: this.actPrjId,
-        user_firstname: userFirstName,
-        user_lastname: userLastName,
-      };
-      this.newsService.create(data).subscribe((results) => {
-        // console.log(results);
-        this.newsData?.push({
-          picture: '/assets/img/scientist-man.png',
-          name: userFirstName + ' ' + userLastName,
-          createdAt: results.updated_at!,
-          type: 'Shared publicly',
+    if (this.actPrjId != -1) {
+      var userFirstName = this.userService.getCurrentUser()?.firstName!;
+      var userLastName = this.userService.getCurrentUser()?.lastName!;
+
+      if (isEmptyOrSpaces(publicMessage) == false) {
+        var data = {
           title: 'Note',
           text: publicMessage,
+          projectId: this.actPrjId,
+          user_firstname: userFirstName,
+          user_lastname: userLastName,
+        };
+        this.newsService.create(data).subscribe((results) => {
+          // console.log(results);
+          this.newsData?.push({
+            picture: '/assets/img/scientist-man.png',
+            name: userFirstName + ' ' + userLastName,
+            createdAt: results.updated_at!,
+            type: 'Shared publicly',
+            title: 'Note',
+            text: publicMessage,
+          });
         });
-      });
-      this.toastr.success('Successfully sent');
+        this.toastr.success('Successfully sent');
+      } else {
+        this.toastr.error('Your message is empty');
+      }
+      this.publicMessage = '';
     } else {
-      this.toastr.error('Your message is empty');
+      this.toastr.error('No study selected');
     }
-    this.publicMessage = '';
+  }
+
+  ngOnDestroy() {
+    this.projectSubscription?.unsubscribe();
   }
 }
 
