@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
 import { ActivityTypeService } from '../common/activity-type.service';
@@ -16,7 +22,7 @@ interface CustomColumn {
   templateUrl: './project-analytics.component.html',
   styleUrls: ['./project-analytics.component.scss'],
 })
-export class ProjectAnalyticsComponent implements OnInit {
+export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   userList = [
     {
       id: 0,
@@ -30,17 +36,20 @@ export class ProjectAnalyticsComponent implements OnInit {
       end_date: '',
     },
   ];
-
+  projectSubscription: any;
   selectedRow!: number;
   selected!: String;
   uID!: number;
-  type!: 'line';
-  date!: Date ;
+  type!: String;
+  date!: Date;
   chartname!: 'chart-bar';
   myChart!: any;
-  projectid!: number;
+
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
+  dataValues = [0];
+  tlabels = [''];
+
   public columnList = [
     'ID',
     'UserID',
@@ -52,13 +61,9 @@ export class ProjectAnalyticsComponent implements OnInit {
     'StartDate',
     'EndDate',
   ];
-  public activitylist=[
-    0,
-  ];
-  public userIDlist=[
-    0,
-  ]
-  uniqueuserIDlist=[]
+  public activitylist = [0];
+  public userIDlist = [0];
+
   public columnShowHideList: CustomColumn[] = [];
 
   userListMatTabDataSource = new MatTableDataSource(this.userList);
@@ -70,21 +75,30 @@ export class ProjectAnalyticsComponent implements OnInit {
   ) {
     this.table = table;
   }
-
   ngOnInit(): void {
-    this.getProjectId();
-    this.initializeColumnProperties();
-    this.getAlldata(this.projectid);
-    
+    this.getActProject();
   }
 
-  getProjectId() {
-    this.projectid = this.prjService.getCurrentProjectId();
+  ngAfterViewInit(): void {
+    this.initializeColumnProperties();
   }
+  getActProject() {
+    //this.prjService.setCurrentProjectId(20);
+    this.projectSubscription = this.prjService
+      .getCurrentProjectObs()
+      .subscribe((observer) => {
+        if (observer?.id != undefined) {
+          this.getAlldata(observer?.id!);
+          this.setDiagramData(observer?.id!);
+        } else {
+          console.log('fix initial undefined');
+        }
+      });
+  }
+
   applyFilter() {
-    //var arr= this.date.toString().split("-");
-    //var datum=arr[2] + "." + arr[1] + "." + arr[0];
-    const filterValue = this.selected || this.date || this.uID;
+    var datum = new Date(this.date).toDateString();
+    const filterValue = this.selected || datum || this.uID;
     console.log(filterValue);
     this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -111,10 +125,10 @@ export class ProjectAnalyticsComponent implements OnInit {
     });
   }
   getAlldata(projectid: number) {
-    this.userList.pop();
-    this.activitylist.pop();
-    this.userIDlist.pop();
-    this.actService.getProjectActivties(2).subscribe((activities) => {
+    this.userList = [];
+    this.activitylist = [];
+    this.userIDlist = [];
+    this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userList.push({
           id: element.id,
@@ -124,41 +138,63 @@ export class ProjectAnalyticsComponent implements OnInit {
           distance: element.distance,
           heartrate: element.hearthrate,
           bloodSugarOxygen: element.bloodSugarOxygen,
-          start_date: element.start_date,
-          end_date: element.end_date,
+          start_date: new Date(Number(element.start_date)).toDateString(),
+          end_date: new Date(Number(element.end_date)).toDateString(),
         });
       });
     });
-    this.actService.getProjectActivties(2).subscribe((activities) => {
+    this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
-        this.activitylist.push(
-          element.activityTypeId,
-        );
+        this.activitylist.push(element.activityTypeId);
       });
     });
-    this.actService.getProjectActivties(2).subscribe((activities) => {
+    this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
-        this.userIDlist.push(
-          element.userId,
-        );
+        this.userIDlist.push(element.userId);
       });
     });
     this.userListMatTabDataSource.data = this.userList;
-    console.log(this.activitylist);
-    
+    var filteredArray: number[] = [];
+    for (let i = 0; i < this.activitylist.length; i++) {
+      if (!filteredArray.includes(this.activitylist[i])) {
+        filteredArray.push(this.activitylist[i]);
+      }
+    }
+    this.activitylist.filter(
+      (item, index) => this.activitylist.indexOf(item) === index
+    );
+     console.log(this.activitylist)
   }
 
-  setDiagramData() {
+  setDiagramData(projectid: number) {
+    
+    projectid = this.prjService.getCurrentProjectId();
     if (this.myChart !== undefined) {
-      this.myChart.destroy();
+      this.myChart.destroy()
     }
-    var dataValues = [4, 13, 6, 5, 8, 3];
+    
+    this.actService.getProjectActivties(projectid).subscribe((result) => {
+      result.forEach((element) => this.dataValues.push(element.steps));
+    });
+    this.actService.getProjectActivties(projectid).subscribe((result) => {
+      result.forEach((element) =>
+        this.tlabels.push(new Date(Number(element.start_date)).toDateString())
+      );
+    });
+   
+    var filteredArray: string[] = [];
+    for (let i = 0; i < this.tlabels.length; i++) {
+      if (!filteredArray.includes(this.tlabels[i])) {
+        filteredArray.push(this.tlabels[i]);
+      }
+    }
+    
     var myData = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      labels: this.tlabels,
       datasets: [
         {
-          label: ' active',
-          data: dataValues,
+          label: 'Steps',
+          data: this.dataValues,
           backgroundColor: [
             'rgb(207, 210, 245)',
             'rgb(187, 191, 238)',
@@ -172,6 +208,11 @@ export class ProjectAnalyticsComponent implements OnInit {
         },
       ],
     };
+     console.log(this.tlabels)
+    console.log(this.dataValues)
+    if(this.type==undefined){
+      this.type='line'
+    }
     var charttype = this.type;
     this.showDiagram('myChart', charttype, myData);
   }
@@ -203,5 +244,10 @@ export class ProjectAnalyticsComponent implements OnInit {
         },
       },
     });
+    this.dataValues = [];
+    this.tlabels = [];
+  }
+  ngOnDestroy() {
+    this.projectSubscription?.unsubscribe();
   }
 }
