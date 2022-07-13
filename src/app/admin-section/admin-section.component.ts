@@ -73,22 +73,26 @@ export class AdminSectionComponent implements OnInit {
   inputUniversity = '';
   inputUniversityAddress = '';
   createUniversity() {
-    this.uniService
-      .create({
-        name: this.inputUniversity,
-        address: this.inputUniversityAddress,
-      })
-      .subscribe((results) => {
-        this.toastr.success('University was created');
-        this.uniDataSource.push({
-          Id: results.id,
-          University: results.name,
-          Address: results.address,
+    if (this.inputUniversity != '' && this.inputUniversityAddress != '') {
+      this.uniService
+        .create({
+          name: this.inputUniversity,
+          address: this.inputUniversityAddress,
+        })
+        .subscribe((results) => {
+          this.toastr.success('University was created');
+          this.uniDataSource.push({
+            Id: results.id,
+            University: results.name,
+            Address: results.address,
+          });
+          this.tableAllUniversitys?.renderRows();
         });
-        this.tableAllUniversitys?.renderRows();
-      });
-    this.inputUniversity = '';
-    this.inputUniversityAddress = '';
+      this.inputUniversity = '';
+      this.inputUniversityAddress = '';
+    } else {
+      this.toastr.error('Fill in all fields!');
+    }
   }
 
   ngAfterViewInit() {
