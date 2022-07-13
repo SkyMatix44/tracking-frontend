@@ -92,6 +92,11 @@ export class HttpService {
    * @param auth
    */
   setAuthentication(auth: Authentication | null): void {
+    if (null == auth) {
+      sessionStorage.removeItem('auth');
+    } else {
+      sessionStorage.setItem('auth', JSON.stringify(auth));
+    }
     this.auth$.next(auth);
   }
 

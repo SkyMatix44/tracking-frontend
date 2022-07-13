@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { Authentication } from './auth.service';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -54,11 +55,31 @@ export class UserService {
   }
 
   update(data: UpdateUserDto): Observable<User> {
-    return this.httpService.patch(`user/update`, data);
+    return this.httpService.patch<User>(`user/update`, data).pipe(
+      map((user: User): User => {
+        this.updateAuthData(user);
+        return user;
+      })
+    );
   }
 
   create(data: CreateUserDto): Observable<User> {
     return this.httpService.post(`user/create`, data);
+  }
+
+  private updateAuthData(newUserData: Partial<User>): void {
+    const auth: Authentication | null = this.httpService.getAuthentication();
+    if (null != auth) {
+      const newAuth: Authentication = {
+        accessToken: auth.accessToken,
+        user: {
+          ...auth.user,
+          ...newUserData,
+        },
+      };
+
+      this.httpService.setAuthentication(newAuth);
+    }
   }
 }
 

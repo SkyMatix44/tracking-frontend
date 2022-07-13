@@ -38,16 +38,15 @@ export class LoginComponent implements OnInit {
           next: () => {
             var userRole = this.userService.getCurrentUser()?.role;
             sessionStorage.setItem('role', JSON.stringify(userRole));
-            console.log(userRole);
             if (userRole == Role.ADMIN || userRole == Role.SCIENTIST) {
               this.router.navigate(['/dashboard']);
               this.toastr.success('Successful!');
             } else {
               this.toastr.error('You do not have access to this website!');
+              this.authService.setAuthentication(null);
             }
           },
           error: () => {
-            // TODO auf verschiedene Fehler reagieren
             this.toastr.error('Please provide valid login data!');
           },
         });
@@ -64,7 +63,6 @@ export class LoginComponent implements OnInit {
       this.createPassword
       // this.university != ''
     ) {
-      // TODO nochmal absprechen welche Daten wirklich bei der registierung benötigt werden
       this.authService
         .register({
           email: this.createEmail,
