@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
 import { ActivityTypeService } from '../common/activity-type.service';
@@ -95,11 +96,10 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         }
       });
   }
-
+  
   applyFilter() {
     var datum = new Date(this.date).toDateString();
-    
-    var filterValue = this.selected|| this.uID || datum ;
+    var filterValue = this.selected||this.uID ||datum ;
     if(filterValue=="Invalid Date"){
       filterValue= ''
     }
