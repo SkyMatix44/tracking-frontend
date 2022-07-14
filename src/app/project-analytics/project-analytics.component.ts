@@ -82,7 +82,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       var checkFilterId = filterId == '' ? false : true;
       var checkFilterActivity = filterActivity == '' ? false : true;
       var checkFilterDate = filterDate == 'invalid date' ? false : true;
-      //checks wich filter input fields are set
+      //checks wich filter input fields have values
       if (checkFilterId && checkFilterActivity && checkFilterDate) {
         return (
           data.userID.toString().includes(filterId) &&
