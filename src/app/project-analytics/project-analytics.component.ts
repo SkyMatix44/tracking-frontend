@@ -69,6 +69,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.getActProject();
+    //formats the filtervalues and filters the data in the table
     this.userListMatTabDataSource.filterPredicate = function (
       data,
       filter: string
@@ -81,8 +82,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       var checkFilterId = filterId == '' ? false : true;
       var checkFilterActivity = filterActivity == '' ? false : true;
       var checkFilterDate = filterDate == 'invalid date' ? false : true;
-      //console.log(filterId);
-
+      //checks wich filter input fields are set
       if (checkFilterId && checkFilterActivity && checkFilterDate) {
         return (
           data.userID.toString().includes(filterId) &&
@@ -132,19 +132,18 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     this.initializeColumnProperties();
     this.userListMatTabDataSource.paginator = this.paginator;
   }
+  //subsribes to the current Project ID
   getActProject() {
-    //this.prjService.setCurrentProjectId(20);
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()
       .subscribe((observer) => {
         if (observer?.id != undefined) {
           this.getAlldata(observer?.id!);
         } else {
-          //console.log('fix initial undefined');
         }
       });
   }
-
+  //gets the filtervalues of the input fields
   applyFilter() {
     var datum = new Date(this.date).toDateString();
     var filterValue = this.selected || this.uID || datum;
@@ -165,7 +164,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     var filterString = this.selected + ',' + stringID + ',' + datum;
     this.userListMatTabDataSource.filter = filterString.trim().toLowerCase();
   }
-
+  //show and hide the columns in the table
   toggleColumn(column: { isActive: boolean; possition: number; name: string }) {
     if (column.isActive) {
       if (column.possition > this.columnList.length - 1) {
@@ -178,6 +177,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       let opr = i > -1 ? this.columnList.splice(i, 1) : undefined;
     }
   }
+  //sets the hide list for the columns
   initializeColumnProperties() {
     this.columnList.forEach((element, index) => {
       this.columnShowHideList.push({
@@ -187,10 +187,9 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       });
     });
   }
+  //formats the duration from ms to hours,minutes and seconds
   getFormattedDuration(start_date: string, end_date: string): string {
     const duration: number = Number(end_date) - Number(start_date); // in ms
-    //console.log(end_date);
-    //console.log(start_date);
     const hours = Math.floor(duration / (1000 * 60 * 60));
     const minutes = Math.floor(
       (duration - hours * 60 * 60 * 1000) / (1000 * 60)
@@ -204,12 +203,14 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     let secString: string = seconds <= 9 ? '0' + seconds : seconds + '';
     return hoursString + ':' + minString + ':' + secString + 'h';
   }
+  //gets data from database
   getAlldata(projectid: number) {
     this.userList = [];
     this.activitylist = [];
     this.count = [];
     this.activity = [];
     this.userIDlist = [];
+    //gets the data for the table
     this.actService.getProjectActivties(projectid).subscribe((activities) => {
       activities.forEach((element) => {
         this.userList.push({
@@ -227,9 +228,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           ),
           start_date: new Date(Number(element.start_date)).toDateString(),
         });
-        //console.log(this.userList);
       });
-
+      //gets the data for the diagram
       activities.forEach((element) => {
         this.activitylist.push(element.activityTypeId);
         this.userIDlist.push(element.userId);
@@ -250,7 +250,6 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           this.filteredArray.push(this.activitylist[i]);
         }
       }
-      //console.log(this.userList);
       this.userListMatTabDataSource.data = this.userList;
       this.setDiagramData(projectid);
     });
@@ -261,7 +260,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       });
     });
   }
-
+  //sets the data from the current project to the diagram
   setDiagramData(projectid: number) {
     projectid = this.prjService.getCurrentProjectId();
     if (this.myChart !== undefined) {
@@ -293,7 +292,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     var charttype = this.type;
     this.showDiagram('myChart', charttype, myData);
   }
-
+  //displays the diagram
   showDiagram(
     diagramName: string,
     charttype: any,
@@ -322,6 +321,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       },
     });
   }
+  //unsubscribe from the current project
   ngOnDestroy() {
     this.projectSubscription?.unsubscribe();
   }
