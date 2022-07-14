@@ -116,6 +116,21 @@
                 />
                 <label>Password</label>
               </div>
+              <label for="userUniversity" class="col-sm-3 col-form-label"
+                >University:</label
+              >
+              <mat-form-field appearance="fill" class="col-sm-9">
+                <mat-select
+                  placeholder="Choose your university"
+                  (selectionChange)="onChangeUni($event)"
+                >
+                  <mat-option
+                    *ngFor="let t of unis; let i = index"
+                    [value]="i"
+                    >{{ t }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
               <div class="form-group">
                 <button
                   mat-raised-button

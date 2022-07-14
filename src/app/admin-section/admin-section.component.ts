@@ -216,7 +216,7 @@ export class AdminSectionComponent implements OnInit {
     lastName: string,
     university: string,
     address: string,
-    userRole: string,
+    userRole: Role,
     status: string
   ) {
     const dialogConfig = new MatDialogConfig();
@@ -334,7 +334,7 @@ export class AdminSectionComponent implements OnInit {
       '',
       '',
       '',
-      '',
+      Role.Role,
       'accepted'
     );
   }
@@ -351,7 +351,7 @@ export interface userDataSource {
   LastName: string;
   University: string;
   Address: string;
-  UserRole: string;
+  UserRole: Role;
   Status: string;
 }
 

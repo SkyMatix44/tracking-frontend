@@ -100,12 +100,23 @@
               <label for="userEmail" class="col-sm-2 col-form-label"
                 >User Role</label
               >
-              <mat-form-field appearance="fill">
-                <mat-label>Select an User role</mat-label>
+              <mat-form-field appearance="fill" style="width: 270px">
+                <mat-label
+                  *ngIf="userRole == 'Admin' || userRole == 'Scientists'"
+                  >Choose a role</mat-label
+                >
+                <mat-label *ngIf="userRole == 'Participant'"
+                  >A Participant cannot be changed.</mat-label
+                >
                 <mat-select [(value)]="selectedUserRole" name="userRole">
+                  <mat-option *ngFor="let t of allUserRoles" [value]="t">{{
+                    t
+                  }}</mat-option>
+                  <!--
                   <mat-option value="Participant">Participant</mat-option>
                   <mat-option value="Scientists">Scientists</mat-option>
                   <mat-option value="Admin">Admin</mat-option>
+                  -->
                 </mat-select>
               </mat-form-field>
             </div>

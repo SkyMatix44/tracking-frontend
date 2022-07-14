@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../common/auth.service';
+import { UniversityService } from '../common/university.service';
 import { Role, UserService } from '../common/user.service';
 
 @Component({
@@ -25,10 +26,15 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private uniService: UniversityService
   ) {}
 
   ngOnInit(): void {}
+
+  ngAfterViewInit() {
+    this.getAllUnis();
+  }
 
   login(): void {
     if (this.userInputEmail && this.userInputPassword != '') {
@@ -60,8 +66,8 @@ export class LoginComponent implements OnInit {
       this.createUserFirstName &&
       this.createUserLastName &&
       this.createEmail &&
-      this.createPassword
-      // this.university != ''
+      this.createPassword &&
+      this.selectedUniValue
     ) {
       this.authService
         .register({
@@ -70,6 +76,7 @@ export class LoginComponent implements OnInit {
           firstName: this.createUserFirstName,
           lastName: this.createUserLastName,
           role: Role.SCIENTIST,
+          universityId: this.selectedUniValue,
         })
         .subscribe({
           next: () => {
@@ -90,6 +97,27 @@ export class LoginComponent implements OnInit {
       .subscribe(() => {
         this.router.navigate(['/dashboard']);
       });
+  }
+
+  selectedUniValue = 0;
+  unis = [''];
+  uniIds = [0];
+  getAllUnis() {
+    this.unis = [];
+    this.uniIds = [];
+    this.uniService.getAll().subscribe((results) => {
+      results.forEach((element) => {
+        this.unis.push(element.name);
+        this.uniIds.push(element.id);
+      });
+    });
+  }
+
+  onChangeUni(event: any) {
+    console.log(event.value);
+    console.log(this.uniIds);
+    console.log(this.uniIds[event.value]); //UniId
+    this.selectedUniValue = this.uniIds[event.value];
   }
 
   goToCard(card: string): void {

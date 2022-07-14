@@ -34,7 +34,21 @@ export class AddOrEditUserDialogComponent implements OnInit {
   userRole = '';
   status = '';
   selectedUserRole = 'Participant';
-  ngOnInit() {}
+  allUserRoles = [''];
+  ngOnInit() {
+    this.getAndSetUserRole();
+  }
+
+  getAndSetUserRole() {
+    this.allUserRoles = [];
+
+    if (this.userRole == 'Participant') {
+      //console.log('A Participant cannot be changed.');
+    } else if (this.userRole == 'Scientists' || this.userRole == 'Admin') {
+      this.allUserRoles.push('Scientists');
+      this.allUserRoles.push('Admin');
+    }
+  }
 
   saveAndClose() {
     if (
