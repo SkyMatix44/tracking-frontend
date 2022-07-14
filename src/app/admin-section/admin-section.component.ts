@@ -55,6 +55,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   getAllUnis() {
+    //alle Unis laden
     this.uniDataSource = [];
     //console.log('getAllUnis');
     this.uniService.getAll().subscribe((results) => {
@@ -73,6 +74,7 @@ export class AdminSectionComponent implements OnInit {
   inputUniversity = '';
   inputUniversityAddress = '';
   createUniversity() {
+    //Universität erstellen
     if (this.inputUniversity != '' && this.inputUniversityAddress != '') {
       this.uniService
         .create({
@@ -100,6 +102,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   loadStudyParticipants() {
+    //Studienteilnehmer laden
     this.userDataSource.pop();
     this.subscr = this.userService.getAll().subscribe((projects) => {
       projects.forEach((element) => {
@@ -109,6 +112,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   setUserUniIntoTable(element: any, uniId: number) {
+    //Nutzer in der Tabelle anzeigen
     var uniName = '';
     if (uniId != null) {
       this.uniService.get(uniId).subscribe((results) => {
@@ -143,6 +147,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   deleteUserFromStudy(rowNr: number) {
+    //User löschen
     this.userDataSource = this.userDataSource.filter(
       (item: any, index: number) => index !== rowNr
     );
@@ -155,12 +160,14 @@ export class AdminSectionComponent implements OnInit {
   currentPageUsers = 0;
   pageSize = 0;
   pageUsersChanged(event: PageEvent) {
+    //Nutzer der Tabelle
     //console.log({ event });
     this.pageSize = event.pageSize;
     this.currentPageUsers = event.pageIndex;
   }
 
   blockOrAcceptUserForStudy(rowNr: number, actStatus: string) {
+    //User für Studie blockieren oder annehmen
     var add = this.currentPageUsers * this.pageSize;
     //console.log(add);
     var actSite = this.userDataSourcePagination._pageData(this.userDataSource);
@@ -208,6 +215,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   openAddEditUserDialog(
+    //Dialog öffnen, um User editieren zu können
     editOrAdd: string,
     rowId: number,
     userId: number,
@@ -295,6 +303,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   getUserRole(userRole: any) {
+    //User Rollen
     if (userRole == 'Participant') {
       userRole = Role.USER;
     } else if (userRole == 'Scientists') {
@@ -312,6 +321,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   getBlocked(userBlocked: any) {
+    //Blockierung
     if (userBlocked == true) {
       userBlocked = 'blocked';
     } else if (userBlocked == false) {
@@ -325,6 +335,7 @@ export class AdminSectionComponent implements OnInit {
   }
 
   createNewUser() {
+    //Dialog öffen, um User neu anlegen zu können
     this.openAddEditUserDialog(
       'Add User',
       -1,

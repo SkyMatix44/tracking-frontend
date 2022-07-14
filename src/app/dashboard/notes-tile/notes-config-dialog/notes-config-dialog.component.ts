@@ -3,7 +3,7 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import dateFormat from 'dateformat';
 import { ToastrService } from 'ngx-toastr';
-
+//author: David Weber
 @Injectable({
   providedIn: 'root',
 })
@@ -29,6 +29,7 @@ export class NotesConfigDialogComponent implements OnInit {
   }
 
   onChangeDate(data: any) {
+    //wenn Datum geändert wird
     this.noteDate = dateFormat(data, 'm d yyyy');
   }
 
@@ -40,6 +41,7 @@ export class NotesConfigDialogComponent implements OnInit {
   noteDescription = '';
   noteDate = '';
   saveAndClose() {
+    //Ergebnisse zurückgeben
     if (this.noteDescription != '') {
       this.dialogRef.close({
         noteHeadline: this.noteHeadline,

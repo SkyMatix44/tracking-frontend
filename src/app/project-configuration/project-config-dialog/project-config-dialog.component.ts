@@ -61,6 +61,7 @@ export class ProjectConfigDialogComponent implements OnInit {
   }
 
   saveAndClose() {
+    //Dialog schließen und Daten zurückgeben
     this.dialogRef.close({
       name: this.studyName,
       description: this.studyDescription,

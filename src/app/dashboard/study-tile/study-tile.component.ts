@@ -34,7 +34,7 @@ export class StudyTileComponent implements OnInit {
   }
 
   async loadAcitivityDataFromDatabase(prjId: number) {
-    //var prjId = this.prjService.getCurrentProjectId();
+    //Diagramm Daten über Aktivitäten der letzten Tage/Wochen/Monate
     var actDate = Date.now();
 
     //letzten 7 Tage
@@ -54,7 +54,7 @@ export class StudyTileComponent implements OnInit {
     this.getAndSetData('week', prjId, last4Weeks, actDate);
   }
 
-  nrPrj = 0;
+  nrPrj = 0; //Diagramm Daten setzen
   getAndSetData(
     displayData: string,
     prjId: number,
@@ -159,17 +159,8 @@ export class StudyTileComponent implements OnInit {
     }
   }
 
-  getDates(startDate: any, stopDate: any) {
-    var dateArray = new Array();
-    var currentDate = startDate;
-    while (currentDate <= stopDate) {
-      dateArray.push(new Date(currentDate));
-      currentDate = currentDate.addDays(1);
-    }
-    return dateArray;
-  }
-
   formatDate(date: any) {
+    //Datum number in [month, day, year] formatieren
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
@@ -196,6 +187,7 @@ export class StudyTileComponent implements OnInit {
     'Thursday',
   ];
   selectTimeperiod(date: string) {
+    //Auswahl des Nutzers über HTML Dropdown, welcher Zeitraum angzeigt werden soll
     this.chart.destroy();
 
     const monthLabels = [
@@ -235,6 +227,7 @@ export class StudyTileComponent implements OnInit {
 
   chart: any;
   showDiagram(diagramName: string, dataLabels: string[], dataValues: number[]) {
+    //Diagramm anzeigen
     Chart.register(...registerables);
 
     const ctx = document.getElementById(diagramName) as ChartItem;

@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    //Login eines Nutzers
     if (this.userInputEmail && this.userInputPassword != '') {
       this.authService
         .login(this.userInputEmail, this.userInputPassword)
@@ -62,6 +63,7 @@ export class LoginComponent implements OnInit {
   }
 
   register(): void {
+    //Registrierung
     if (
       this.createUserFirstName &&
       this.createUserLastName &&
@@ -92,6 +94,7 @@ export class LoginComponent implements OnInit {
   }
 
   validate(): void {
+    //Nutzer Validierung, Token eingeben
     this.authService
       .validate(this.createEmail, this.validationCode)
       .subscribe(() => {
@@ -103,6 +106,7 @@ export class LoginComponent implements OnInit {
   unis = [''];
   uniIds = [0];
   getAllUnis() {
+    //alle Universitäten für Dropdown holen
     this.unis = [];
     this.uniIds = [];
     this.uniService.getAll().subscribe((results) => {
@@ -114,13 +118,12 @@ export class LoginComponent implements OnInit {
   }
 
   onChangeUni(event: any) {
-    //console.log(event.value);
-    //console.log(this.uniIds);
-    //console.log(this.uniIds[event.value]); //UniId
+    //Dropdown für Uni-Auswahl
     this.selectedUniValue = this.uniIds[event.value];
   }
 
   goToCard(card: string): void {
+    //zur Validierung gehen
     this.currentCard = card;
   }
 }

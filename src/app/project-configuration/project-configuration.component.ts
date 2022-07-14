@@ -80,6 +80,7 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   getActProject() {
+    //aktuelles Projekt holen
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()
       .subscribe((observer) => {
@@ -95,6 +96,7 @@ export class ProjectConfigurationComponent implements OnInit {
 
   actPrjNumber = 2;
   loadProject() {
+    //Projekt laden
     this.studyDataSource = [];
 
     this.projectSubscription = this.prjService
@@ -117,6 +119,7 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   getNrOfScientists(prjId: number): number {
+    //Anzahl der Wissenschaftler
     var nrOfScientists = 0;
     this.prjService
       .getProjectUsers(prjId, 'scientists')
@@ -133,6 +136,7 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   loadStudyParticipants(actPrjNumber: number) {
+    //Studienteilnehmer holen
     this.userDataSource = [];
     this.projectSubscription = this.prjService
       .getProjectUsers(actPrjNumber, 'participants')
@@ -152,11 +156,13 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   loadEnrollmentKey() {
+    //Einschreibeschlüssel
     var prj = this.prjService.getCurrentProject();
     this.showEnrollmentKey(prj?.name!, prj?.invite_token!);
   }
 
   showEnrollmentKey(studyname: string, key: string) {
+    //Einschreibeschlüssel anzeigen
     this.enrollmentKey = key;
     this.enrollmentKeyStudyname = studyname;
   }
@@ -164,12 +170,15 @@ export class ProjectConfigurationComponent implements OnInit {
   currentPageParticipants = 0;
   pageSize = 0;
   pageParticipantsChanged(event: PageEvent) {
+    //Tabelle Paginator Auswahl wird geändert
+    //für Berechnung der ausgewählten id
     //console.log({ event });
     this.pageSize = event.pageSize;
     this.currentPageParticipants = event.pageIndex;
   }
 
   editStudyDialog(rowNr: number, studyId: number) {
+    //Dialog edit Studie
     var actSite = this.studyDataSourcePagination._pageData(
       this.studyDataSource
     );
@@ -224,6 +233,7 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   addStudy() {
+    //Dialog Studie hinzufügen
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.data = {
@@ -266,6 +276,7 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   removeUserFromStudy(rowNr: number, userId: number) {
+    //Nutzer von Studie entfernen
     var prj = this.prjService.getCurrentProject();
     this.userDataSource = this.userDataSource.filter(
       (item: any, index: number) => index !== rowNr
@@ -281,6 +292,7 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
   blockOrAcceptUserForStudy(rowNr: number, userId: number, actStatus: string) {
+    //Nutzer von Studie blockieren
     var add = this.currentPageParticipants * this.pageSize;
 
     ////console.log(this.userDataSource[rowNr + add]);

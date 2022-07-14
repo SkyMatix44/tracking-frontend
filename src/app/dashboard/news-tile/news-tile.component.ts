@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { NewsService } from '../../common/news.service';
 import { ProjectService } from '../../common/project.service';
 import { UserService } from '../../common/user.service';
-
+//author: David Weber
 @Component({
   selector: 'app-news-tile',
   templateUrl: './news-tile.component.html',
@@ -25,6 +25,7 @@ export class NewsTileComponent implements OnInit {
   }
 
   getActPrjAndLoadNews() {
+    //aktuelles Projekt holen und News laden
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()
       .subscribe((observer) => {
@@ -71,6 +72,7 @@ export class NewsTileComponent implements OnInit {
 
   publicMessage = '';
   sendMessage(publicMessage: any) {
+    //Nachricht an App und Dashboard abschicken
     this.actPrjId = this.prjService.getCurrentProjectId();
 
     if (this.actPrjId != -1) {
@@ -112,6 +114,7 @@ export class NewsTileComponent implements OnInit {
 }
 
 function isEmptyOrSpaces(str: any) {
+  //Leerzeichen oder leerer String
   return str === null || str.match(/^ *$/) !== null;
 }
 

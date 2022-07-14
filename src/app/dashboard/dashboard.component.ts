@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getActProject() {
+    //Aktuell ausgewähltes Projekt abrufen
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()
       .subscribe((observer) => {
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getNrOfScientists(prjId: number) {
+    //Anzahl der Wissenschaftler einer Studie holen
     this.projectSubscription = this.prjService
       .getProjectUsers(prjId, 'scientists')
       .subscribe((results) => {
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getNrOfParticipants(prjId: number) {
+    //Anzahl der Nutzers einer Studie
     this.projectSubscription = this.prjService
       .getProjectUsers(prjId, 'participants')
       .subscribe((results) => {
@@ -50,6 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getNrOfDaysLeft(startDate: number, endDate: number) {
+    //Anzahl der verbleibenden Tage der Studie
     //Differenz bzw. Dauer
     var diff = endDate.valueOf() - startDate.valueOf();
     var diffDays = Math.ceil(diff / (1000 * 3600 * 24));

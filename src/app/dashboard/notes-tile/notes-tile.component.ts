@@ -19,6 +19,8 @@ export class NotesTileComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  //author: David Weber
+
   projectSubscription: Subscription | undefined;
   actProjectId: number = 0;
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class NotesTileComponent implements OnInit {
   }
 
   getActProject() {
+    //
     //this.prjService.setCurrentProjectId(20);
     this.projectSubscription = this.prjService
       .getCurrentProjectObs()

@@ -23,6 +23,7 @@ export class TestingTokensComponent implements OnInit {
   ngOnInit(): void {}
 
   loadTokens(): void {
+    //Tokens zur Validierung einer Email (eines Accounts) laden
     if (null != this.email) {
       this.httpService
         .getWithoutAuth(`auth/tokens/${btoa(this.email)}`)

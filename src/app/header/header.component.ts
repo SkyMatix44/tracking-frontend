@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getAllPrjAndSetInitial() {
+    //alle Studien holen und ggf. initial setzen
     this.studieIds = [];
     this.prjService.getAllProjects().subscribe((results) => {
       //console.log(results);
@@ -53,6 +54,7 @@ export class HeaderComponent implements OnInit {
   }
 
   setInitialProject() {
+    //initiale Studie setzen
     if (this.studieIds[0] != undefined) {
       this.selectedValue = this.studieIds[0].name;
       this.prjService.setCurrentProjectId(this.studieIds[0].id);
@@ -60,12 +62,14 @@ export class HeaderComponent implements OnInit {
   }
 
   redirectTo(uri: string) {
+    //navigation zu anderen Komponenten
     this.router
       .navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigate([uri]));
   }
 
   logout(): void {
+    //Nutzer ausloggen
     this.authService.logout();
     this.userRole = undefined;
     this.router.navigate(['/login']);
@@ -74,6 +78,7 @@ export class HeaderComponent implements OnInit {
   studieIds = [{ id: 20, name: 'StudieSiegen' }];
 
   onChangePrj(event: any) {
+    //abrufen, wenn sich Projekt ändert
     this.prjService.setCurrentProjectId(event.value);
   }
 }

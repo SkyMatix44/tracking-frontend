@@ -40,6 +40,7 @@ export class AddOrEditUserDialogComponent implements OnInit {
   }
 
   getAndSetUserRole() {
+    //User-Rolle setzen für die jeweilige Auswahlmöglichkeit
     this.allUserRoles = [];
 
     if (this.userRole == 'Participant') {
@@ -51,6 +52,7 @@ export class AddOrEditUserDialogComponent implements OnInit {
   }
 
   saveAndClose() {
+    //Dialog schließen und Ergebnisse zurückgeben
     if (
       !this.isEmptyOrSpaces(this.userEmail) &&
       !this.isEmptyOrSpaces(this.userFirstName) &&
@@ -77,6 +79,7 @@ export class AddOrEditUserDialogComponent implements OnInit {
   }
 
   isEmptyOrSpaces(str: any) {
+    //Überprüfung ob leer oder Leerzeichen
     return str === null || str.match(/^ *$/) !== null;
   }
 }

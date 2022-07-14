@@ -29,6 +29,7 @@ export class UserProfileComponent implements OnInit {
 
   user: User | undefined;
   getUserAttributes() {
+    //Nutzer-Daten laden und setzen
     var user = this.userService.getCurrentUser()!;
     this.user = this.userService.getCurrentUser()!;
     ////console.log(this.user);
@@ -40,6 +41,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   setUserUni(uniId: number) {
+    //Uni einem Nutzer zuordnen und speichern
     this.uniService.get(uniId).subscribe((results) => {
       this.selectedUniValue = results.id - 1;
     });
@@ -49,6 +51,7 @@ export class UserProfileComponent implements OnInit {
   unis = [''];
   uniIds = [0];
   getAllUnis() {
+    //alle Unis holen und anzeigen
     this.unis = [];
     this.uniIds = [];
     this.uniService.getAll().subscribe((results) => {
@@ -60,8 +63,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   onChangeUni(event: any) {
-    //console.log(event.value);
-    //console.log(this.uniIds);
+    //Uni Dropdown Abänderung
     this.userService
       .update({ universityId: this.uniIds[event.value] })
       .subscribe((results) => {
@@ -70,9 +72,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   saveChanges() {
+    //Änderungen des Nutzerprofils abspeichern
     var university = '';
     this.uniService.get(this.user?.universityId!).subscribe((results) => {
-      ////console.log(results.name);
+      //console.log(results.name);
       university = results.name;
     });
 
