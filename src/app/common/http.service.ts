@@ -107,6 +107,9 @@ export class HttpService {
     return this.auth$.getValue();
   }
 
+  /**
+   * Return the user authentication as Observable
+   */
   getAuthenticationObs(): Observable<Authentication | null> {
     return this.auth$.asObservable();
   }
@@ -115,9 +118,7 @@ export class HttpService {
    * Return the complete url for the current system
    */
   private buildUrl(urlPath: string): string {
-    let a = `${APP_URL}/${urlPath}`;
-    console.log(a);
-    return a;
+    return `${APP_URL}/${urlPath}`;
   }
 
   /**

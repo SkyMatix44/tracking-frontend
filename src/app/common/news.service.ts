@@ -8,22 +8,37 @@ import { HttpService } from './http.service';
 export class NewsService {
   constructor(private httpService: HttpService) {}
 
+  /**
+   * Create a news
+   */
   create(data: CreateNewsDto): Observable<News> {
     return this.httpService.post('news', data);
   }
 
+  /**
+   * Update a news
+   */
   update(newsId: number, data: UpdateNewsDto): Observable<News> {
     return this.httpService.patch(`news/${newsId}`, data);
   }
 
+  /**
+   * Delete a news
+   */
   delete(newsId: number): Observable<void> {
     return this.httpService.delete(`news/${newsId}`);
   }
 
+  /**
+   * Returns a news
+   */
   get(newsId: number): Observable<News> {
     return this.httpService.get(`news/${newsId}`);
   }
 
+  /**
+   * Return all news from a project
+   */
   getProjectNews(projectId: number): Observable<News[]> {
     return this.httpService.get(`news/project/${projectId}`);
   }

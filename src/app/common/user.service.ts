@@ -9,6 +9,9 @@ import { HttpService } from './http.service';
 export class UserService {
   constructor(private httpService: HttpService) {}
 
+  /**
+   * Returns the current user
+   */
   getCurrentUser(): User | null {
     const auth = this.httpService.getAuthentication();
     if (auth != null) {
@@ -18,6 +21,9 @@ export class UserService {
     return null;
   }
 
+  /**
+   * Checks if the given user id is the current user
+   */
   isCurrentUser(id: number): boolean {
     const auth = this.httpService.getAuthentication();
     if (null != auth) {
@@ -27,26 +33,44 @@ export class UserService {
     return false;
   }
 
+  /**
+   * Change the password of the current user
+   */
   changePassword(data: ChangePasswordDto): Observable<void> {
     return this.httpService.post('user/update/password', data);
   }
 
+  /**
+   * Change the email of the current user
+   */
   changeEmail(data: ChangeEmailDto): Observable<void> {
     return this.httpService.post('user/update/email', data);
   }
 
+  /**
+   * Block an user
+   */
   blockUser(userId: number): Observable<void> {
     return this.httpService.post(`user/${userId}/block`, null);
   }
 
+  /**
+   * Unblock an user
+   */
   unblockUser(userId: number): Observable<void> {
     return this.httpService.post(`user/${userId}/unblock`, null);
   }
 
+  /**
+   * Returns all users
+   */
   getAll(): Observable<User[]> {
     return this.httpService.get('user/all');
   }
 
+  /**
+   * Update an user (only for admins)
+   */
   updateUserAsAdmin(
     userId: number,
     data: UpdateUserAdminDto
@@ -54,6 +78,9 @@ export class UserService {
     return this.httpService.post(`user/${userId}/update`, data);
   }
 
+  /**
+   * Update the current user
+   */
   update(data: UpdateUserDto): Observable<User> {
     return this.httpService.patch<User>(`user/update`, data).pipe(
       map((user: User): User => {
@@ -63,10 +90,16 @@ export class UserService {
     );
   }
 
+  /**
+   * Create a new user
+   */
   create(data: CreateUserDto): Observable<User> {
     return this.httpService.post(`user/create`, data);
   }
 
+  /**
+   * Update auth data
+   */
   private updateAuthData(newUserData: Partial<User>): void {
     const auth: Authentication | null = this.httpService.getAuthentication();
     if (null != auth) {
@@ -128,8 +161,8 @@ export interface UpdateUserAdminDto {
   gender?: Gender;
   address?: string;
   birthday?: number;
-  height?: number;
-  weight?: number;
+  height?: number; // in cm
+  weight?: number; // in kg
   validated?: boolean;
   universityId?: number;
   role?: Role;
@@ -141,8 +174,8 @@ export interface UpdateUserDto {
   gender?: Gender;
   address?: string;
   birthday?: number;
-  height?: number;
-  weight?: number;
+  height?: number; // in cm
+  weight?: number; // inm kg
   universityId?: number;
 }
 
@@ -154,8 +187,8 @@ export interface CreateUserDto {
   gender?: Gender;
   address?: string;
   birthday?: number;
-  height?: number;
-  weight?: number;
+  height?: number; // in cm
+  weight?: number; // in kg
   universityId?: number;
   role: Role;
 }

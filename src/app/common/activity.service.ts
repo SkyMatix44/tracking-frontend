@@ -8,22 +8,37 @@ import { HttpService } from './http.service';
 export class ActivityService {
   constructor(private httpService: HttpService) {}
 
+  /**
+   * Update an Activity
+   */
   update(activityId: number, data: UpdateActivityDto): Observable<Activity> {
     return this.httpService.patch(`activity/${activityId}`, data);
   }
 
+  /**
+   * Delete an Activity
+   */
   delete(activityId: number): Observable<void> {
     return this.httpService.delete(`activity/${activityId}`);
   }
 
+  /**
+   * Returns an Activity by ID
+   */
   get(activityId: number): Observable<Activity> {
     return this.httpService.get(`activity/${activityId}`);
   }
 
+  /**
+   * Returns all Activities from a project
+   */
   getProjectActivties(projectId: number): Observable<Activity[]> {
     return this.httpService.get(`activity/project/${projectId}`);
   }
 
+  /**
+   * Returns all Activities from a project from a user
+   */
   getProjectUserActivties(
     projectId: number,
     userId: number

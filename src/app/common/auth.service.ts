@@ -120,8 +120,8 @@ export interface SignUpDto {
   gender?: Gender;
   address?: string;
   birthday?: number;
-  height?: number;
-  weight?: number;
+  height?: number; // in cm
+  weight?: number; // in kg
   role: Role;
   universityId?: number;
 }
