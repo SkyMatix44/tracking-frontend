@@ -34,7 +34,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     'Distance',
     'Heartrate',
     'Calories',
-    'BloodSugarOxygen',
+    'BloodSugar',
     'Duration',
     'StartDate',
   ];
@@ -181,14 +181,18 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
   getFormattedDuration(start_date: string, end_date: string): string {
     const duration: number = Number(end_date) - Number(start_date); // in ms
+    console.log(end_date)
+    console.log(start_date)
     const hours = Math.floor(duration / (1000 * 60 * 60));
     const minutes = Math.floor(
       (duration - hours * 60 * 60 * 1000) / (1000 * 60)
     );
+    const seconds=Math.floor((duration-hours-minutes)/1000)
 
     let hoursString: string = hours <= 9 ? '0' + hours : hours + '';
     let minString: string = minutes <= 9 ? '0' + minutes : minutes + '';
-    return hoursString + ':' + minString + 'h';
+    let secString: string = seconds <= 9 ? '0' + seconds : seconds + '';
+    return hoursString + ':' + minString+':'+secString + 'h';
   }
   getAlldata(projectid: number) {
     this.userList = [];
