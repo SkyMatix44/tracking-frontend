@@ -10,6 +10,7 @@ import { Chart, ChartItem, registerables } from 'chart.js';
 import { ActivityTypeService } from '../common/activity-type.service';
 import { ActivityService } from '../common/activity.service';
 import { ProjectService } from '../common/project.service';
+import { MatPaginator } from '@angular/material/paginator';
 
 interface CustomColumn {
   possition: number;
@@ -54,6 +55,10 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   public columnShowHideList: CustomColumn[] = [];
   public activity = [''];
   userListMatTabDataSource = new MatTableDataSource<UserList>(this.userList);
+  filteredValues = {};
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   constructor(
     table: ElementRef,
     private actService: ActivityService,
@@ -68,17 +73,63 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       data,
       filter: string
     ): boolean {
-      console.log(data);
-      return (
-        data.userID.toString().includes(filter) 
-        //data.activity.includes(filter) 
-        //data.start_date.toString().includes(filter)
-      );
+      var filterArray = filter.split(',');
+      var filterId = filterArray[1];
+      var filterActivity = filterArray[0];
+      var filterDate = filterArray[2];
+
+      var checkFilterId = filterId == '' || undefined ? false : true;
+      var checkFilterActivity = filterActivity == '' ? false : true;
+      var checkFilterDate = filterDate == 'invalid date' ? false : true;
+
+      if (checkFilterId && checkFilterActivity && checkFilterDate) {
+        return (
+          data.userID.toString().includes(filterId) &&
+          data.activity.toLowerCase().includes(filterActivity) &&
+          data.start_date.toLowerCase().includes(filterDate)
+        );
+      }
+
+      if (checkFilterId && checkFilterActivity) {
+        return (
+          data.userID.toString().includes(filterId) &&
+          data.activity.toLowerCase().includes(filterActivity)
+        );
+      }
+
+      if (checkFilterId && checkFilterDate) {
+        return (
+          data.userID.toString().includes(filterId) &&
+          data.start_date.toLowerCase().includes(filterDate)
+        );
+      }
+
+      if (checkFilterActivity && checkFilterDate) {
+        return (
+          data.activity.toLowerCase().includes(filterActivity) &&
+          data.start_date.toLowerCase().includes(filterDate)
+        );
+      }
+
+      if (checkFilterId) {
+        return data.userID.toString().includes(filterId);
+      }
+
+      if (checkFilterActivity) {
+        return data.activity.toLowerCase().includes(filterActivity);
+      }
+
+      if (checkFilterDate) {
+        return data.start_date.toLowerCase().includes(filterDate);
+      }
+
+      return true;
     };
   }
 
   ngAfterViewInit(): void {
     this.initializeColumnProperties();
+    this.userListMatTabDataSource.paginator = this.paginator;
   }
   getActProject() {
     //this.prjService.setCurrentProjectId(20);
@@ -99,8 +150,12 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     if (filterValue == 'Invalid Date') {
       filterValue = '';
     }
-    console.log(filterValue);
-    this.userListMatTabDataSource.filter = filterValue.trim().toLowerCase();
+    if (this.selected == undefined) {
+      this.selected = '';
+    }
+
+    var filterString = this.selected + ',' + this.uID + ',' + datum;
+    this.userListMatTabDataSource.filter = filterString.trim().toLowerCase();
   }
 
   toggleColumn(column: { isActive: boolean; possition: number; name: string }) {
@@ -148,8 +203,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           userID: element.userId,
           activity: element.activityType,
           steps: element.steps,
-          distance: element.distance +'km',
-          heartrate: element.hearthrate +'bpm',
+          distance: element.distance + 'km',
+          heartrate: element.hearthrate + 'bpm',
           calories: Math.round(element.calories_consumption * 100) / 100,
           bloodSugarOxygen: element.bloodSugarOxygen,
           duration: this.getFormattedDuration(
