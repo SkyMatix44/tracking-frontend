@@ -195,7 +195,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     const minutes = Math.floor(
       (duration - hours * 60 * 60 * 1000) / (1000 * 60)
     );
-    const seconds = Math.floor((duration - hours - minutes) / 1000);
+    const seconds = Math.floor((duration - (hours*60*60*1000) - (minutes*60*1000)) / 1000);
 
     let hoursString: string = hours <= 9 ? '0' + hours : hours + '';
     let minString: string = minutes <= 9 ? '0' + minutes : minutes + '';
