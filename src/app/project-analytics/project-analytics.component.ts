@@ -137,8 +137,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           userID: element.userId,
           activity: element.activityType,
           steps: element.steps,
-          distance: element.distance,
-          heartrate: element.hearthrate,
+          distance: element.distance +'km',
+          heartrate: element.hearthrate +'bpm',
           calories: Math.round(element.calories_consumption * 100) / 100,
           bloodSugarOxygen: element.bloodSugarOxygen,
           duration: this.getFormattedDuration(
@@ -252,8 +252,8 @@ export interface UserList {
   userID: number;
   activity: string;
   steps: number;
-  distance: number;
-  heartrate: number;
+  distance: string;
+  heartrate: string;
   calories: number;
   bloodSugarOxygen: number;
   duration: string;
