@@ -10,6 +10,7 @@ import { Chart, ChartItem, registerables } from 'chart.js';
 import { ActivityTypeService } from '../common/activity-type.service';
 import { ActivityService } from '../common/activity.service';
 import { ProjectService } from '../common/project.service';
+import { MatPaginator } from '@angular/material/paginator';
 
 interface CustomColumn {
   possition: number;
@@ -55,6 +56,8 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   public activity = [''];
   userListMatTabDataSource = new MatTableDataSource<UserList>(this.userList);
   filteredValues = {};
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     table: ElementRef,
@@ -126,6 +129,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeColumnProperties();
+    this.userListMatTabDataSource.paginator = this.paginator;
   }
   getActProject() {
     //this.prjService.setCurrentProjectId(20);
