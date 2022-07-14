@@ -55,4 +55,5 @@ export interface Activity {
   projectId: number;
   activityType: string;
   calories_consumption: number;
+  calories_consumption_per_unit: number; // per kg and min
 }
