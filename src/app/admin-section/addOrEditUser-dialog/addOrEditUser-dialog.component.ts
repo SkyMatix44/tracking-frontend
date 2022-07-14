@@ -35,6 +35,7 @@ export class AddOrEditUserDialogComponent implements OnInit {
   status = '';
   selectedUserRole = 'Participant';
   allUserRoles = [''];
+
   ngOnInit() {
     this.getAndSetUserRole();
   }
@@ -43,9 +44,15 @@ export class AddOrEditUserDialogComponent implements OnInit {
     //User-Rolle setzen für die jeweilige Auswahlmöglichkeit
     this.allUserRoles = [];
 
-    if (this.userRole == 'Participant') {
-      //console.log('A Participant cannot be changed.');
-    } else if (this.userRole == 'Scientists' || this.userRole == 'Admin') {
+    if (this.dialogTitle == 'Edit User') {
+      if (this.userRole == 'Participant') {
+        //console.log('A Participant cannot be changed.');
+      } else if (this.userRole == 'Scientists' || this.userRole == 'Admin') {
+        this.allUserRoles.push('Scientists');
+        this.allUserRoles.push('Admin');
+      }
+    } else {
+      this.allUserRoles.push('Participant');
       this.allUserRoles.push('Scientists');
       this.allUserRoles.push('Admin');
     }
@@ -57,8 +64,6 @@ export class AddOrEditUserDialogComponent implements OnInit {
       !this.isEmptyOrSpaces(this.userEmail) &&
       !this.isEmptyOrSpaces(this.userFirstName) &&
       !this.isEmptyOrSpaces(this.userLastName) &&
-      !this.isEmptyOrSpaces(this.userUniversity) &&
-      !this.isEmptyOrSpaces(this.userAddress) &&
       !this.isEmptyOrSpaces(this.selectedUserRole)
       //&& !this.isEmptyOrSpaces(this.userPassword)
     ) {
