@@ -188,18 +188,19 @@
         {{ userList.bloodSugarOxygen }}
       </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="Duration">
+      <mat-header-cell *matHeaderCellDef>Duration</mat-header-cell>
+      <mat-cell *matCellDef="let userList">
+        {{ userList.duration }}
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="StartDate">
       <mat-header-cell *matHeaderCellDef>Startdate</mat-header-cell>
       <mat-cell *matCellDef="let userList">
         {{ userList.start_date }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="EndDate">
-      <mat-header-cell *matHeaderCellDef>Enddate</mat-header-cell>
-      <mat-cell *matCellDef="let userList">
-        {{ userList.end_date }}
-      </mat-cell>
-    </ng-container>
+   
     <mat-header-row *matHeaderRowDef="columnList"></mat-header-row>
     <mat-row
       *matRowDef="let row; columns: columnList; let i = index"

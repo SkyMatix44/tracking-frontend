@@ -35,8 +35,9 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       heartrate: 0,
       calories:0,
       bloodSugarOxygen: 0,
+      duration:'',
       start_date: '',
-      end_date: '',
+      
     },
   ];
  
@@ -49,8 +50,9 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
     'Heartrate',
     'Calories',
     'BloodSugarOxygen',
+    'Duration',
     'StartDate',
-    'EndDate',
+    
   ]; 
   @ViewChild('TABLE', { static: true })
   table: ElementRef;
@@ -128,6 +130,15 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       });
     });
   }
+  getFormattedDuration(start_date: string, end_date: string): string {
+    const duration: number = Number(end_date) - Number(start_date); // in ms
+    const hours = Math.floor(duration / (1000 * 60 * 60));
+    const minutes = Math.floor((duration - hours * 60 * 60 * 1000) / (1000 * 60));
+
+    let hoursString: string = hours <= 9 ? '0' + hours : hours + '';
+    let minString: string = minutes <= 9 ? '0' + minutes : minutes + '';
+    return hoursString + ':' + minString+ 'h';
+  }
   getAlldata(projectid: number) {
     this.userList = [];
     this.activitylist = [];
@@ -143,10 +154,11 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           steps: element.steps,
           distance: element.distance,
           heartrate: element.hearthrate,
-          calories:element.calories_consumption,
+          calories:Math.round((element.calories_consumption)*100)/100,
           bloodSugarOxygen: element.bloodSugarOxygen,
+          duration:this.getFormattedDuration(element.start_date, element.end_date),
           start_date: new Date(Number(element.start_date)).toDateString(),
-          end_date: new Date(Number(element.end_date)).toDateString(),
+         
         });
       });
     });
