@@ -25,7 +25,7 @@ export class UniversityService {
   }
 
   getAll(): Observable<University[]> {
-    return this.httpService.get(`university`);
+    return this.httpService.getWithoutAuth(`auth/universities`);
   }
 }
 
