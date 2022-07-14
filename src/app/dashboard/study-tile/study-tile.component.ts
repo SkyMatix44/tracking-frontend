@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, ChartItem, registerables } from 'chart.js';
+import { ActivityService } from '../../common/activity.service';
+import { ProjectService } from '../../common/project.service';
 
 @Component({
   selector: 'app-study-tile',
@@ -7,7 +9,11 @@ import { Chart, ChartItem, registerables } from 'chart.js';
   styleUrls: ['./study-tile.component.scss'],
 })
 export class StudyTileComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private activService: ActivityService,
+    private prjService: ProjectService
+  ) {}
+  userList: UserList[] = [];
 
   ngOnInit(): void {
     const monthLabels = [
@@ -22,6 +28,25 @@ export class StudyTileComponent implements OnInit {
 
     this.showDiagram('line-chart', monthLabels, monthData);
     this.currentlySelectedPeriod = 'Last 6 months';
+  }
+
+  loadAcitivityDataFromDatabase() {
+    var prjId = this.prjService.getCurrentProjectId();
+    console.log(prjId);
+
+    var a = this.activService
+      .getProjectActivties(prjId)
+      .subscribe((results) => {
+        results.forEach((element) => {
+          this.userList.push({
+            id: element.id,
+            userID: element.userId,
+            activity: element.activityType,
+            start_date: new Date(Number(element.start_date)).toDateString(),
+          });
+        });
+        console.log(this.userList);
+      });
   }
 
   currentlySelectedPeriod = '';
@@ -39,13 +64,13 @@ export class StudyTileComponent implements OnInit {
     var monthData = [0, 59, 30, 81, 56, 40];
 
     const dayLabels = [
+      'Friday',
+      'Saturday',
+      'Sunday',
       'Monday',
       'Tuesday',
       'Wednesday',
       'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
     ];
     var dayData = [10, 20, 37, 18, 56, 85, 40];
 
@@ -104,4 +129,11 @@ export class StudyTileComponent implements OnInit {
 
     this.chart = myChart;
   }
+}
+
+export interface UserList {
+  id: number;
+  userID: number;
+  activity: string;
+  start_date: string;
 }
