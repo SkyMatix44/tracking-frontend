@@ -64,6 +64,17 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.getActProject();
+    this.userListMatTabDataSource.filterPredicate = function (
+      data,
+      filter: string
+    ): boolean {
+      console.log(data);
+      return (
+        data.userID.toString().includes(filter) 
+        //data.activity.includes(filter) 
+        //data.start_date.toString().includes(filter)
+      );
+    };
   }
 
   ngAfterViewInit(): void {
