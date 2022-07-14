@@ -31,9 +31,12 @@ export class ActivityService {
 
   /**
    * Returns all Activities from a project
+   * @param projectId project id
+   * @param from from date (-1: not set)
+   * @param to to date (-1: not set)
    */
-  getProjectActivties(projectId: number): Observable<Activity[]> {
-    return this.httpService.get(`activity/project/${projectId}`);
+  getProjectActivties(projectId: number, from: number = -1, to: number = -1): Observable<Activity[]> {
+    return this.httpService.get(`activity/project/${projectId}/from/${from}/to/${to}`);
   }
 
   /**
