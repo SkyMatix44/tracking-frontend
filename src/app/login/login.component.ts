@@ -114,9 +114,9 @@ export class LoginComponent implements OnInit {
   }
 
   onChangeUni(event: any) {
-    console.log(event.value);
-    console.log(this.uniIds);
-    console.log(this.uniIds[event.value]); //UniId
+    //console.log(event.value);
+    //console.log(this.uniIds);
+    //console.log(this.uniIds[event.value]); //UniId
     this.selectedUniValue = this.uniIds[event.value];
   }
 

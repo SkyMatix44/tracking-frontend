@@ -5,12 +5,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart, ChartItem, registerables } from 'chart.js';
 import { ActivityTypeService } from '../common/activity-type.service';
 import { ActivityService } from '../common/activity.service';
 import { ProjectService } from '../common/project.service';
-import { MatPaginator } from '@angular/material/paginator';
 
 interface CustomColumn {
   possition: number;
@@ -81,7 +81,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
       var checkFilterId = filterId == '' ? false : true;
       var checkFilterActivity = filterActivity == '' ? false : true;
       var checkFilterDate = filterDate == 'invalid date' ? false : true;
-      console.log(filterId);
+      //console.log(filterId);
 
       if (checkFilterId && checkFilterActivity && checkFilterDate) {
         return (
@@ -140,7 +140,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
         if (observer?.id != undefined) {
           this.getAlldata(observer?.id!);
         } else {
-          console.log('fix initial undefined');
+          //console.log('fix initial undefined');
         }
       });
   }
@@ -189,13 +189,15 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
   }
   getFormattedDuration(start_date: string, end_date: string): string {
     const duration: number = Number(end_date) - Number(start_date); // in ms
-    console.log(end_date);
-    console.log(start_date);
+    //console.log(end_date);
+    //console.log(start_date);
     const hours = Math.floor(duration / (1000 * 60 * 60));
     const minutes = Math.floor(
       (duration - hours * 60 * 60 * 1000) / (1000 * 60)
     );
-    const seconds = Math.floor((duration - (hours*60*60*1000) - (minutes*60*1000)) / 1000);
+    const seconds = Math.floor(
+      (duration - hours * 60 * 60 * 1000 - minutes * 60 * 1000) / 1000
+    );
 
     let hoursString: string = hours <= 9 ? '0' + hours : hours + '';
     let minString: string = minutes <= 9 ? '0' + minutes : minutes + '';
@@ -225,7 +227,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           ),
           start_date: new Date(Number(element.start_date)).toDateString(),
         });
-        console.log(this.userList);
+        //console.log(this.userList);
       });
 
       activities.forEach((element) => {
@@ -248,7 +250,7 @@ export class ProjectAnalyticsComponent implements OnInit, AfterViewInit {
           this.filteredArray.push(this.activitylist[i]);
         }
       }
-      console.log(this.userList);
+      //console.log(this.userList);
       this.userListMatTabDataSource.data = this.userList;
       this.setDiagramData(projectid);
     });

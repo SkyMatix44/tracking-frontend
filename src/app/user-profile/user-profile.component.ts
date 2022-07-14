@@ -31,7 +31,7 @@ export class UserProfileComponent implements OnInit {
   getUserAttributes() {
     var user = this.userService.getCurrentUser()!;
     this.user = this.userService.getCurrentUser()!;
-    //console.log(this.user);
+    ////console.log(this.user);
     this.userFirstName = user?.firstName || '';
     this.userLastName = user?.lastName || '';
     this.userEmail = user?.email || '';
@@ -60,8 +60,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   onChangeUni(event: any) {
-    console.log(event.value);
-    console.log(this.uniIds);
+    //console.log(event.value);
+    //console.log(this.uniIds);
     this.userService
       .update({ universityId: this.uniIds[event.value] })
       .subscribe((results) => {
@@ -72,7 +72,7 @@ export class UserProfileComponent implements OnInit {
   saveChanges() {
     var university = '';
     this.uniService.get(this.user?.universityId!).subscribe((results) => {
-      console.log(results.name);
+      ////console.log(results.name);
       university = results.name;
     });
 
@@ -117,7 +117,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log('Destroy');
+    //console.log('Destroy');
     this.user = undefined;
     this.userFirstName = '';
     this.userLastName = '';

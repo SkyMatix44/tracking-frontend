@@ -74,9 +74,9 @@ export class ProjectConfigurationComponent implements OnInit {
     this.studyDataSourcePagination.paginator = this.paginator.toArray()[0];
     this.userDataSourcePagination.paginator = this.paginator.toArray()[1];
     var pageSize = this.studyDataSourcePagination.paginator.pageSize; //<----
-    console.log(pageSize);
+    //console.log(pageSize);
     var pageSizeUser = this.userDataSourcePagination.paginator.pageSize; //<----
-    console.log(pageSizeUser);
+    //console.log(pageSizeUser);
   }
 
   getActProject() {
@@ -85,7 +85,7 @@ export class ProjectConfigurationComponent implements OnInit {
       .subscribe((observer) => {
         if (observer?.id != undefined) {
           this.actPrjNumber = observer.id;
-          //console.log(this.actPrjNumber);
+          ////console.log(this.actPrjNumber);
           this.actStudyName = 'of "' + observer.name + '"';
           this.loadStudyParticipants(observer.id);
           this.loadEnrollmentKey();
@@ -164,7 +164,7 @@ export class ProjectConfigurationComponent implements OnInit {
   currentPageParticipants = 0;
   pageSize = 0;
   pageParticipantsChanged(event: PageEvent) {
-    console.log({ event });
+    //console.log({ event });
     this.pageSize = event.pageSize;
     this.currentPageParticipants = event.pageIndex;
   }
@@ -202,7 +202,7 @@ export class ProjectConfigurationComponent implements OnInit {
           this.projectSubscription = this.prjService
             .update(studyId, data)
             .subscribe((observer) => {
-              console.log(observer);
+              //console.log(observer);
             });
 
           this.studyDataSource = this.studyDataSource.filter(
@@ -252,11 +252,11 @@ export class ProjectConfigurationComponent implements OnInit {
             end_date: endDateNr.getTime(), //1614294000
           };
 
-          console.log();
+          //console.log();
           this.projectSubscription = this.prjService
             .create(data)
             .subscribe((observer) => {
-              console.log(observer.invite_token);
+              //console.log(observer.invite_token);
               this.loadProject();
               this.showEnrollmentKey(observer.name, observer.invite_token);
             });
@@ -271,7 +271,7 @@ export class ProjectConfigurationComponent implements OnInit {
       (item: any, index: number) => index !== rowNr
     );
     var nr: number[] = [userId];
-    console.log(prj?.id! + ' ' + nr);
+    //console.log(prj?.id! + ' ' + nr);
     this.prjService
       .removeUsersFromProject(prj?.id!, nr)
       .subscribe((results) => {
@@ -283,14 +283,14 @@ export class ProjectConfigurationComponent implements OnInit {
   blockOrAcceptUserForStudy(rowNr: number, userId: number, actStatus: string) {
     var add = this.currentPageParticipants * this.pageSize;
 
-    //console.log(this.userDataSource[rowNr + add]);
+    ////console.log(this.userDataSource[rowNr + add]);
     var actSite = this.userDataSourcePagination._pageData(this.userDataSource);
     if (actStatus == 'accepted') {
-      console.log('User ' + actSite[rowNr].Id + ' blockieren');
+      //console.log('User ' + actSite[rowNr].Id + ' blockieren');
       this.projectSubscription = this.userService
         .blockUser(actSite[rowNr].Id)
         .subscribe((result) => {
-          console.log(result);
+          //console.log(result);
         });
       this.userDataSource[rowNr + add] = {
         Id: actSite[rowNr].Id,
@@ -306,7 +306,7 @@ export class ProjectConfigurationComponent implements OnInit {
       this.projectSubscription = this.userService
         .unblockUser(actSite[rowNr].Id)
         .subscribe((result) => {
-          console.log(result);
+          //console.log(result);
         });
       this.userDataSource[rowNr + add] = {
         Id: actSite[rowNr].Id,

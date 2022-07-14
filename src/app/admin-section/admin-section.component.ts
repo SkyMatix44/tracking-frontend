@@ -56,10 +56,10 @@ export class AdminSectionComponent implements OnInit {
 
   getAllUnis() {
     this.uniDataSource = [];
-    console.log('getAllUnis');
+    //console.log('getAllUnis');
     this.uniService.getAll().subscribe((results) => {
       results.forEach((element) => {
-        console.log(element);
+        //console.log(element);
         this.uniDataSource.push({
           Id: element.id,
           University: element.name,
@@ -155,7 +155,7 @@ export class AdminSectionComponent implements OnInit {
   currentPageUsers = 0;
   pageSize = 0;
   pageUsersChanged(event: PageEvent) {
-    console.log({ event });
+    //console.log({ event });
     this.pageSize = event.pageSize;
     this.currentPageUsers = event.pageIndex;
   }
@@ -169,7 +169,7 @@ export class AdminSectionComponent implements OnInit {
       this.subscr = this.userService
         .blockUser(actSite[rowNr].Id)
         .subscribe((result) => {
-          console.log(result);
+          //console.log(result);
         });
       this.userDataSource[rowNr + add] = {
         Id: actSite[rowNr].Id,
@@ -189,7 +189,7 @@ export class AdminSectionComponent implements OnInit {
       this.subscr = this.userService
         .unblockUser(actSite[rowNr].Id)
         .subscribe((result) => {
-          console.log(result);
+          //console.log(result);
         });
       this.userDataSource[rowNr + add] = {
         Id: actSite[rowNr].Id,
@@ -257,7 +257,7 @@ export class AdminSectionComponent implements OnInit {
             this.subscr = this.userService
               .updateUserAsAdmin(userId, updateData)
               .subscribe((result) => {
-                console.log(result);
+                //console.log(result);
               });
           } else if (editOrAdd == 'Add User') {
             var userData = {
@@ -274,7 +274,7 @@ export class AdminSectionComponent implements OnInit {
             this.subscr = this.userService
               .create(userData)
               .subscribe((result) => {
-                console.log(result);
+                //console.log(result);
               });
           }
 
