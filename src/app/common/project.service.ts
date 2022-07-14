@@ -21,7 +21,7 @@ export class ProjectService implements OnDestroy {
   public readonly projects$: BehaviorSubject<Project[]> = new BehaviorSubject(
     [] as Project[]
   );
-
+  // auth sub
   private authSub: Subscription | null = null;
 
   constructor(private httpService: HttpService) {
@@ -96,14 +96,19 @@ export class ProjectService implements OnDestroy {
   addUsersToProject(projectId: number, userIds: number[]): Observable<void> {
     return this.httpService.post(`project/${projectId}/users/add`, { userIds });
   }
-  
+
   /**
    * Remove users from a project
    * @param projectId
    * @param userIds
    */
-  removeUsersFromProject(projectId: number, userIds: number[]): Observable<void> {
-    return this.httpService.post(`project/${projectId}/users/remove`, { userIds });
+  removeUsersFromProject(
+    projectId: number,
+    userIds: number[]
+  ): Observable<void> {
+    return this.httpService.post(`project/${projectId}/users/remove`, {
+      userIds,
+    });
   }
 
   /**
